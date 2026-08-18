@@ -20,9 +20,9 @@
        whatsapp — номер только цифрами, начиная со страны. Пример: '79001234567'
        Если значение пустое (''), кнопка мессенджера НЕ становится битой:
        она остаётся ссылкой «Позвонить» на телефон из phone.
-       TODO(заказчик): заполнить telegram и whatsapp реальными значениями. */
+       TODO(заказчик): указать номер WhatsApp (telegram заполнен). */
     contacts: {
-      telegram: '',                    // TODO: username Telegram, напр. 'lokomotiv_ved'
+      telegram: 'LokomotivNeva',       // @LokomotivNeva — проверено: аккаунт открыт для сообщений
       whatsapp: '',                    // TODO: номер WhatsApp цифрами, напр. '79001234567'
       phone: '+74952409065',
       phoneHuman: '+7 (495) 240-90-65',
