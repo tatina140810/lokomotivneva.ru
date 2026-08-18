@@ -45,11 +45,11 @@
           <li><a class="nav__link" href="/cases/">Кейсы</a></li>
           <li><a class="nav__link" href="/contacts/">Контакты</a></li>
         </ul>
-        <div class="nav__mobile-actions"><a class="btn btn--gold btn--block" href="#zayavka">Рассчитать платёж</a></div>
+        <div class="nav__mobile-actions"><a class="btn btn--gold btn--block" href="#qualify">Рассчитать платёж</a></div>
       </nav>
       <div class="header__actions">
         <a class="header__phone" href="tel:+74952409065"><svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-phone"></use></svg><span>+7 (495) 240-90-65</span></a>
-        <a class="btn btn--gold header__cta" href="#zayavka">Рассчитать платёж</a>
+        <a class="btn btn--gold header__cta" href="#qualify">Рассчитать платёж</a>
       </div>
       <button class="burger" id="burger" type="button" aria-label="Открыть меню" aria-expanded="false" aria-controls="nav"><span></span><span></span><span></span></button>
     </div>
@@ -65,19 +65,28 @@
       <div class="hero-2col">
       <div class="page-hero__inner">
         <p class="section__eyebrow reveal" style="color:var(--gold-400)">Платёжный агент ВЭД · Москва</p>
-        <h1 class="reveal" data-reveal-delay="1" id="hero-title">
+        <!-- Вариант заголовка переключается в assets/js/site-config.js → hero.variant
+             ('control' = текст ниже, 'a'/'b'/'c' = варианты для A/B-теста). -->
+        <h1 class="reveal" data-reveal-delay="1" id="hero-title" data-hero-title>
           Расчёты по внешнеторговым контрактам <span class="text-gold">и сопровождение поставок</span>
         </h1>
+        <!-- TODO: заменить на реальные цифры клиента, когда компания начнёт их фиксировать.
+             Значения живут в site-config.js → proof (там же выключатель show). -->
+        <p class="hero-proof reveal" data-reveal-delay="1" data-loko-proof hidden>
+          <svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-check"></use></svg>
+          <span>Более <b data-loko-stat="payments">—</b> платежей на сумму <b data-loko-stat="volume">—</b> млн ₽ проведено в <span data-loko-stat="period">—</span> · <b data-loko-stat="blocked">0</b> заблокированных переводов</span>
+        </p>
         <p class="page-hero__lead reveal" data-reveal-delay="2">
           Исполняем платёжные поручения в Китай, Гонконг, ОАЭ, Турцию, страны ЕС и Великобританию —
           от 1 рабочего дня. При необходимости берём на себя перевозку, таможенное оформление и хранение груза.
         </p>
         <div class="page-hero__actions reveal" data-reveal-delay="3">
-          <a class="btn btn--gold btn--lg" href="#zayavka">Рассчитать платёж</a>
+          <a class="btn btn--gold btn--lg" href="#qualify">Пройти квалификацию за 30 секунд</a>
           <a class="btn btn--ghost btn--lg" data-messenger="auto" href="tel:+74952409065" rel="nofollow">
             <svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-phone"></use></svg><span data-messenger-label>Позвонить +7 (495) 240-90-65</span>
           </a>
         </div>
+        <p class="page-hero__note reveal" data-reveal-delay="3">Ответим в течение рабочего дня. Первая консультация по маршруту платежа — бесплатно.</p>
         <ul class="markers reveal" data-reveal-delay="4">
           <li><svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-shield"></use></svg>ООО, зарегистрировано в РФ. Агентский договор</li>
           <li><svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-clock"></use></svg>Срок исполнения поручения — от 1 рабочего дня</li>
