@@ -115,7 +115,15 @@
     if (!host) return;
     var c = CFG.cases || {};
     var items = c.items || [];
-    if (!items.length) { host.hidden = true; return; }
+    var wrap = $('[data-loko-cases-section]');
+    /* Кейсов нет — прячем ВСЮ секцию, иначе остаётся заголовок с пустотой. */
+    if (!items.length) {
+      if (wrap) wrap.hidden = true;
+      host.hidden = true;
+      return;
+    }
+    if (wrap) wrap.hidden = false;
+    host.hidden = false;
     host.innerHTML = items.map(caseCard).join('');
     /* Честная пометка, пока кейсы демонстрационные */
     var note = $('[data-loko-cases-note]');
