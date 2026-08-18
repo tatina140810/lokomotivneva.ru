@@ -493,3 +493,10 @@
 .bonus__list p { margin: 0; font-size: .9rem; line-height: 1.55; color: var(--text-muted-light); }
 .bonus__form { margin: 0; }
 @media (max-width: 900px) { .bonus { grid-template-columns: 1fr; } }
+
+/* ---- Списки и подзаголовки h2 внутри текстовых блоков .prose ---- */
+.prose h2 { margin-top: 1.8rem; font-size: var(--fs-h3); }
+.prose ul, .prose ol { margin-left: 1.15rem; padding-left: 0; list-style: disc; }
+.prose ol { list-style: decimal; }
+.prose li { margin-top: .5rem; }
+.prose li::marker { color: var(--gold-600); }
