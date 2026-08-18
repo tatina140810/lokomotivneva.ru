@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Контакты и заявка на расчёт платежа | ООО «Локомотив»</title>
+  <meta name="description" content="Контакты ООО «Локомотив»: телефон, Telegram, почта, адрес и режим работы. Оставьте заявку — рассчитаем международный платёж с фиксированным курсом.">
+  <meta name="theme-color" content="#0B1E3F">
+  <link rel="icon" href="/assets/img/logo-160.jpg">
+  <link rel="stylesheet" href="/assets/css/styles.css?v=20260817f">
+  <link rel="stylesheet" href="/assets/css/additions.css?v=20260817f">
+</head>
+<body>
+  <a class="skip-link" href="#main">Перейти к основному содержанию</a>
+  <header class="header" id="header"><div class="container header__inner">
+    <a class="brand" href="/" aria-label="ООО «Локомотив» — на главную">
+      <span class="brand__seal"><img src="/assets/img/logo-160.jpg" width="160" height="160" alt="Эмблема ООО «Локомотив»"></span>
+      <span class="brand__text"><span class="brand__prefix">ООО</span><span class="brand__name">Локомотив</span><span class="brand__tagline">Международные платежи и логистика</span></span>
+    </a>
+    <nav class="nav" id="nav" aria-label="Основная навигация"><ul class="nav__list">
+      <li><a class="nav__link" href="/payments/">Платежи</a></li>
+      <li><a class="nav__link" href="/logistics/">Логистика</a></li>
+      <li><a class="nav__link" href="/trust/">Проверьте нас</a></li>
+      <li><a class="nav__link" href="/cases/">Кейсы</a></li>
+      <li><a class="nav__link" href="/contacts/">Контакты</a></li>
+    </ul><div class="nav__mobile-actions"><a class="btn btn--gold btn--block" href="#lead-form">Оставить заявку</a></div></nav>
+    <div class="header__actions">
+      <a class="header__phone" href="tel:+74952409065"><svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-phone"></use></svg><span>+7 (495) 240-90-65</span></a>
+      <a class="btn btn--gold header__cta" href="#lead-form">Оставить заявку</a>
+    </div>
+    <button class="burger" id="burger" type="button" aria-label="Открыть меню" aria-expanded="false" aria-controls="nav"><span></span><span></span><span></span></button>
+  </div></header>
+
+  <main id="main">
+    <section class="page-hero">
+      <div class="worldmap worldmap--hero" data-worldmap="hero" aria-hidden="true"></div>
+      <div class="hero__glow" aria-hidden="true"></div>
+      <div class="container page-hero__inner">
+        <nav class="crumbs" aria-label="Хлебные крошки"><ol><li><a href="/">Главная</a></li><li aria-current="page">Контакты</li></ol></nav>
+        <h1>Контакты</h1>
+      </div>
+    </section>
+
+    <section class="section section--light">
+      <div class="container">
+        <div class="contacts__grid">
+          <div class="contacts__info reveal">
+            <ul class="contacts__list">
+              <li><span class="contacts__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-phone"></use></svg></span><span><span class="contacts__label">Телефон</span><a class="contacts__value" href="tel:+74952409065">+7 (495) 240-90-65</a></span></li>
+              <li><span class="contacts__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-telegram"></use></svg></span><span><span class="contacts__label">Telegram / WhatsApp</span><a class="contacts__value" href="https://t.me/" rel="nofollow">Написать в мессенджер</a></span></li>
+              <li><span class="contacts__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-mail"></use></svg></span><span><span class="contacts__label">Электронная почта</span><a class="contacts__value" href="mailto:lokomotiv.neva@mail.ru">lokomotiv.neva@mail.ru</a></span></li>
+              <li><span class="contacts__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-pin"></use></svg></span><span><span class="contacts__label">Офис</span><span class="contacts__value">г. Москва, пр-д 1-й Красногвардейский, д. 22, стр. 1, этаж 30, помещ. 52</span></span></li>
+              <li><span class="contacts__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-clock"></use></svg></span><span><span class="contacts__label">Режим работы</span><span class="contacts__value">Пн–Пт 09:00–19:00 · заявки принимаем круглосуточно</span></span></li>
+            </ul>
+          </div>
+
+          <div class="form-card reveal" data-reveal-delay="1">
+            <h3 class="form-card__title">Заявка на расчёт платежа</h3>
+            <p class="form-card__sub">Направление, сумма и валюта — вернёмся с расчётом</p>
+            <form class="form" id="lead-form" novalidate>
+              <div aria-hidden="true" style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden"><label>Компания<input type="text" name="company" tabindex="-1" autocomplete="off"></label></div>
+              <div class="field"><label class="field__label" for="name">Имя <span aria-hidden="true">*</span></label><input class="field__input" type="text" id="name" name="name" autocomplete="name" placeholder="Как к вам обращаться" required minlength="2" aria-describedby="name-error"><p class="field__error" id="name-error" role="alert" hidden></p></div>
+              <div class="field"><label class="field__label" for="phone">Телефон <span aria-hidden="true">*</span></label><input class="field__input" type="tel" id="phone" name="phone" autocomplete="tel" placeholder="+7 (___) ___-__-__ или +код страны" required inputmode="tel" aria-describedby="phone-error"><p class="field__error" id="phone-error" role="alert" hidden></p></div>
+              <div class="field"><label class="field__label" for="email">Эл. почта <span aria-hidden="true">*</span></label><input class="field__input" type="email" id="email" name="email" autocomplete="email" placeholder="you@example.com" inputmode="email" required aria-describedby="email-error"><p class="field__error" id="email-error" role="alert" hidden></p></div>
+              <div class="field"><label class="field__label" for="message">Направление и сумма <span aria-hidden="true">*</span></label><textarea class="field__input field__input--area" id="message" name="message" rows="4" placeholder="Напр. Китай, оплата поставщику ~100 000 ¥, есть инвойс" required aria-describedby="message-error"></textarea><p class="field__error" id="message-error" role="alert" hidden></p></div>
+              <label class="checkbox"><input type="checkbox" id="consent" name="consent" required aria-describedby="consent-error"><span>Я согласен с <a href="/privacy/" target="_blank" rel="noopener">политикой обработки персональных данных</a></span></label>
+              <p class="field__error" id="consent-error" role="alert" hidden></p>
+              <button class="btn btn--gold btn--block btn--lg" type="submit">Отправить заявку</button>
+              <p class="form__note">Нажимая кнопку, вы соглашаетесь с <a href="/privacy/" target="_blank" rel="noopener">политикой обработки персональных данных</a>.</p>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer" id="footer"><div class="container footer__grid">
+    <div class="footer__brand"><span class="brand__seal brand__seal--lg"><img src="/assets/img/logo-160.jpg" width="160" height="160" loading="lazy" alt="Эмблема ООО «Локомотив»"></span>
+      <div><p class="footer__name">ООО «Локомотив»</p><p class="footer__slogan">Международные платежи · логистика · таможня</p></div></div>
+    <nav class="footer__nav" aria-label="Платежи"><h2 class="footer__heading">Платежи</h2><ul>
+      <li><a href="/payments/china/">Китай</a></li><li><a href="/payments/turkey/">Турция</a></li>
+      <li><a href="/payments/uae/">ОАЭ</a></li><li><a href="/payments/europe/">Европа</a></li>
+      <li><a href="/payments/services/">Услуги и ПО</a></li><li><a href="/payments/export/">Экспортная выручка</a></li></ul></nav>
+    <nav class="footer__nav" aria-label="Компания"><h2 class="footer__heading">Компания</h2><ul>
+      <li><a href="/complex/">Комплексно под ключ</a></li><li><a href="/sellers/">Для селлеров</a></li>
+      <li><a href="/logistics/">Логистика</a></li><li><a href="/trust/">Проверьте нас</a></li>
+      <li><a href="/cases/">Кейсы</a></li><li><a href="/contacts/">Контакты</a></li></ul></nav>
+    <div class="footer__legal"><h2 class="footer__heading">Реквизиты</h2>
+      <p>ООО «Локомотив»</p><p>ОГРН 1267700222899 · ИНН 9703250829 · КПП 770301001</p><p>г. Москва, пр-д 1-й Красногвардейский, д. 22, стр. 1, этаж 30, помещ. 52</p></div>
+  </div>
+  <div class="container footer__bottom"><p>© <span id="year">2026</span> ООО «Локомотив». Все права защищены.</p><p><a href="/privacy/">Политика обработки персональных данных</a> · <a href="/">На главную</a></p></div></footer>
+
+  <div class="toast" id="toast" role="status" aria-live="polite" hidden>
+    <span class="toast__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-check"></use></svg></span>
+    <span class="toast__text"></span>
+  </div>
+
+  <script src="/assets/js/main.js?v=20260817c" defer></script>
+</body>
+</html>

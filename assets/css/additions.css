@@ -1,0 +1,337 @@
+/* =============================================================================
+   ООО «Локомотив» — расширение стиля под международные платежи.
+   Дополняет styles.css: те же токены navy+gold, ничего не переопределяет силой.
+   Новые блоки: верхняя строка, выпадающее меню, крошки, шапка внутренних
+   страниц, плитки направлений, калькулятор, шаги, доказательства, цепочка,
+   кейсы, пакет документов.
+   ========================================================================== */
+
+/* --------------------------- 1. Верхняя строка --------------------------- */
+.topbar {
+  background: var(--navy-900);
+  color: var(--text-muted-light);
+  font-size: .82rem;
+  border-bottom: 1px solid rgba(212, 175, 55, .16);
+}
+.topbar__inner {
+  display: flex; flex-wrap: wrap; align-items: center; gap: .4rem 1.4rem;
+  min-height: 40px; padding-block: .35rem;
+}
+.topbar__item { display: inline-flex; align-items: center; gap: .4rem; }
+.topbar__item .icon { width: 1em; height: 1em; color: var(--gold-500); }
+.topbar a:hover { color: var(--gold-300); }
+.topbar__sep { opacity: .35; }
+.topbar__spacer { margin-inline-start: auto; }
+
+/* --------------------- 2. Выпадающее подменю в шапке --------------------- */
+.nav__item--has-sub { position: relative; }
+.nav__sub {
+  position: absolute; top: calc(100% + .4rem); left: 0; z-index: 60;
+  min-width: 260px; padding: .5rem;
+  background: var(--white);
+  border: 1px solid var(--light-2);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-card);
+  opacity: 0; visibility: hidden; transform: translateY(6px);
+  transition: opacity .18s var(--ease), transform .18s var(--ease), visibility .18s;
+}
+.nav__item--has-sub:hover .nav__sub,
+.nav__item--has-sub:focus-within .nav__sub {
+  opacity: 1; visibility: visible; transform: translateY(0);
+}
+.nav__sub a {
+  display: block; padding: .55rem .7rem; border-radius: 9px;
+  color: var(--text-dark); font-weight: 600; font-size: .95rem;
+}
+.nav__sub a:hover { background: var(--light); color: var(--gold-700); }
+.nav__sub-note { display: block; font-weight: 400; font-size: .8rem; color: var(--text-muted-dark); }
+
+/* ---------------------- 3. Шапка внутренней страницы --------------------- */
+.page-hero {
+  position: relative;
+  background: var(--navy-800);
+  color: var(--text-light);
+  padding-block: clamp(2.2rem, 1.5rem + 3vw, 4rem);
+  overflow: hidden;
+}
+.page-hero .worldmap { opacity: .5; }
+.page-hero__inner { position: relative; z-index: 2; max-width: 820px; }
+
+/* Hero в 2 колонки: слева текст, справа эмблема компании */
+.hero-2col {
+  position: relative; z-index: 2;
+  display: grid; grid-template-columns: minmax(0, 1fr) clamp(240px, 30vw, 400px);
+  gap: clamp(1.5rem, 4vw, 4rem); align-items: center;
+}
+.hero-2col .page-hero__inner { max-width: none; }
+.hero-emblem { position: relative; margin: 0; display: grid; place-items: center; }
+.hero-emblem img {
+  width: 100%; height: auto; border-radius: 50%;
+  box-shadow: 0 26px 60px rgba(0, 0, 0, .5);
+  border: 3px solid rgba(212, 175, 55, .5);
+}
+.hero-emblem::before {
+  content: ""; position: absolute; inset: -12%; z-index: -1; border-radius: 50%;
+  background: radial-gradient(circle, rgba(212, 175, 55, .30), transparent 66%);
+  filter: blur(28px);
+}
+@media (max-width: 900px) {
+  .hero-2col { grid-template-columns: 1fr; justify-items: center; }
+  .hero-emblem { order: -1; width: clamp(180px, 46vw, 280px); }
+  .hero-2col .page-hero__inner { text-align: left; }
+}
+.page-hero h1 {
+  font-size: clamp(1.7rem, 1.2rem + 2.6vw, 3rem);
+  color: var(--white);
+}
+.page-hero h1 .text-gold { color: var(--gold-400); }
+.page-hero__lead {
+  font-size: clamp(1rem, .95rem + .4vw, 1.2rem);
+  color: var(--text-muted-light); max-width: 62ch;
+}
+.page-hero__actions { display: flex; flex-wrap: wrap; gap: .8rem; margin-top: 1.4rem; }
+
+/* ------------------------------ 4. Крошки -------------------------------- */
+.crumbs { font-size: .85rem; margin-bottom: 1rem; color: var(--text-muted-light); }
+.crumbs ol { display: flex; flex-wrap: wrap; gap: .3rem .55rem; }
+.crumbs li { display: inline-flex; align-items: center; gap: .55rem; }
+.crumbs li::after { content: "/"; opacity: .4; }
+.crumbs li:last-child::after { content: ""; }
+.crumbs a:hover { color: var(--gold-300); }
+.crumbs [aria-current="page"] { color: var(--gold-400); }
+
+/* --------------------- 5. Маркеры доверия под hero ----------------------- */
+.markers {
+  display: flex; flex-wrap: wrap; gap: .7rem 1.4rem; margin-top: 1.4rem;
+}
+.markers li {
+  display: inline-flex; align-items: center; gap: .5rem;
+  font-size: .92rem; font-weight: 600; color: var(--text-light);
+}
+.markers .icon { width: 1.15em; height: 1.15em; color: var(--gold-400); }
+.section--light .markers li,
+.section--light .markers { color: var(--text-dark); }
+.section--light .markers .icon { color: var(--gold-600); }
+
+/* ----------------------- 6. Плитки направлений --------------------------- */
+.dirs { display: grid; gap: 1.1rem; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+.dir {
+  display: flex; flex-direction: column; gap: .5rem;
+  padding: 1.4rem 1.4rem 1.5rem;
+  background: var(--white); color: var(--text-dark);
+  border: 1px solid var(--light-2); border-radius: var(--radius);
+  box-shadow: var(--shadow-soft);
+  transition: transform .2s var(--ease), box-shadow .2s var(--ease), border-color .2s var(--ease);
+}
+.dir:hover { transform: translateY(-4px); box-shadow: var(--shadow-card); border-color: var(--gold-400); }
+.dir__top { display: flex; align-items: center; gap: .7rem; }
+.dir__flag {
+  width: 42px; height: 42px; flex: 0 0 auto;
+  display: grid; place-items: center; border-radius: 11px;
+  background: var(--light); color: var(--gold-700);
+}
+.dir__flag .icon { width: 1.4em; height: 1.4em; }
+.dir__name { font-size: 1.15rem; font-weight: 800; }
+.dir__meta { display: flex; flex-wrap: wrap; gap: .35rem .9rem; font-size: .86rem; color: var(--text-muted-dark); }
+.dir__meta b { color: var(--text-dark); font-weight: 700; }
+.dir__link {
+  margin-top: auto; padding-top: .4rem; font-weight: 700; color: var(--gold-700);
+  display: inline-flex; align-items: center; gap: .4rem;
+}
+.dir__link .icon { width: 1em; height: 1em; transition: transform .2s var(--ease); }
+.dir:hover .dir__link .icon { transform: translateX(3px); }
+
+/* ------------------------------ 7. Калькулятор --------------------------- */
+.calc {
+  display: grid; gap: 1.6rem;
+  grid-template-columns: 1.1fr .9fr;
+  align-items: stretch;
+  background: var(--white); color: var(--text-dark);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+}
+.calc__form { padding: clamp(1.4rem, 1rem + 2vw, 2.4rem); }
+.calc__row { display: grid; gap: 1rem; grid-template-columns: 1fr 1fr; margin-bottom: 1rem; }
+.calc__field { display: flex; flex-direction: column; gap: .4rem; }
+.calc__field label { font-weight: 700; font-size: .9rem; }
+.calc__field input, .calc__field select {
+  font: inherit; padding: .7rem .8rem;
+  border: 1.5px solid var(--light-2); border-radius: 11px; background: var(--white);
+  color: var(--text-dark);
+}
+.calc__field input:focus, .calc__field select:focus { border-color: var(--gold-500); outline: none; }
+.calc__result {
+  background: var(--navy-800); color: var(--text-light);
+  padding: clamp(1.4rem, 1rem + 2vw, 2.4rem);
+  display: flex; flex-direction: column; justify-content: center; gap: 1rem;
+}
+.calc__result-title { font-size: .82rem; letter-spacing: .12em; text-transform: uppercase; color: var(--gold-400); }
+.calc__line { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem;
+  padding-block: .55rem; border-bottom: 1px solid rgba(255,255,255,.1); }
+.calc__line:last-of-type { border-bottom: 0; }
+.calc__line span { color: var(--text-muted-light); font-size: .92rem; }
+.calc__line b { font-size: 1.2rem; color: var(--white); font-weight: 800; }
+.calc__total b { font-size: 1.7rem; color: var(--gold-400); }
+.calc__hint { font-size: .8rem; color: var(--text-muted-light); }
+
+/* -------------------------------- 8. Шаги -------------------------------- */
+.steps { counter-reset: step; display: grid; gap: 1.1rem;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
+.step {
+  position: relative; padding: 1.5rem 1.3rem 1.4rem;
+  background: var(--white); color: var(--text-dark);
+  border: 1px solid var(--light-2); border-radius: var(--radius);
+  box-shadow: var(--shadow-soft);
+}
+.section--navy .step { background: var(--navy-700); color: var(--text-light); border-color: rgba(212,175,55,.18); }
+.step::before {
+  counter-increment: step; content: counter(step, decimal-leading-zero);
+  display: inline-block; margin-bottom: .6rem;
+  font-size: 1.35rem; font-weight: 800; color: var(--gold-500);
+}
+.step h3 { font-size: 1.08rem; margin-bottom: .35rem; }
+.step p { margin: 0; font-size: .93rem; color: var(--text-muted-dark); }
+.section--navy .step p { color: var(--text-muted-light); }
+
+/* --------------------- 9. Карточки-доказательства ------------------------ */
+.proofs { display: grid; gap: 1.1rem; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+.proof {
+  padding: 1.5rem 1.4rem;
+  background: var(--white); color: var(--text-dark);
+  border: 1px solid var(--light-2); border-radius: var(--radius);
+  box-shadow: var(--shadow-soft);
+}
+.proof__icon {
+  width: 46px; height: 46px; display: grid; place-items: center; margin-bottom: .9rem;
+  border-radius: 12px; background: var(--light); color: var(--gold-700);
+}
+.proof__icon .icon { width: 1.5em; height: 1.5em; }
+.proof h3 { font-size: 1.1rem; margin-bottom: .4rem; }
+.proof p { margin: 0; font-size: .94rem; color: var(--text-muted-dark); }
+
+/* ----------------- 10. Длинный блок доверия (страница /trust) ------------ */
+.trust-item {
+  padding: 1.6rem clamp(1.2rem, 1rem + 1vw, 2rem);
+  background: var(--white); border: 1px solid var(--light-2);
+  border-left: 4px solid var(--gold-500);
+  border-radius: var(--radius); box-shadow: var(--shadow-soft);
+  margin-bottom: 1.1rem;
+}
+.trust-item__head { display: flex; align-items: baseline; gap: .7rem; margin-bottom: .5rem; }
+.trust-item__num {
+  flex: 0 0 auto; font-size: 1.05rem; font-weight: 800; color: var(--gold-700);
+}
+.trust-item h3 { font-size: 1.2rem; margin: 0; }
+.trust-item__ours {
+  margin-top: .8rem; padding: .9rem 1rem; border-radius: 11px;
+  background: var(--light); border: 1px solid var(--light-2);
+}
+.trust-item__ours b { color: var(--gold-700); }
+.trust-item__docs {
+  margin-top: .7rem; display: flex; flex-wrap: wrap; gap: .5rem .9rem;
+  font-size: .86rem; color: var(--text-muted-dark);
+}
+.trust-item__docs a, .doc-chip {
+  display: inline-flex; align-items: center; gap: .4rem;
+  color: var(--gold-700); font-weight: 600;
+}
+.trust-item__docs .icon, .doc-chip .icon { width: 1.05em; height: 1.05em; }
+.trust-note {
+  margin-top: 1.6rem; padding: 1.5rem clamp(1.2rem, 1rem + 1vw, 2rem);
+  background: var(--navy-800); color: var(--text-light);
+  border-radius: var(--radius-lg);
+}
+.trust-note h3 { color: var(--gold-400); }
+.trust-note p { color: var(--text-muted-light); }
+
+/* --------------------- 11. Цепочка «платёж + логистика» ------------------ */
+.chain { display: grid; gap: .9rem; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); align-items: stretch; }
+.chain__step {
+  position: relative; padding: 1.3rem 1.1rem; text-align: center;
+  background: var(--navy-700); color: var(--text-light);
+  border: 1px solid rgba(212,175,55,.2); border-radius: var(--radius);
+}
+.chain__step .icon { width: 2em; height: 2em; color: var(--gold-400); margin-bottom: .5rem; }
+.chain__step h3 { font-size: 1rem; margin: 0 0 .25rem; }
+.chain__step p { font-size: .84rem; margin: 0; color: var(--text-muted-light); }
+.chain__step:not(:last-child)::after {
+  content: ""; position: absolute; z-index: 3; top: 50%; right: -.65rem;
+  width: 1.3rem; height: 1.3rem; transform: translateY(-50%) rotate(45deg);
+  border-top: 2px solid var(--gold-500); border-right: 2px solid var(--gold-500);
+  background: transparent;
+}
+@media (max-width: 640px) {
+  .chain__step:not(:last-child)::after { top: auto; bottom: -.75rem; right: 50%; transform: translateX(50%) rotate(135deg); }
+}
+
+/* ------------------------------- 12. Кейсы ------------------------------- */
+.cases { display: grid; gap: 1.1rem; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+.case {
+  padding: 1.5rem 1.4rem; background: var(--white); color: var(--text-dark);
+  border: 1px solid var(--light-2); border-radius: var(--radius); box-shadow: var(--shadow-soft);
+  display: flex; flex-direction: column; gap: .6rem;
+}
+.case__tag {
+  align-self: flex-start; font-size: .78rem; font-weight: 700; letter-spacing: .04em;
+  padding: .25rem .7rem; border-radius: 999px;
+  background: var(--light); color: var(--gold-700);
+}
+.case__title { font-size: 1.1rem; font-weight: 800; margin: 0; }
+.case__facts { display: flex; flex-wrap: wrap; gap: .3rem 1rem; font-size: .88rem; color: var(--text-muted-dark); }
+.case__facts b { color: var(--text-dark); }
+
+/* --------------------------- 13. Пакет документов ------------------------ */
+.docpack { display: grid; gap: .7rem; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+.docpack li {
+  display: flex; align-items: flex-start; gap: .7rem;
+  padding: 1rem 1.1rem; background: var(--white); color: var(--text-dark);
+  border: 1px solid var(--light-2); border-radius: 12px;
+}
+.docpack .icon { width: 1.4em; height: 1.4em; color: var(--gold-600); flex: 0 0 auto; margin-top: .1rem; }
+.docpack b { display: block; }
+.docpack span { font-size: .88rem; color: var(--text-muted-dark); }
+
+/* ----------------------- 14. Мелкие утилиты раскладки -------------------- */
+.section__title--start { text-align: left; }
+.lead-narrow { max-width: 68ch; }
+.cta-row { display: flex; flex-wrap: wrap; gap: .8rem; margin-top: 1.4rem; }
+.split { display: grid; gap: 1.6rem; grid-template-columns: 1.05fr .95fr; align-items: center; }
+.prose > * + * { margin-top: .9rem; }
+.prose h3 { margin-top: 1.6rem; }
+
+@media (max-width: 900px) {
+  .calc, .split { grid-template-columns: 1fr; }
+  .calc__row { grid-template-columns: 1fr; }
+}
+
+/* Ссылки в тексте страниц (политика ПДн и др.) */
+.prose a { color: var(--gold-700); text-decoration: underline; text-underline-offset: 2px; }
+.prose a:hover { color: var(--gold-600); }
+
+/* Ссылка на политику в согласии формы (тёмный фон) */
+.checkbox a, .form__note a { color: var(--gold-400); text-decoration: underline; text-underline-offset: 2px; }
+.checkbox a:hover, .form__note a:hover { color: var(--gold-300); }
+
+/* ---- Привлекающая анимация основных CTA (призыв к действию) ---- */
+@keyframes cta-pulse {
+  0%, 100% { transform: scale(1);     box-shadow: 0 10px 26px rgba(212,175,55,.30), 0 0 0 0 rgba(212,175,55,.55); }
+  50%      { transform: scale(1.035); box-shadow: 0 16px 34px rgba(212,175,55,.45), 0 0 0 12px rgba(212,175,55,0); }
+}
+.header__cta,
+.btn--gold.btn--lg,
+.nav__mobile-actions .btn--gold {
+  animation: cta-pulse 2.6s var(--ease) infinite;
+  will-change: transform, box-shadow;
+}
+/* На наведении гасим пульс — работает обычный hover-подъём и свечение */
+.header__cta:hover,
+.btn--gold.btn--lg:hover,
+.nav__mobile-actions .btn--gold:hover { animation: none; }
+
+/* Префикс «ООО» над названием в шапке (как на печати) */
+.brand__prefix {
+  color: var(--gold-400); font-weight: 700;
+  font-size: .62rem; letter-spacing: .22em; line-height: 1;
+  margin-bottom: 2px;
+}
