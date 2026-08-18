@@ -361,3 +361,19 @@
   font-size: .85rem; line-height: 1.5;
   color: var(--text-muted-light);
 }
+
+/* ---- Блок «Наша гарантия» ---- */
+.guarantee {
+  display: flex; gap: 1.2rem; align-items: flex-start;
+  max-width: 860px; margin: 0 auto;
+  padding: clamp(1.3rem, 1rem + 1.6vw, 2.1rem);
+  background: var(--white); color: var(--text-dark);
+  border: 1px solid var(--light-2); border-left: 4px solid var(--gold-500);
+  border-radius: var(--radius); box-shadow: var(--shadow-soft);
+}
+.guarantee__icon { flex: none; width: 46px; height: 46px; display: grid; place-items: center;
+  border-radius: 12px; background: var(--light); color: var(--gold-700); }
+.guarantee__icon svg { width: 26px; height: 26px; fill: none; stroke: currentColor; stroke-width: 1.7; }
+.guarantee__claim { margin: 0; font-size: clamp(1.05rem, .95rem + .6vw, 1.4rem); font-weight: 800; line-height: 1.4; }
+.guarantee__note { margin: .6rem 0 0; font-size: .9rem; color: var(--text-muted-dark); }
+@media (max-width: 560px) { .guarantee { flex-direction: column; gap: .9rem; } }
