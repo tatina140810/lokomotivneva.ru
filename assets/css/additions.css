@@ -377,3 +377,50 @@
 .guarantee__claim { margin: 0; font-size: clamp(1.05rem, .95rem + .6vw, 1.4rem); font-weight: 800; line-height: 1.4; }
 .guarantee__note { margin: .6rem 0 0; font-size: .9rem; color: var(--text-muted-dark); }
 @media (max-width: 560px) { .guarantee { flex-direction: column; gap: .9rem; } }
+
+/* ---- Квалификационная форма (2 шага). Базируется на стилях .calc__* ---- */
+.qualify {
+  display: grid; gap: 0; grid-template-columns: 1.05fr .95fr;
+  align-items: stretch;
+  background: var(--white); color: var(--text-dark);
+  border-radius: var(--radius-lg); box-shadow: var(--shadow-card); overflow: hidden;
+}
+.qualify__form { padding: clamp(1.4rem, 1rem + 2vw, 2.4rem); }
+.qualify__row { display: grid; gap: 1rem; grid-template-columns: 1fr 1fr; margin-bottom: 1rem; }
+.qualify__row--amount { grid-template-columns: 1.6fr .8fr; }
+.qualify__step {
+  margin: 0 0 1rem; font-size: .78rem; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--gold-700);
+}
+.qualify__error {
+  margin: .8rem 0 0; padding: .55rem .75rem; border-radius: 10px;
+  background: rgba(200, 40, 40, .08); color: #B02A2A; font-size: .88rem; font-weight: 600;
+}
+.qualify__error[hidden] { display: none; }
+
+.qualify__panel {
+  background: var(--navy-800); color: var(--text-light);
+  padding: clamp(1.4rem, 1rem + 2vw, 2.4rem);
+  display: flex; flex-direction: column; justify-content: center; gap: 1rem;
+}
+.qualify__placeholder { margin: 0; color: var(--text-muted-light); font-size: .95rem; line-height: 1.6; }
+.qualify__disclaimer {
+  margin: .9rem 0 0; padding: .7rem .85rem;
+  border-left: 3px solid var(--gold-500); border-radius: 0 10px 10px 0;
+  background: rgba(212, 175, 55, .10);
+  font-size: .86rem; line-height: 1.5; color: var(--text-light);
+}
+.qualify__step2 { margin-top: .4rem; display: flex; flex-direction: column; gap: .8rem; }
+.qualify__step2 .qualify__step { color: var(--gold-400); margin: 0; }
+.qualify__invite { margin: 0; font-weight: 700; font-size: 1.02rem; line-height: 1.45; }
+.qualify__step2 .calc__field label { color: var(--text-light); }
+.qualify__opt { font-weight: 400; color: var(--text-muted-light); font-size: .82rem; }
+.qualify__free { margin: 0; font-size: .8rem; color: var(--text-muted-light); line-height: 1.5; }
+.qualify.is-answered .qualify__panel { justify-content: flex-start; }
+
+@media (max-width: 900px) {
+  .qualify { grid-template-columns: 1fr; }
+}
+@media (max-width: 560px) {
+  .qualify__row, .qualify__row--amount { grid-template-columns: 1fr; }
+}

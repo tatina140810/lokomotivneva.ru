@@ -102,6 +102,76 @@
       </div>
     </section>
 
+    <!-- КВАЛИФИКАЦИЯ (2 шага). Курс НЕ рассчитывается — только ориентиры из конфига. -->
+    <section class="section section--navy" id="qualify" aria-labelledby="qualify-title">
+      <div class="container">
+        <header class="section__head">
+          <p class="section__eyebrow reveal">30 секунд · без звонка</p>
+          <h2 class="section__title section__title--center reveal" id="qualify-title" data-reveal-delay="1">
+            <span data-loko-offer>Экспресс-платёж 24</span>: <span class="text-gold">подберём условия по вашей сделке</span>
+          </h2>
+          <p class="section__sub reveal" data-reveal-delay="2">Два коротких шага. Покажем ориентировочный срок и вилку комиссии по направлению — курс не рассчитываем.</p>
+        </header>
+
+        <div class="qualify reveal" data-reveal-delay="2" id="qualify-widget">
+
+          <!-- ШАГ 1 — без контактных данных -->
+          <div class="qualify__form">
+            <p class="qualify__step">Шаг 1 из 2 · контакты пока не нужны</p>
+            <div class="qualify__row">
+              <div class="calc__field">
+                <label for="q-route">Направление платежа</label>
+                <select id="q-route"></select>
+              </div>
+              <div class="calc__field">
+                <label for="q-category">Категория товара или услуги</label>
+                <select id="q-category"></select>
+              </div>
+            </div>
+            <div class="qualify__row qualify__row--amount">
+              <div class="calc__field">
+                <label for="q-amount">Примерная сумма сделки</label>
+                <input type="text" id="q-amount" inputmode="numeric" autocomplete="off" placeholder="например, 5 000 000">
+              </div>
+              <div class="calc__field">
+                <label for="q-currency">Валюта</label>
+                <select id="q-currency"></select>
+              </div>
+            </div>
+            <button class="btn btn--gold btn--block btn--lg" type="button" data-qualify-show>Показать ориентиры</button>
+            <p class="qualify__error" data-qualify-error role="alert" hidden></p>
+          </div>
+
+          <!-- РЕЗУЛЬТАТ ШАГА 1 + ШАГ 2 -->
+          <div class="qualify__panel">
+            <p class="qualify__placeholder" data-qualify-placeholder>
+              Заполните шаг 1 — покажем ориентировочный срок исполнения и диапазон комиссии по выбранному направлению.
+            </p>
+
+            <div data-qualify-result hidden>
+              <p class="calc__result-title">Ориентировочные параметры</p>
+              <div class="calc__line"><span>Срок исполнения</span><b data-qualify-term>—</b></div>
+              <div class="calc__line"><span>Комиссия агента</span><b data-qualify-fee>—</b></div>
+              <p class="qualify__disclaimer" data-qualify-disclaimer></p>
+            </div>
+
+            <form class="qualify__step2" id="qualify-form" data-qualify-step2 novalidate hidden>
+              <p class="qualify__step">Шаг 2 из 2</p>
+              <p class="qualify__invite">Хотите получить точный расчёт по вашей сделке? Оставьте контакт.</p>
+              <div aria-hidden="true" style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden"><label>Компания<input type="text" name="company" tabindex="-1" autocomplete="off"></label></div>
+              <div class="calc__field"><label for="q-name">Имя</label><input type="text" id="q-name" name="name" autocomplete="name" placeholder="Как к вам обращаться"></div>
+              <div class="calc__field"><label for="q-phone">Телефон</label><input type="tel" id="q-phone" name="phone" autocomplete="tel" inputmode="tel" placeholder="+7 (___) ___-__-__ или +код страны"></div>
+              <div class="calc__field"><label for="q-tg">Telegram или WhatsApp <span class="qualify__opt">— если удобнее в мессенджере</span></label><input type="text" id="q-tg" name="messenger" autocomplete="off" placeholder="@username или номер"></div>
+              <label class="checkbox"><input type="checkbox" id="q-consent"><span>Я согласен с <a href="/privacy/" target="_blank" rel="noopener">политикой обработки персональных данных</a></span></label>
+              <button class="btn btn--gold btn--block btn--lg" type="submit">Получить точный расчёт</button>
+              <p class="qualify__free">Первая консультация по маршруту платежа — бесплатно. Ответим в течение рабочего дня.</p>
+            </form>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
     <!-- НАПРАВЛЕНИЯ -->
     <section class="section section--light" id="directions" aria-labelledby="dir-title">
       <div class="container">
@@ -301,6 +371,7 @@
 
   <script src="/assets/js/site-config.js?v=20260819a" defer></script>
   <script src="/assets/js/site.js?v=20260819a" defer></script>
+  <script src="/assets/js/qualify.js?v=20260819a" defer></script>
   <script src="/assets/js/main.js?v=20260817c" defer></script>
 </body>
 </html>
