@@ -74,8 +74,8 @@
         </p>
         <div class="page-hero__actions reveal" data-reveal-delay="3">
           <a class="btn btn--gold btn--lg" href="#zayavka">Рассчитать платёж</a>
-          <a class="btn btn--ghost btn--lg" href="https://t.me/" rel="nofollow">
-            <svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-telegram"></use></svg>Написать в Telegram
+          <a class="btn btn--ghost btn--lg" data-messenger="auto" href="tel:+74952409065" rel="nofollow">
+            <svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-phone"></use></svg><span data-messenger-label>Позвонить +7 (495) 240-90-65</span>
           </a>
         </div>
         <ul class="markers reveal" data-reveal-delay="4">
@@ -190,7 +190,7 @@
           <div class="contacts__info reveal">
             <ul class="contacts__list">
               <li><span class="contacts__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-phone"></use></svg></span><span><span class="contacts__label">Телефон</span><a class="contacts__value" href="tel:+74952409065">+7 (495) 240-90-65</a></span></li>
-              <li><span class="contacts__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-telegram"></use></svg></span><span><span class="contacts__label">Telegram / WhatsApp</span><a class="contacts__value" href="https://t.me/" rel="nofollow">Написать в мессенджер</a></span></li>
+              <li data-messenger-row hidden><span class="contacts__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-telegram"></use></svg></span><span><span class="contacts__label">Мессенджер</span><a class="contacts__value" data-messenger="auto" href="tel:+74952409065" rel="nofollow"><span data-messenger-label>Написать в мессенджер</span></a></span></li>
               <li><span class="contacts__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-mail"></use></svg></span><span><span class="contacts__label">Почта</span><a class="contacts__value" href="mailto:lokomotiv.neva@mail.ru">lokomotiv.neva@mail.ru</a></span></li>
             </ul>
             <div class="requisites-card">
@@ -253,6 +253,8 @@
     <span class="toast__text"></span>
   </div>
 
+  <script src="/assets/js/site-config.js?v=20260819a" defer></script>
+  <script src="/assets/js/site.js?v=20260819a" defer></script>
   <script src="/assets/js/main.js?v=20260817c" defer></script>
 </body>
 </html>
