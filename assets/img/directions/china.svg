@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600" role="img" aria-label="Китай — фото-заглушка">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#123A63"/><stop offset="1" stop-color="#0A2540"/>
+    </linearGradient>
+    <pattern id="d" width="26" height="26" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="2" r="1.3" fill="#ffffff" opacity=".05"/>
+    </pattern>
+  </defs>
+  <rect width="800" height="600" fill="url(#g)"/>
+  <rect width="800" height="600" fill="url(#d)"/>
+  <g fill="none" stroke="#C9A227" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" opacity=".55" transform="translate(320,210) scale(6)"><rect x="5" y="4" width="14" height="12" rx="2"/><path d="M8 8h8M5 20l3-4M19 20l-3-4"/><circle cx="9" cy="16" r="1.3"/><circle cx="15" cy="16" r="1.3"/></g>
+  <text x="400" y="500" text-anchor="middle" fill="#C8D4E8" font-family="Arial,sans-serif" font-size="34" font-weight="700">Китай</text>
+  <text x="400" y="540" text-anchor="middle" fill="#8FA3BF" font-family="Arial,sans-serif" font-size="18">фото-заглушка — заменить на реальное изображение</text>
+</svg>
