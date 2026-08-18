@@ -128,7 +128,15 @@
     if (!host) return;
     var r = CFG.reviews || {};
     var items = r.items || [];
-    if (!items.length) { host.hidden = true; return; }
+    var wrap = $('[data-loko-reviews-section]');
+    /* Пока настоящих отзывов нет (show:false) — блок не выводим вовсе. */
+    if (!r.show || !items.length) {
+      if (wrap) wrap.hidden = true;
+      host.hidden = true;
+      return;
+    }
+    if (wrap) wrap.hidden = false;
+    host.hidden = false;
     host.innerHTML = items.map(function (it) {
       return '' +
         '<li class="review">' +
@@ -136,8 +144,6 @@
           '<p class="review__author">' + esc(it.author) + '</p>' +
         '</li>';
     }).join('');
-    var note = $('[data-loko-reviews-note]');
-    if (note) note.hidden = !r.demo;
   }
 
   /* ========================= 6. Имя оффера ================================== */

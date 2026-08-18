@@ -424,3 +424,47 @@
 @media (max-width: 560px) {
   .qualify__row, .qualify__row--amount { grid-template-columns: 1fr; }
 }
+
+/* ---- Цитата внутри карточки кейса ---- */
+.case__quote {
+  margin: .4rem 0 0; padding: .7rem .9rem;
+  border-left: 3px solid var(--gold-500); border-radius: 0 10px 10px 0;
+  background: var(--light);
+  font-size: .92rem; line-height: 1.55; font-style: italic; color: var(--text-dark);
+}
+.case__quote cite { display: block; margin-top: .4rem; font-style: normal; font-size: .82rem; color: var(--text-muted-dark); }
+
+/* ---- Цифры доверия на светлой секции ---- */
+.trust-stats {
+  display: grid; gap: 1px; grid-template-columns: repeat(4, 1fr);
+  margin: 2rem 0 0; padding: 0; list-style: none;
+  background: var(--light-2); border: 1px solid var(--light-2);
+  border-radius: var(--radius); overflow: hidden;
+}
+.trust-stats[hidden] { display: none; }
+.trust-stats li {
+  display: flex; flex-direction: column; gap: .3rem;
+  padding: 1.3rem 1rem; background: var(--white); text-align: center;
+}
+.trust-stats b {
+  font-size: clamp(1.5rem, 1.1rem + 1.4vw, 2.3rem);
+  font-weight: 800; color: var(--gold-700); line-height: 1;
+}
+.trust-stats span { font-size: .8rem; line-height: 1.4; color: var(--text-muted-dark); }
+@media (max-width: 760px) { .trust-stats { grid-template-columns: repeat(2, 1fr); } }
+
+/* ---- Отзывы ---- */
+.reviews-wrap { margin-top: 2.4rem; }
+.reviews-wrap[hidden] { display: none; }
+.reviews-wrap__title { text-align: center; font-size: var(--fs-h3); margin: 0 0 1.2rem; }
+.reviews {
+  display: grid; gap: 1.1rem; list-style: none; margin: 0; padding: 0;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+.review {
+  padding: 1.4rem 1.3rem; background: var(--white); color: var(--text-dark);
+  border: 1px solid var(--light-2); border-top: 3px solid var(--gold-500);
+  border-radius: var(--radius); box-shadow: var(--shadow-soft);
+}
+.review__text { margin: 0; font-size: .95rem; line-height: 1.6; }
+.review__author { margin: .8rem 0 0; font-size: .82rem; color: var(--text-muted-dark); }

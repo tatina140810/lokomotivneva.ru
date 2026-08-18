@@ -260,6 +260,25 @@
       </div>
     </section>
 
+    <!-- КЕЙСЫ. Карточки строятся из site-config.js → cases.items -->
+    <section class="section section--navy section--pattern" id="cases" aria-labelledby="cases-title">
+      <div class="container">
+        <header class="section__head">
+          <p class="section__eyebrow reveal">Кейсы</p>
+          <h2 class="section__title section__title--center reveal" id="cases-title" data-reveal-delay="1">Как это выглядит <span class="text-gold">на практике</span></h2>
+          <!-- TODO: заменить на реальные кейсы клиента после получения согласия на публикацию.
+               Данные — в site-config.js → cases.items; после замены поставить cases.demo = false,
+               и эта строка-пометка исчезнет сама. -->
+          <p class="section__sub reveal" data-reveal-delay="2" data-loko-cases-note hidden>Примеры типовых сделок. Кейсы с названиями компаний и цитатами публикуем только с письменного согласия клиента.</p>
+        </header>
+        <ul class="cases reveal" data-loko-cases></ul>
+        <div class="cta-row reveal" style="justify-content:center">
+          <a class="btn btn--gold btn--lg" href="#qualify">Пройти квалификацию за 30 секунд</a>
+          <a class="btn btn--ghost" href="/cases/">Все кейсы</a>
+        </div>
+      </div>
+    </section>
+
     <!-- КОМПЛЕКСНО -->
     <section class="section section--navy section--pattern" aria-labelledby="cx-title">
       <div class="container">
@@ -290,6 +309,22 @@
           <li><svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-doc"></use></svg><span><b>Образец агентского договора</b><span>Для изучения вашим юристом</span></span></li>
           <li><svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-doc"></use></svg><span><b>Пример закрывающего пакета</b><span>Отчёт агента, акт, подтверждение</span></span></li>
         </ul>
+        <!-- Цифры доверия. ОДИН источник с hero — site-config.js → proof.
+             Пока proof.show = false, блок скрыт (см. TODO в конфиге). -->
+        <ul class="trust-stats reveal" data-loko-proof hidden>
+          <li><b data-loko-stat="payments">—</b><span>платежей проведено</span></li>
+          <li><b data-loko-stat="volume">—</b><span>млн ₽ суммарный оборот</span></li>
+          <li><b data-loko-stat="avg">—</b><span>часов средний срок исполнения</span></li>
+          <li><b data-loko-stat="blocked">0</b><span>заблокированных переводов</span></li>
+        </ul>
+
+        <!-- Отзывы. Выводятся только когда в конфиге reviews.show = true
+             (то есть когда появятся настоящие отзывы с согласием клиентов). -->
+        <div class="reviews-wrap reveal" data-loko-reviews-section hidden>
+          <h3 class="reviews-wrap__title">Что говорят клиенты</h3>
+          <ul class="reviews" data-loko-reviews></ul>
+        </div>
+
         <div class="cta-row reveal" style="justify-content:center"><a class="btn btn--navy" href="/trust/">Как проверить агента</a></div>
       </div>
     </section>
