@@ -12,8 +12,8 @@
   <meta property="og:image" content="/assets/img/logo-512.jpg">
   <meta property="og:locale" content="ru_RU">
   <link rel="icon" href="/assets/img/logo-160.jpg">
-  <link rel="stylesheet" href="/assets/css/styles.css?v=20260819c">
-  <link rel="stylesheet" href="/assets/css/additions.css?v=20260819c">
+  <link rel="stylesheet" href="/assets/css/styles.css?v=20260819d">
+  <link rel="stylesheet" href="/assets/css/additions.css?v=20260819d">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org", "@type": "FinancialService",
@@ -24,18 +24,7 @@
     "taxID": "9703250829",
     "vatID": "9703250829",
     "address": { "@type": "PostalAddress", "streetAddress": "пр-д 1-й Красногвардейский, д. 22, стр. 2, помещ. 173", "addressLocality": "Москва", "addressRegion": "Москва", "addressCountry": "RU" },
-    "areaServed": ["Китай", "Гонконг", "ОАЭ", "Турция", "Европейский союз", "Великобритания"],
-    "makesOffer": {
-      "@type": "Offer",
-      "itemOffered": {
-        "@type": "Service",
-        "name": "Экспресс-платёж 24",
-        "serviceType": "Исполнение платёжных поручений в адрес иностранных поставщиков",
-        "description": "Платёж поставщику в Китай, Турцию, ОАЭ и другие страны по агентскому договору. Если поручение не исполнено — полный возврат средств в течение 24 часов.",
-        "provider": { "@type": "Organization", "name": "ООО «Локомотив»" },
-        "areaServed": ["Китай", "Гонконг", "ОАЭ", "Турция", "Европейский союз", "Великобритания"]
-      }
-    }
+    "areaServed": ["Китай", "Гонконг", "ОАЭ", "Турция", "Европейский союз", "Великобритания"]
   }
   </script>
 </head>
@@ -74,7 +63,7 @@
       <div class="container">
       <div class="hero-2col">
       <div class="page-hero__inner">
-        <p class="section__eyebrow reveal" style="color:var(--gold-400)"><span data-loko-offer>Экспресс-платёж 24</span> · платёжный агент ВЭД, Москва</p>
+        <p class="section__eyebrow reveal" style="color:var(--gold-400)">Платёжный агент ВЭД, Москва</p>
         <!-- Вариант заголовка переключается в assets/js/site-config.js → hero.variant
              ('control' = текст ниже, 'a'/'b'/'c' = варианты для A/B-теста). -->
         <h1 class="reveal" data-reveal-delay="1" id="hero-title" data-hero-title>
@@ -91,7 +80,7 @@
           от 1 рабочего дня. При необходимости берём на себя перевозку, таможенное оформление и хранение груза.
         </p>
         <div class="page-hero__actions reveal" data-reveal-delay="3">
-          <a class="btn btn--gold btn--lg" href="#qualify">Оставить заявку за 30 секунд</a>
+          <a class="btn btn--gold btn--lg" href="#qualify">Оставить заявку</a>
           <a class="btn btn--ghost btn--lg" data-messenger="auto" href="tel:+74952409065" rel="nofollow">
             <svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-phone"></use></svg><span data-messenger-label>Позвонить +7 (495) 240-90-65</span>
           </a>
@@ -116,9 +105,8 @@
     <section class="section section--navy" id="qualify" aria-labelledby="qualify-title">
       <div class="container">
         <header class="section__head">
-          <p class="section__eyebrow reveal">30 секунд · без звонка</p>
           <h2 class="section__title section__title--center reveal" id="qualify-title" data-reveal-delay="1">
-            <span data-loko-offer>Экспресс-платёж 24</span>: <span class="text-gold">подберём условия по вашей сделке</span>
+            Подберём условия <span class="text-gold">по вашей сделке</span>
           </h2>
           <p class="section__sub reveal" data-reveal-delay="2">Два коротких шага. Покажем ориентировочный срок и вилку комиссии по направлению — курс не рассчитываем.</p>
         </header>
@@ -171,8 +159,10 @@
               <div aria-hidden="true" style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden"><label>Компания<input type="text" name="company" tabindex="-1" autocomplete="off"></label></div>
               <div class="calc__field"><label for="q-name">Имя</label><input type="text" id="q-name" name="name" autocomplete="name" placeholder="Как к вам обращаться"></div>
               <div class="calc__field"><label for="q-phone">Телефон</label><input type="tel" id="q-phone" name="phone" autocomplete="tel" inputmode="tel" placeholder="+7 (___) ___-__-__ или +код страны"></div>
+              <div class="calc__field"><label for="q-email">Эл. почта</label><input type="email" id="q-email" name="email" autocomplete="email" inputmode="email" placeholder="you@example.com"></div>
               <div class="calc__field"><label for="q-tg">Telegram или WhatsApp <span class="qualify__opt">— если удобнее в мессенджере</span></label><input type="text" id="q-tg" name="messenger" autocomplete="off" placeholder="@username или номер"></div>
               <label class="checkbox"><input type="checkbox" id="q-consent"><span>Я согласен с <a href="/privacy/" target="_blank" rel="noopener">политикой обработки персональных данных</a></span></label>
+              <p class="qualify__error" data-qualify-error2 role="alert" hidden></p>
               <button class="btn btn--gold btn--block btn--lg" type="submit">Получить точный расчёт</button>
               <p class="qualify__free">Ответим в течение рабочего дня.</p>
             </form>
@@ -216,49 +206,12 @@
       </div>
     </section>
 
-    <!-- ГАРАНТИЯ -->
-    <section class="section section--light" id="guarantee" aria-labelledby="guarantee-title">
-      <div class="container">
-        <header class="section__head">
-          <p class="section__eyebrow reveal">Наша гарантия</p>
-          <h2 class="section__title section__title--center reveal" data-reveal-delay="1" id="guarantee-title">
-            <span data-loko-offer>Экспресс-платёж 24</span> — <span class="text-gold-dark">с возвратом средств</span>
-          </h2>
-        </header>
-
-        <div class="guarantee reveal" data-reveal-delay="2">
-          <span class="guarantee__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-shield"></use></svg></span>
-          <div class="guarantee__body">
-            <!-- Действующая формулировка — юридически наименее рискованная:
-                 обещает возврат денег, а не срок и не курс. -->
-            <p class="guarantee__claim">Если поручение не будет исполнено — полный возврат средств в течение 24 часов.</p>
-            <p class="guarantee__note">Порядок возврата описан в агентском договоре — образец открыт для изучения вашим юристом.</p>
-
-            <!-- АЛЬТЕРНАТИВНЫЕ ФОРМУЛИРОВКИ ГАРАНТИИ. Не включать без согласования.
-                 TODO: требует юридической проверки перед использованием
-                 (1) «Если платёж не уйдёт в заявленный срок — не берём комиссию за эту сделку»
-                 TODO: требует юридической проверки перед использованием + подтверждения заказчика.
-                 ВНИМАНИЕ: формулировка (2) может противоречить реальной агентской схеме —
-                 фиксированного курса у компании нет, курс определяется на момент исполнения.
-                 Не делать активной без явного подтверждения заказчика.
-                 (2) «Курс зафиксирован в счёте — даже если рынок изменится, вы платите ровно
-                      столько, сколько указано» -->
-          </div>
-        </div>
-
-        <div class="cta-row reveal" data-reveal-delay="3" style="justify-content:center">
-          <a class="btn btn--gold btn--lg" href="#qualify">Оставить заявку за 30 секунд</a>
-          <a class="btn btn--navy" href="/trust/">Как проверить агента</a>
-        </div>
-      </div>
-    </section>
-
     <!-- BONUS STACK: усилители оффера + лид-магнит -->
     <section class="section section--navy" id="bonus" aria-labelledby="bonus-title">
       <div class="container">
         <header class="section__head">
           <p class="section__eyebrow reveal">Дополнительно</p>
-          <h2 class="section__title section__title--center reveal" id="bonus-title" data-reveal-delay="1">Что входит в <span class="text-gold" data-loko-offer>Экспресс-платёж 24</span> сверх платежа</h2>
+          <h2 class="section__title section__title--center reveal" id="bonus-title" data-reveal-delay="1">Что мы даём <span class="text-gold">сверх платежа</span></h2>
         </header>
 
         <div class="bonus reveal" data-reveal-delay="2">
@@ -284,7 +237,7 @@
             <div aria-hidden="true" style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden"><label>Компания<input type="text" name="company" tabindex="-1" autocomplete="off"></label></div>
             <div class="field"><label class="field__label" for="m-name">Имя</label><input class="field__input" type="text" id="m-name" name="name" autocomplete="name" placeholder="Как к вам обращаться"></div>
             <div class="field"><label class="field__label" for="m-phone">Телефон</label><input class="field__input" type="tel" id="m-phone" name="phone" autocomplete="tel" inputmode="tel" placeholder="+7 (___) ___-__-__ или +код страны"></div>
-            <div class="field"><label class="field__label" for="m-email">Эл. почта <span class="qualify__opt">— куда прислать файл</span></label><input class="field__input" type="email" id="m-email" name="email" autocomplete="email" inputmode="email" placeholder="you@example.com"></div>
+            <div class="field"><label class="field__label" for="m-email">Эл. почта <span class="qualify__opt">— на неё пришлём файл</span></label><input class="field__input" type="email" id="m-email" name="email" autocomplete="email" inputmode="email" placeholder="you@example.com"></div>
             <label class="checkbox"><input type="checkbox" id="m-consent"><span>Я согласен с <a href="/privacy/" target="_blank" rel="noopener">политикой обработки персональных данных</a></span></label>
             <p class="qualify__error" data-magnet-error role="alert" hidden></p>
             <button class="btn btn--gold btn--block btn--lg" type="submit">Получить чек-лист</button>
@@ -436,9 +389,9 @@
     <span class="toast__text"></span>
   </div>
 
-  <script src="/assets/js/site-config.js?v=20260819c" defer></script>
-  <script src="/assets/js/site.js?v=20260819c" defer></script>
-  <script src="/assets/js/qualify.js?v=20260819c" defer></script>
-  <script src="/assets/js/main.js?v=20260819c" defer></script>
+  <script src="/assets/js/site-config.js?v=20260819d" defer></script>
+  <script src="/assets/js/site.js?v=20260819d" defer></script>
+  <script src="/assets/js/qualify.js?v=20260819d" defer></script>
+  <script src="/assets/js/main.js?v=20260819d" defer></script>
 </body>
 </html>
