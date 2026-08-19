@@ -3,7 +3,7 @@
    Дополняет styles.css: те же токены navy+gold, ничего не переопределяет силой.
    Новые блоки: верхняя строка, выпадающее меню, крошки, шапка внутренних
    страниц, плитки направлений, калькулятор, шаги, доказательства, цепочка,
-   кейсы, пакет документов.
+   пакет документов.
    ========================================================================== */
 
 /* --------------------------- 1. Верхняя строка --------------------------- */
@@ -265,22 +265,6 @@
   .chain__step:not(:last-child)::after { top: auto; bottom: -.75rem; right: 50%; transform: translateX(50%) rotate(135deg); }
 }
 
-/* ------------------------------- 12. Кейсы ------------------------------- */
-.cases { display: grid; gap: 1.1rem; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
-.case {
-  padding: 1.5rem 1.4rem; background: var(--white); color: var(--text-dark);
-  border: 1px solid var(--light-2); border-radius: var(--radius); box-shadow: var(--shadow-soft);
-  display: flex; flex-direction: column; gap: .6rem;
-}
-.case__tag {
-  align-self: flex-start; font-size: .78rem; font-weight: 700; letter-spacing: .04em;
-  padding: .25rem .7rem; border-radius: 999px;
-  background: var(--light); color: var(--gold-700);
-}
-.case__title { font-size: 1.1rem; font-weight: 800; margin: 0; }
-.case__facts { display: flex; flex-wrap: wrap; gap: .3rem 1rem; font-size: .88rem; color: var(--text-muted-dark); }
-.case__facts b { color: var(--text-dark); }
-
 /* --------------------------- 13. Пакет документов ------------------------ */
 .docpack { display: grid; gap: .7rem; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
 .docpack li {
@@ -429,15 +413,6 @@
 @media (max-width: 560px) {
   .qualify__row, .qualify__row--amount { grid-template-columns: 1fr; }
 }
-
-/* ---- Цитата внутри карточки кейса ---- */
-.case__quote {
-  margin: .4rem 0 0; padding: .7rem .9rem;
-  border-left: 3px solid var(--gold-500); border-radius: 0 10px 10px 0;
-  background: var(--light);
-  font-size: .92rem; line-height: 1.55; font-style: italic; color: var(--text-dark);
-}
-.case__quote cite { display: block; margin-top: .4rem; font-style: normal; font-size: .82rem; color: var(--text-muted-dark); }
 
 /* ---- Цифры доверия на светлой секции ---- */
 .trust-stats {
