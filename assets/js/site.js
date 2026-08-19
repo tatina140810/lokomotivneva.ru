@@ -23,32 +23,37 @@
   /* ======================= 1. Ссылки на мессенджеры =========================
      В HTML лежит БЕЗОПАСНЫЙ фолбэк — ссылка «Позвонить». Если в конфиге задан
      telegram/whatsapp, ссылка повышается до мессенджера. Битой она не бывает
-     ни при каком состоянии конфига — в этом весь смысл. */
-  function resolveMessenger(prefer) {
+     ни при каком состоянии конфига — в этом весь смысл.
+
+     Явный вид ('telegram' / 'whatsapp') резолвится СТРОГО: если этот мессенджер
+     в конфиге пуст, ссылка не подменяется на другой — иначе строка «WhatsApp»
+     увела бы в Telegram. Подмена по приоритету осталась только у 'auto'. */
+  function messengerLink(kind) {
     var c = CFG.contacts || {};
     var tg = (c.telegram || '').replace(/^@/, '').trim();
     var wa = (c.whatsapp || '').replace(/\D/g, '');
 
-    if (prefer !== 'whatsapp' && tg) {
-      return { href: 'https://t.me/' + tg, label: 'Написать в Telegram', icon: 'i-telegram' };
+    if (kind === 'telegram') {
+      return tg ? { href: 'https://t.me/' + tg, label: 'Написать в Telegram', icon: 'i-telegram' } : null;
     }
-    if (prefer !== 'telegram' && wa) {
-      return { href: 'https://wa.me/' + wa, label: 'Написать в WhatsApp', icon: 'i-whatsapp' };
+    if (kind === 'whatsapp') {
+      return wa ? { href: 'https://wa.me/' + wa, label: 'Написать в WhatsApp', icon: 'i-whatsapp' } : null;
     }
-    if (prefer === 'telegram' && wa) {
-      return { href: 'https://wa.me/' + wa, label: 'Написать в WhatsApp', icon: 'i-whatsapp' };
-    }
-    return null;
+    /* 'auto' и всё неизвестное — по приоритету: сначала Telegram, потом WhatsApp. */
+    return messengerLink('telegram') || messengerLink('whatsapp');
   }
 
   function applyMessengers() {
-    /* Строки контактов «Telegram / WhatsApp» прячем целиком, пока мессенджер
-       не настроен — иначе получается подпись «Telegram», ведущая на телефон. */
-    var hasMessenger = !!resolveMessenger('auto');
-    $$('[data-messenger-row]').forEach(function (el) { el.hidden = !hasMessenger; });
+    /* Каждая строка контактов прячется по СВОЕМУ мессенджеру: у строки
+       data-messenger-row="whatsapp" смотрим только whatsapp. Пустое значение
+       атрибута = 'auto' (строка «Мессенджер» из старой вёрстки). */
+    $$('[data-messenger-row]').forEach(function (el) {
+      var kind = el.getAttribute('data-messenger-row') || 'auto';
+      el.hidden = !messengerLink(kind);
+    });
 
     $$('a[data-messenger]').forEach(function (el) {
-      var res = resolveMessenger(el.getAttribute('data-messenger'));
+      var res = messengerLink(el.getAttribute('data-messenger'));
       if (!res) return;                       /* оставляем фолбэк из HTML */
       el.setAttribute('href', res.href);
       el.setAttribute('target', '_blank');
