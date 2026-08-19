@@ -291,6 +291,15 @@
 .docpack .icon { width: 1.4em; height: 1.4em; color: var(--gold-600); flex: 0 0 auto; margin-top: .1rem; }
 .docpack b { display: block; }
 .docpack span { font-size: .88rem; color: var(--text-muted-dark); }
+/* Карточки-ссылки на реальные документы (ЕГРЮЛ, карточка предприятия) */
+.docpack__item--link { padding: 0; border-color: var(--gold-500); transition: box-shadow .2s ease, transform .2s ease; }
+.docpack__item--link > a {
+  display: flex; align-items: flex-start; gap: .7rem;
+  padding: 1rem 1.1rem; width: 100%; color: inherit; text-decoration: none;
+}
+.docpack__item--link b { color: var(--gold-700); }
+.docpack__item--link:hover, .docpack__item--link:focus-within { box-shadow: var(--shadow-soft); transform: translateY(-2px); }
+.docpack__item--link > a:focus-visible { outline: 2px solid var(--gold-600); outline-offset: 2px; border-radius: 12px; }
 
 /* ----------------------- 14. Мелкие утилиты раскладки -------------------- */
 .section__title--start { text-align: left; }
