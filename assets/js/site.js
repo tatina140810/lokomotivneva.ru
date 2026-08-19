@@ -2,7 +2,7 @@
    site.js — подстановка данных из site-config.js в вёрстку
    -----------------------------------------------------------------------------
    Отвечает за: ссылки мессенджеров, вариант заголовка первого экрана,
-   цифры доверия, кейсы, отзывы, имя оффера.
+   цифры доверия, отзывы, имя оффера.
    Никакой бизнес-логики и никаких расчётов курса здесь нет.
    Подключается ПОСЛЕ site-config.js, до/после main.js — неважно.
    ============================================================================= */
@@ -92,44 +92,6 @@
     $$('[data-loko-proof]').forEach(function (el) { el.hidden = false; });
   }
 
-  /* ============================ 4. Кейсы ==================================== */
-  function caseCard(item) {
-    var quote = item.quote
-      ? '<blockquote class="case__quote">«' + esc(item.quote) + '»' +
-        (item.author ? '<cite>' + esc(item.author) + '</cite>' : '') + '</blockquote>'
-      : '';
-    return '' +
-      '<li class="case">' +
-        '<span class="case__tag">' + esc(item.tag) + '</span>' +
-        '<h3 class="case__title">' + esc(item.title) + '</h3>' +
-        '<div class="case__facts">' +
-          '<span>Сумма сделки: <b>' + esc(item.amount) + '</b></span>' +
-          '<span>Срок исполнения: <b>' + esc(item.term) + '</b></span>' +
-        '</div>' +
-        quote +
-      '</li>';
-  }
-
-  function applyCases() {
-    var host = $('[data-loko-cases]');
-    if (!host) return;
-    var c = CFG.cases || {};
-    var items = c.items || [];
-    var wrap = $('[data-loko-cases-section]');
-    /* Кейсов нет — прячем ВСЮ секцию, иначе остаётся заголовок с пустотой. */
-    if (!items.length) {
-      if (wrap) wrap.hidden = true;
-      host.hidden = true;
-      return;
-    }
-    if (wrap) wrap.hidden = false;
-    host.hidden = false;
-    host.innerHTML = items.map(caseCard).join('');
-    /* Честная пометка, пока кейсы демонстрационные */
-    var note = $('[data-loko-cases-note]');
-    if (note) note.hidden = !c.demo;
-  }
-
   /* ============================ 5. Отзывы =================================== */
   function applyReviews() {
     var host = $('[data-loko-reviews]');
@@ -164,7 +126,6 @@
   applyMessengers();
   applyHeroVariant();
   applyProof();
-  applyCases();
   applyReviews();
   applyOfferName();
 })();
