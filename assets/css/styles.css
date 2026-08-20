@@ -612,6 +612,10 @@ a.contacts__value:hover { color: var(--gold-700); }
 .requisites-card {
   padding: 1.5rem;
   background: var(--white);
+  /* Карточка белая, но стоит в тёмных секциях (.section--navy), которые задают
+     светлый цвет текста. Без явного цвета значения реквизитов наследовали
+     почти белый и были нечитаемы на белом фоне. */
+  color: var(--text-dark);
   border: 1px solid var(--light-2);
   border-radius: var(--radius);
   box-shadow: var(--shadow-soft);
