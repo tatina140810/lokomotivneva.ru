@@ -407,10 +407,6 @@
       if (t.length > 1500) return 'Слишком длинное сообщение — не более 1500 символов';
       return '';
     },
-    /* Только форма /individuals/: выбор направления перевода. */
-    direction: function (v) {
-      return v ? '' : 'Выберите направление перевода';
-    },
     consent: function (_, field) {
       return field.checked ? '' : 'Без согласия мы не сможем обработать заявку';
     }
@@ -451,7 +447,7 @@
   }
 
   if (form) {
-    var fields = $$('input, textarea, select', form).filter(function (f) { return RULES[f.name]; });
+    var fields = $$('input, textarea', form).filter(function (f) { return RULES[f.name]; });
 
     /* Проверяем поле при потере фокуса, ошибку снимаем сразу при исправлении */
     fields.forEach(function (field) {
@@ -487,31 +483,13 @@
 
       var name = $('#name').value.trim();
       var honeypot = form.querySelector('[name="company"]');
-
-      /* Сообщение собираем из того, что есть в конкретной форме. Бэкенд требует
-         message непустым, поэтому в формах без textarea (например у физлиц
-         комментарий необязателен) его наполняют направление и мессенджер. */
-      var topicEl = form.querySelector('[data-lead-topic]');
-      var topic = topicEl && topicEl.selectedIndex >= 0 ? topicEl.options[topicEl.selectedIndex].text : '';
-      var messengerEl = form.querySelector('[data-lead-messenger]');
-      var messenger = messengerEl ? messengerEl.value.trim() : '';
-      var body = $('#message') ? $('#message').value.trim() : '';
-      var comment = form.querySelector('[data-lead-comment]');
-      if (!body && comment) body = comment.value.trim();
-
-      var parts = [];
-      if (topic) parts.push('Направление: ' + topic);
-      if (messenger) parts.push('Telegram/WhatsApp: ' + messenger);
-      if (body) parts.push(body);
-
       var payload = {
         name: name,
         phone: $('#phone').value.trim(),
         email: ($('#email') ? $('#email').value.trim() : ''),
-        message: parts.join('. '),
+        message: ($('#message') ? $('#message').value.trim() : ''),
         page: window.location.pathname,
-        /* Разные воронки должны различаться в панели заявок. */
-        source: form.getAttribute('data-lead-source') || 'lokomotivneva.ru',
+        source: 'lokomotivneva.ru',
         company: honeypot ? honeypot.value : ''
       };
 
