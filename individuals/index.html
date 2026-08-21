@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Переводы за рубеж для физических лиц — учёба, лечение, поездки | ООО «Локомотив»</title>
+  <meta name="description" content="Перевод денег за границу для частных лиц: оплата обучения, лечения, бронирований и других личных расходов. Без открытия счёта за рубежом, без визита в банк.">
+  <!-- ВРЕМЕННО: страница закрыта от индексации до согласования схемы приёма
+       платежей физлиц с юристом/комплаенсом. После согласования — удалить. -->
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#0B1E3F">
+  <link rel="icon" href="/assets/img/logo-160.jpg">
+  <!-- Общие стили сайта — БЕЗ правок ради этого раздела (версия та же, что на
+       остальных страницах). Всё своё лежит в individuals.css. -->
+  <link rel="stylesheet" href="/assets/css/styles.css?v=20260820b">
+  <link rel="stylesheet" href="/assets/css/additions.css?v=20260820b">
+  <link rel="stylesheet" href="/assets/css/individuals.css?v=20260820a">
+</head>
+<body>
+  <a class="skip-link" href="#main">Перейти к основному содержанию</a>
+  <header class="header" id="header"><div class="container header__inner">
+    <a class="brand" href="/" aria-label="ООО «Локомотив» — на главную">
+      <span class="brand__seal"><img src="/assets/img/logo-160.jpg" width="160" height="160" alt="Эмблема ООО «Локомотив»"></span>
+      <span class="brand__text"><span class="brand__name">ЛОКОМОТИВ</span><span class="brand__tagline">Международные платежи и логистика</span></span>
+    </a>
+    <nav class="nav" id="nav" aria-label="Основная навигация"><ul class="nav__list">
+      <li><a class="nav__link" href="/payments/">Платежи</a></li>
+      <li><a class="nav__link" href="/logistics/">Логистика</a></li>
+      <li><a class="nav__link" href="/trust/">Проверьте нас</a></li>
+      <li><a class="nav__link" href="/contacts/">Контакты</a></li>
+      <li><a class="nav__link" href="/individuals/">Для физлиц</a></li>
+    </ul><div class="nav__mobile-actions"><a class="btn btn--gold btn--block" href="#ind-form">Оставить заявку</a></div></nav>
+    <div class="header__actions">
+      <a class="header__phone" href="tel:+74952409065"><svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-phone"></use></svg><span>+7 (495) 240-90-65</span></a>
+      <a class="btn btn--gold header__cta" href="#ind-form">Оставить заявку</a>
+    </div>
+    <button class="burger" id="burger" type="button" aria-label="Открыть меню" aria-expanded="false" aria-controls="nav"><span></span><span></span><span></span></button>
+  </div></header>
+  <main id="main">
+
+    <!-- ===================== HERO =====================
+         ЧЕРНОВИК: точный копирайт заголовка и подзаголовка согласовывается
+         отдельно. Язык бытовой: никакого агентского договора, ДКП и отчёта
+         агента — это термины B2B-раздела. -->
+    <section class="page-hero">
+      <div class="worldmap worldmap--hero" data-worldmap="hero" aria-hidden="true"></div>
+      <div class="hero__glow" aria-hidden="true"></div>
+      <div class="container page-hero__inner">
+        <nav class="crumbs" aria-label="Хлебные крошки"><ol><li><a href="/">Главная</a></li><li aria-current="page">Для физлиц</li></ol></nav>
+        <h1>Переводы за рубеж для физлиц — <span class="text-gold">без открытия счёта за границей</span></h1>
+        <p class="page-hero__lead">
+          Поможем оплатить учёбу, лечение, поездку или другие личные расходы за границей.
+          Деньги уходят напрямую получателю — в его валюте, без открытия счёта за рубежом
+          и без визита в банк. Курс и стоимость услуги фиксируются в счёте до оплаты.
+        </p>
+        <div class="page-hero__actions">
+          <a class="btn btn--gold btn--lg" href="#ind-form">Оставить заявку</a>
+          <a class="btn btn--ghost btn--lg" href="#how">Как это работает</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== НАПРАВЛЕНИЯ =====================
+         Четыре направления на одной странице. «Учёба» и «Лечение» — черновики
+         из проработки; «Путешествия» и «И другое» — TODO: финальный текст. -->
+    <section class="section section--light" id="directions" aria-labelledby="directions-title">
+      <div class="container">
+        <header class="section__head">
+          <p class="section__eyebrow reveal">Направления</p>
+          <h2 class="section__title section__title--center reveal" id="directions-title" data-reveal-delay="1">С чем <span class="text-gold-dark">чаще всего обращаются</span></h2>
+          <p class="section__sub reveal" data-reveal-delay="2">Выберите свой случай — расскажем, как это устроено и что понадобится от вас.</p>
+        </header>
+
+        <div class="tabs reveal" data-tabs data-reveal-delay="2">
+          <div class="tabs__nav" role="tablist" aria-label="Направления переводов">
+            <button class="tabs__btn" type="button" role="tab" id="tab-study" aria-controls="panel-study" aria-selected="true" data-direction="study">Учёба</button>
+            <button class="tabs__btn" type="button" role="tab" id="tab-health" aria-controls="panel-health" aria-selected="false" data-direction="health">Лечение</button>
+            <button class="tabs__btn" type="button" role="tab" id="tab-travel" aria-controls="panel-travel" aria-selected="false" data-direction="travel">Путешествия</button>
+            <button class="tabs__btn" type="button" role="tab" id="tab-other" aria-controls="panel-other" aria-selected="false" data-direction="other">И другое</button>
+          </div>
+
+          <!-- УЧЁБА — согласованный черновик -->
+          <div class="tabs__panel" id="panel-study" role="tabpanel" aria-labelledby="tab-study" tabindex="0">
+            <h3>Оплата обучения за рубежом — от 1 дня, без открытия счёта за границей</h3>
+            <p>
+              Переведём оплату за учёбу в вуз или школу напрямую на счёт учебного заведения.
+              Курс фиксируем в счёте. Работаем без открытия счёта за рубежом.
+            </p>
+            <ul class="tabs__cases">
+              <li><svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-check"></use></svg><span>Семестровый взнос в университет — по инвойсу от учебного заведения.</span></li>
+              <li><svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-check"></use></svg><span>Языковые курсы и подготовительные программы, в том числе с оплатой частями.</span></li>
+              <li><svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-check"></use></svg><span>Проживание в кампусе или общежитии, если счёт выставляет учебное заведение.</span></li>
+            </ul>
+            <a class="btn btn--gold" href="#ind-form" data-direction-cta="study">Оставить заявку на оплату учёбы</a>
+          </div>
+
+          <!-- ЛЕЧЕНИЕ — согласованный черновик.
+               «С полным комплектом документов для банка» выбрано намеренно
+               вместо «без вопросов банка»: второе читается как обход валютного
+               контроля. Не менять без согласования. -->
+          <div class="tabs__panel" id="panel-health" role="tabpanel" aria-labelledby="tab-health" tabindex="0" hidden>
+            <h3>Срочный перевод оплаты за лечение за рубежом — от 1 дня</h3>
+            <p>
+              Переводим оплату клиникам напрямую, в валюте получателя. С полным комплектом
+              документов для банка. Подтверждение платежа — в день перевода.
+            </p>
+            <ul class="tabs__cases">
+              <li><svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-check"></use></svg><span>Предоплата за приём, обследование или операцию по счёту клиники.</span></li>
+              <li><svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-check"></use></svg><span>Оплата курса лечения и реабилитации, в том числе по нескольким счетам.</span></li>
+              <li><svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-check"></use></svg><span>Срочный перевод, когда клиника ждёт оплату до даты госпитализации.</span></li>
+            </ul>
+            <a class="btn btn--gold" href="#ind-form" data-direction-cta="health">Оставить заявку на оплату лечения</a>
+          </div>
+
+          <!-- ПУТЕШЕСТВИЯ — TODO: финальный текст отдельным шагом. -->
+          <div class="tabs__panel" id="panel-travel" role="tabpanel" aria-labelledby="tab-travel" tabindex="0" hidden>
+            <h3>Оплата поездки за границу — брони, туры и сборы</h3>
+            <p>
+              Оплатим бронирование, тур или другие расходы по поездке напрямую получателю,
+              если российская карта не проходит. Стоимость услуги называем до оплаты.
+            </p>
+            <ul class="tabs__cases">
+              <li><svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-check"></use></svg><span>Бронирование отеля или апартаментов, которое нужно подтвердить оплатой.</span></li>
+              <li><svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-check"></use></svg><span>Оплата тура, экскурсионной или спортивной программы иностранному организатору.</span></li>
+              <li><svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-check"></use></svg><span>Визовые и сервисные сборы, которые принимает только зарубежный получатель.</span></li>
+            </ul>
+            <a class="btn btn--gold" href="#ind-form" data-direction-cta="travel">Оставить заявку на оплату поездки</a>
+          </div>
+
+          <!-- И ДРУГОЕ — TODO: финальный текст отдельным шагом. Направление
+               намеренно широкое: собирает всё, что не попало в первые три. -->
+          <div class="tabs__panel" id="panel-other" role="tabpanel" aria-labelledby="tab-other" tabindex="0" hidden>
+            <h3>Другие переводы за рубеж — опишите задачу, подберём решение</h3>
+            <p>
+              Если ваш случай не похож на первые три — расскажите, кому и за что нужно
+              заплатить. Посмотрим, получится ли провести перевод, и честно скажем, если нет.
+            </p>
+            <ul class="tabs__cases">
+              <li><svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-check"></use></svg><span>Покупка в зарубежном магазине или у частного продавца.</span></li>
+              <li><svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-check"></use></svg><span>Аренда жилья за границей, залог или коммунальные платежи.</span></li>
+              <li><svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-check"></use></svg><span>Оплата иностранных сервисов и подписок, которые не принимают карты РФ.</span></li>
+            </ul>
+            <a class="btn btn--gold" href="#ind-form" data-direction-cta="other">Описать свою задачу</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== КАК ЭТО РАБОТАЕТ =====================
+         ЧЕРНОВИК: шаги 2 и 3 зависят от ответа юриста по 115-ФЗ. -->
+    <section class="section section--navy" id="how" aria-labelledby="how-title">
+      <div class="container">
+        <header class="section__head">
+          <p class="section__eyebrow reveal">Как это работает</p>
+          <h2 class="section__title section__title--center reveal" id="how-title" data-reveal-delay="1">Четыре шага <span class="text-gold">от заявки до подтверждения</span></h2>
+        </header>
+        <ol class="steps reveal" data-reveal-delay="2">
+          <li class="step"><h3>Заявка</h3><p>Вы оставляете заявку и коротко описываете, кому и за что нужно заплатить.</p></li>
+          <li class="step"><h3>Условия</h3><p>Менеджер уточняет детали, называет срок и стоимость услуги. Курс и вознаграждение фиксируются в счёте — до того, как вы платите.</p></li>
+          <li class="step"><h3>Документы и проверка</h3><p>Присылаете паспорт и документ, по которому идёт оплата: счёт от вуза, клиники или бронь. Проверка обязательна по закону — без неё перевод не проводится.</p></li>
+          <li class="step"><h3>Перевод и подтверждение</h3><p>Отправляем деньги получателю и присылаем подтверждение платежа.</p></li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ===================== ЗАЯВКА В ОДИН ШАГ =====================
+         Своя форма, отдельная от B2B: никакой двухшаговой квалификации и
+         калькулятора. Почта обязательна — бэкенд отклоняет заявку без неё
+         (см. шапку assets/js/individuals.js). Комментарий необязателен. -->
+    <section class="section section--light" id="ind-form" aria-labelledby="ind-form-title">
+      <div class="container">
+        <header class="section__head">
+          <p class="section__eyebrow reveal">Заявка</p>
+          <h2 class="section__title section__title--center reveal" id="ind-form-title" data-reveal-delay="1">Оставьте заявку — <span class="text-gold-dark">вернёмся с условиями</span></h2>
+          <p class="section__sub reveal" data-reveal-delay="2">Одна короткая форма. Курс и стоимость услуги называем после того, как узнаем детали — заранее их не считаем.</p>
+        </header>
+
+        <div class="indiv-form">
+          <div class="prose reveal">
+            <h3>Что будет после заявки</h3>
+            <p>Менеджер свяжется в рабочее время, уточнит страну, получателя и сумму, назовёт срок и стоимость услуги. До этого момента вы ничего не платите и ничем не связаны.</p>
+            <h3>Если случай нестандартный</h3>
+            <p>Опишите его в комментарии как есть. Если перевод провести не получится, скажем сразу — это быстрее, чем выяснять по ходу дела.</p>
+          </div>
+
+          <div class="form-card reveal" data-reveal-delay="1">
+            <h3 class="form-card__title">Заявка на перевод</h3>
+            <p class="form-card__sub">Ответим в рабочее время и уточним детали</p>
+            <form class="form" id="ind-form-el" novalidate>
+              <div aria-hidden="true" style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden"><label>Компания<input type="text" name="company" tabindex="-1" autocomplete="off"></label></div>
+              <div class="field"><label class="field__label" for="ind-name">Имя <span aria-hidden="true">*</span></label><input class="field__input" type="text" id="ind-name" name="name" autocomplete="name" placeholder="Как к вам обращаться"></div>
+              <div class="field"><label class="field__label" for="ind-phone">Телефон <span aria-hidden="true">*</span></label><input class="field__input" type="tel" id="ind-phone" name="phone" autocomplete="tel" inputmode="tel" placeholder="+7 (___) ___-__-__ или +код страны"></div>
+              <div class="field"><label class="field__label" for="ind-email">Эл. почта <span aria-hidden="true">*</span></label><input class="field__input" type="email" id="ind-email" name="email" autocomplete="email" inputmode="email" placeholder="you@example.com"></div>
+              <div class="field"><label class="field__label" for="ind-messenger">Telegram или WhatsApp <span class="indiv-opt">— если удобнее в мессенджере</span></label><input class="field__input" type="text" id="ind-messenger" name="messenger" autocomplete="off" placeholder="@username или номер"></div>
+              <div class="field"><label class="field__label" for="ind-direction">Направление перевода <span aria-hidden="true">*</span></label>
+                <select class="field__input" id="ind-direction" name="direction">
+                  <option value="study">Учёба</option>
+                  <option value="health">Лечение</option>
+                  <option value="travel">Путешествия</option>
+                  <option value="other">Другое</option>
+                </select>
+              </div>
+              <div class="field"><label class="field__label" for="ind-comment">Комментарий <span class="indiv-opt">— страна, получатель, сумма; необязательно</span></label><textarea class="field__input field__input--area" id="ind-comment" name="comment" rows="3" placeholder="Напр. оплата семестра в университете в Испании, ~4 000 €, счёт на руках"></textarea></div>
+              <label class="checkbox"><input type="checkbox" id="ind-consent"><span>Я согласен с <a href="/privacy/" target="_blank" rel="noopener">политикой обработки персональных данных</a></span></label>
+              <p class="indiv-error" data-ind-error role="alert" hidden></p>
+              <p class="indiv-ok" data-ind-ok role="status" hidden></p>
+              <button class="btn btn--gold btn--block btn--lg" type="submit">Отправить заявку</button>
+              <p class="form__note">Нажимая кнопку, вы соглашаетесь с <a href="/privacy/" target="_blank" rel="noopener">политикой обработки персональных данных</a>.</p>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== ДОКУМЕНТЫ ОТ КЛИЕНТА =====================
+         TODO: состав документов и формулировку про проверку подтвердить
+         у юриста/комплаенса до снятия noindex. -->
+    <section class="section section--light" id="docs" aria-labelledby="ind-docs-title">
+      <div class="container">
+        <header class="section__head">
+          <p class="section__eyebrow reveal">Документы</p>
+          <h2 class="section__title section__title--center reveal" id="ind-docs-title" data-reveal-delay="1">Что понадобится <span class="text-gold-dark">от вас</span></h2>
+          <p class="section__sub reveal" data-reveal-delay="2">Переводы за границу проверяются по закону — это делают все, кто работает легально. Список короткий и известен заранее.</p>
+        </header>
+        <ul class="persondocs reveal" data-reveal-delay="2">
+          <li><b>Паспорт</b><span>Разворот с фотографией — чтобы подтвердить, кто отправляет деньги.</span></li>
+          <li><b>Документ, по которому идёт оплата</b><span>Счёт от вуза или клиники, договор, бронь. Из него видно получателя и сумму.</span></li>
+          <li><b>Реквизиты получателя</b><span>Обычно они уже есть в счёте. Если нет — попросим отдельно.</span></li>
+          <li><b>Иногда — подтверждение источника средств</b><span>Просят не всегда и зависит от суммы. Если понадобится, менеджер скажет заранее.</span></li>
+        </ul>
+        <div class="cta-row reveal" data-reveal-delay="3" style="justify-content:center">
+          <a class="btn btn--gold btn--lg" href="#ind-form">Оставить заявку</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer" id="footer"><div class="container footer__grid">
+    <div class="footer__brand"><span class="brand__seal brand__seal--lg"><img src="/assets/img/logo-160.jpg" width="160" height="160" loading="lazy" alt="Эмблема ООО «Локомотив»"></span>
+      <div><p class="footer__name">ООО «Локомотив»</p><p class="footer__slogan">Международные платежи · логистика · таможня</p></div></div>
+    <nav class="footer__nav" aria-label="Платежи"><h2 class="footer__heading">Платежи</h2><ul>
+      <li><a href="/payments/china/">Китай</a></li><li><a href="/payments/turkey/">Турция</a></li>
+      <li><a href="/payments/uae/">ОАЭ</a></li><li><a href="/payments/europe/">Европа</a></li>
+      <li><a href="/payments/services/">Услуги и ПО</a></li><li><a href="/payments/export/">Экспортная выручка</a></li></ul></nav>
+    <nav class="footer__nav" aria-label="Компания"><h2 class="footer__heading">Компания</h2><ul>
+      <li><a href="/complex/">Комплексно под ключ</a></li><li><a href="/sellers/">Для селлеров</a></li>
+      <li><a href="/logistics/">Логистика</a></li><li><a href="/trust/">Проверьте нас</a></li>
+      <li><a href="/contacts/">Контакты</a></li></ul></nav>
+    <div class="footer__legal"><h2 class="footer__heading">Реквизиты</h2>
+      <p>ООО «Локомотив»</p><p>ОГРН 1267700222899 · ИНН 9703250829 · КПП 770301001</p><p>г. Москва, пр-д 1-й Красногвардейский, д. 22, стр. 2, помещ. 173</p></div>
+  </div>
+  <div class="container footer__bottom"><p>© <span id="year">2026</span> ООО «Локомотив». Все права защищены.</p><p><a href="/privacy/">Политика обработки персональных данных</a> · <a href="/">На главную</a></p></div></footer>
+
+  <script src="/assets/js/site-config.js?v=20260820b" defer></script>
+  <script src="/assets/js/site.js?v=20260820b" defer></script>
+  <script src="/assets/js/main.js?v=20260820b" defer></script>
+  <script src="/assets/js/individuals.js?v=20260820a" defer></script>
+</body>
+</html>

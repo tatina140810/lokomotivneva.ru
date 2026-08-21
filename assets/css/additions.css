@@ -3,7 +3,7 @@
    Дополняет styles.css: те же токены navy+gold, ничего не переопределяет силой.
    Новые блоки: верхняя строка, выпадающее меню, крошки, шапка внутренних
    страниц, плитки направлений, калькулятор, шаги, доказательства, цепочка,
-   кейсы, пакет документов.
+   пакет документов.
    ========================================================================== */
 
 /* --------------------------- 1. Верхняя строка --------------------------- */
@@ -265,22 +265,6 @@
   .chain__step:not(:last-child)::after { top: auto; bottom: -.75rem; right: 50%; transform: translateX(50%) rotate(135deg); }
 }
 
-/* ------------------------------- 12. Кейсы ------------------------------- */
-.cases { display: grid; gap: 1.1rem; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
-.case {
-  padding: 1.5rem 1.4rem; background: var(--white); color: var(--text-dark);
-  border: 1px solid var(--light-2); border-radius: var(--radius); box-shadow: var(--shadow-soft);
-  display: flex; flex-direction: column; gap: .6rem;
-}
-.case__tag {
-  align-self: flex-start; font-size: .78rem; font-weight: 700; letter-spacing: .04em;
-  padding: .25rem .7rem; border-radius: 999px;
-  background: var(--light); color: var(--gold-700);
-}
-.case__title { font-size: 1.1rem; font-weight: 800; margin: 0; }
-.case__facts { display: flex; flex-wrap: wrap; gap: .3rem 1rem; font-size: .88rem; color: var(--text-muted-dark); }
-.case__facts b { color: var(--text-dark); }
-
 /* --------------------------- 13. Пакет документов ------------------------ */
 .docpack { display: grid; gap: .7rem; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
 .docpack li {
@@ -291,6 +275,15 @@
 .docpack .icon { width: 1.4em; height: 1.4em; color: var(--gold-600); flex: 0 0 auto; margin-top: .1rem; }
 .docpack b { display: block; }
 .docpack span { font-size: .88rem; color: var(--text-muted-dark); }
+/* Карточки-ссылки на реальные документы (ЕГРЮЛ, карточка предприятия) */
+.docpack__item--link { padding: 0; border-color: var(--gold-500); transition: box-shadow .2s ease, transform .2s ease; }
+.docpack__item--link > a {
+  display: flex; align-items: flex-start; gap: .7rem;
+  padding: 1rem 1.1rem; width: 100%; color: inherit; text-decoration: none;
+}
+.docpack__item--link b { color: var(--gold-700); }
+.docpack__item--link:hover, .docpack__item--link:focus-within { box-shadow: var(--shadow-soft); transform: translateY(-2px); }
+.docpack__item--link > a:focus-visible { outline: 2px solid var(--gold-600); outline-offset: 2px; border-radius: 12px; }
 
 /* ----------------------- 14. Мелкие утилиты раскладки -------------------- */
 .section__title--start { text-align: left; }
@@ -335,3 +328,159 @@
   font-size: .62rem; letter-spacing: .22em; line-height: 1;
   margin-bottom: 2px;
 }
+
+/* =============================================================================
+   НОВЫЕ БЛОКИ 2026-08-19 (маркетинговая доработка)
+   ============================================================================= */
+
+/* Атрибут hidden обязан побеждать любой display из CSS.
+   Без этого элементы с display:flex/grid остаются видимыми, даже когда
+   скрипт выставил им hidden (так вылезал шаг 2 квалификации до шага 1). */
+[hidden] { display: none !important; }
+
+/* ---- Строка цифр под заголовком первого экрана (proof of probability) ---- */
+.hero-proof {
+  display: flex; align-items: flex-start; gap: .6rem;
+  margin: 0 0 1.2rem;
+  padding: .7rem .95rem;
+  border: 1px solid rgba(212, 175, 55, .35);
+  border-radius: 12px;
+  background: rgba(212, 175, 55, .08);
+  color: var(--text-light);
+  font-size: .95rem; line-height: 1.5;
+}
+.hero-proof[hidden] { display: none; }
+.hero-proof .icon { flex: none; width: 20px; height: 20px; color: var(--gold-400); margin-top: 1px; }
+.hero-proof b { color: var(--gold-400); font-weight: 800; }
+
+/* ---- Мелкая строка-усилитель под кнопками первого экрана ---- */
+.page-hero__note {
+  margin: .85rem 0 0;
+  font-size: .85rem; line-height: 1.5;
+  color: var(--text-muted-light);
+}
+
+/* ---- Блок «Наша гарантия» ---- */
+.guarantee {
+  display: flex; gap: 1.2rem; align-items: flex-start;
+  max-width: 860px; margin: 0 auto;
+  padding: clamp(1.3rem, 1rem + 1.6vw, 2.1rem);
+  background: var(--white); color: var(--text-dark);
+  border: 1px solid var(--light-2); border-left: 4px solid var(--gold-500);
+  border-radius: var(--radius); box-shadow: var(--shadow-soft);
+}
+.guarantee__icon { flex: none; width: 46px; height: 46px; display: grid; place-items: center;
+  border-radius: 12px; background: var(--light); color: var(--gold-700); }
+.guarantee__icon svg { width: 26px; height: 26px; fill: none; stroke: currentColor; stroke-width: 1.7; }
+.guarantee__claim { margin: 0; font-size: clamp(1.05rem, .95rem + .6vw, 1.4rem); font-weight: 800; line-height: 1.4; }
+.guarantee__note { margin: .6rem 0 0; font-size: .9rem; color: var(--text-muted-dark); }
+@media (max-width: 560px) { .guarantee { flex-direction: column; gap: .9rem; } }
+
+/* ---- Квалификационная форма (2 шага). Базируется на стилях .calc__* ---- */
+.qualify {
+  display: grid; gap: 0; grid-template-columns: 1.05fr .95fr;
+  align-items: stretch;
+  background: var(--white); color: var(--text-dark);
+  border-radius: var(--radius-lg); box-shadow: var(--shadow-card); overflow: hidden;
+}
+.qualify__form { padding: clamp(1.4rem, 1rem + 2vw, 2.4rem); }
+.qualify__row { display: grid; gap: 1rem; grid-template-columns: 1fr 1fr; margin-bottom: 1rem; }
+.qualify__row--amount { grid-template-columns: 1.6fr .8fr; }
+.qualify__step {
+  margin: 0 0 1rem; font-size: .78rem; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--gold-700);
+}
+.qualify__error {
+  margin: .8rem 0 0; padding: .55rem .75rem; border-radius: 10px;
+  background: rgba(200, 40, 40, .08); color: #B02A2A; font-size: .88rem; font-weight: 600;
+}
+.qualify__error[hidden] { display: none; }
+
+.qualify__panel {
+  background: var(--navy-800); color: var(--text-light);
+  padding: clamp(1.4rem, 1rem + 2vw, 2.4rem);
+  display: flex; flex-direction: column; justify-content: center; gap: 1rem;
+}
+.qualify__placeholder { margin: 0; color: var(--text-muted-light); font-size: .95rem; line-height: 1.6; }
+.qualify__disclaimer {
+  margin: .9rem 0 0; padding: .7rem .85rem;
+  border-left: 3px solid var(--gold-500); border-radius: 0 10px 10px 0;
+  background: rgba(212, 175, 55, .10);
+  font-size: .86rem; line-height: 1.5; color: var(--text-light);
+}
+.qualify__step2 { margin-top: .4rem; display: flex; flex-direction: column; gap: .8rem; }
+.qualify__step2 .qualify__step { color: var(--gold-400); margin: 0; }
+.qualify__invite { margin: 0; font-weight: 700; font-size: 1.02rem; line-height: 1.45; }
+.qualify__step2 .calc__field label { color: var(--text-light); }
+.qualify__opt { font-weight: 400; color: var(--text-muted-light); font-size: .82rem; }
+.qualify__free { margin: 0; font-size: .8rem; color: var(--text-muted-light); line-height: 1.5; }
+.qualify.is-answered .qualify__panel { justify-content: flex-start; }
+
+@media (max-width: 900px) {
+  .qualify { grid-template-columns: 1fr; }
+}
+@media (max-width: 560px) {
+  .qualify__row, .qualify__row--amount { grid-template-columns: 1fr; }
+}
+
+/* ---- Цифры доверия на светлой секции ---- */
+.trust-stats {
+  display: grid; gap: 1px; grid-template-columns: repeat(4, 1fr);
+  margin: 2rem 0 0; padding: 0; list-style: none;
+  background: var(--light-2); border: 1px solid var(--light-2);
+  border-radius: var(--radius); overflow: hidden;
+}
+.trust-stats[hidden] { display: none; }
+.trust-stats li {
+  display: flex; flex-direction: column; gap: .3rem;
+  padding: 1.3rem 1rem; background: var(--white); text-align: center;
+}
+.trust-stats b {
+  font-size: clamp(1.5rem, 1.1rem + 1.4vw, 2.3rem);
+  font-weight: 800; color: var(--gold-700); line-height: 1;
+}
+.trust-stats span { font-size: .8rem; line-height: 1.4; color: var(--text-muted-dark); }
+@media (max-width: 760px) { .trust-stats { grid-template-columns: repeat(2, 1fr); } }
+
+/* ---- Отзывы ---- */
+.reviews-wrap { margin-top: 2.4rem; }
+.reviews-wrap[hidden] { display: none; }
+.reviews-wrap__title { text-align: center; font-size: var(--fs-h3); margin: 0 0 1.2rem; }
+.reviews {
+  display: grid; gap: 1.1rem; list-style: none; margin: 0; padding: 0;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+.review {
+  padding: 1.4rem 1.3rem; background: var(--white); color: var(--text-dark);
+  border: 1px solid var(--light-2); border-top: 3px solid var(--gold-500);
+  border-radius: var(--radius); box-shadow: var(--shadow-soft);
+}
+.review__text { margin: 0; font-size: .95rem; line-height: 1.6; }
+.review__author { margin: .8rem 0 0; font-size: .82rem; color: var(--text-muted-dark); }
+
+/* ---- Bonus stack: усилители оффера + форма лид-магнита ---- */
+.bonus { display: grid; gap: 1.6rem; grid-template-columns: 1.05fr .95fr; align-items: start; }
+.bonus__list { display: grid; gap: 1rem; list-style: none; margin: 0; padding: 0; }
+.bonus__list li {
+  display: flex; gap: 1rem; align-items: flex-start;
+  padding: 1.3rem 1.2rem;
+  background: rgba(255, 255, 255, .05);
+  border: 1px solid rgba(212, 175, 55, .28);
+  border-radius: var(--radius);
+}
+.bonus__icon {
+  flex: none; width: 42px; height: 42px; display: grid; place-items: center;
+  border-radius: 11px; background: rgba(212, 175, 55, .14); color: var(--gold-400);
+}
+.bonus__icon svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.7; }
+.bonus__list h3 { margin: 0 0 .35rem; font-size: 1.02rem; line-height: 1.4; color: var(--white); }
+.bonus__list p { margin: 0; font-size: .9rem; line-height: 1.55; color: var(--text-muted-light); }
+.bonus__form { margin: 0; }
+@media (max-width: 900px) { .bonus { grid-template-columns: 1fr; } }
+
+/* ---- Списки и подзаголовки h2 внутри текстовых блоков .prose ---- */
+.prose h2 { margin-top: 1.8rem; font-size: var(--fs-h3); }
+.prose ul, .prose ol { margin-left: 1.15rem; padding-left: 0; list-style: disc; }
+.prose ol { list-style: decimal; }
+.prose li { margin-top: .5rem; }
+.prose li::marker { color: var(--gold-600); }

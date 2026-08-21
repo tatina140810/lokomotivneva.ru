@@ -12,8 +12,8 @@
   <meta property="og:image" content="/assets/img/logo-512.jpg">
   <meta property="og:locale" content="ru_RU">
   <link rel="icon" href="/assets/img/logo-160.jpg">
-  <link rel="stylesheet" href="/assets/css/styles.css?v=20260817f">
-  <link rel="stylesheet" href="/assets/css/additions.css?v=20260818a">
+  <link rel="stylesheet" href="/assets/css/styles.css?v=20260820b">
+  <link rel="stylesheet" href="/assets/css/additions.css?v=20260820b">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org", "@type": "FinancialService",
@@ -23,7 +23,7 @@
     "logo": "/assets/img/logo-512.jpg",
     "taxID": "9703250829",
     "vatID": "9703250829",
-    "address": { "@type": "PostalAddress", "streetAddress": "пр-д 1-й Красногвардейский, д. 22, стр. 1, этаж 30, помещ. 52", "addressLocality": "Москва", "addressRegion": "Москва", "addressCountry": "RU" },
+    "address": { "@type": "PostalAddress", "streetAddress": "пр-д 1-й Красногвардейский, д. 22, стр. 2, помещ. 173", "addressLocality": "Москва", "addressRegion": "Москва", "addressCountry": "RU" },
     "areaServed": ["Китай", "Гонконг", "ОАЭ", "Турция", "Европейский союз", "Великобритания"]
   }
   </script>
@@ -42,14 +42,14 @@
           <li><a class="nav__link" href="/payments/">Платежи</a></li>
           <li><a class="nav__link" href="/logistics/">Логистика</a></li>
           <li><a class="nav__link" href="/trust/">Проверьте нас</a></li>
-          <li><a class="nav__link" href="/cases/">Кейсы</a></li>
           <li><a class="nav__link" href="/contacts/">Контакты</a></li>
+          <li><a class="nav__link" href="/individuals/">Для физлиц</a></li>
         </ul>
-        <div class="nav__mobile-actions"><a class="btn btn--gold btn--block" href="#zayavka">Рассчитать платёж</a></div>
+        <div class="nav__mobile-actions"><a class="btn btn--gold btn--block" href="#qualify">Рассчитать платёж</a></div>
       </nav>
       <div class="header__actions">
         <a class="header__phone" href="tel:+74952409065"><svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-phone"></use></svg><span>+7 (495) 240-90-65</span></a>
-        <a class="btn btn--gold header__cta" href="#zayavka">Рассчитать платёж</a>
+        <a class="btn btn--gold header__cta" href="#qualify">Рассчитать платёж</a>
       </div>
       <button class="burger" id="burger" type="button" aria-label="Открыть меню" aria-expanded="false" aria-controls="nav"><span></span><span></span><span></span></button>
     </div>
@@ -64,20 +64,29 @@
       <div class="container">
       <div class="hero-2col">
       <div class="page-hero__inner">
-        <p class="section__eyebrow reveal" style="color:var(--gold-400)">Платёжный агент ВЭД · Москва</p>
-        <h1 class="reveal" data-reveal-delay="1" id="hero-title">
+        <p class="section__eyebrow reveal" style="color:var(--gold-400)">Платёжный агент ВЭД, Москва</p>
+        <!-- Вариант заголовка переключается в assets/js/site-config.js → hero.variant
+             ('control' = текст ниже, 'a'/'b'/'c' = варианты для A/B-теста). -->
+        <h1 class="reveal" data-reveal-delay="1" id="hero-title" data-hero-title>
           Расчёты по внешнеторговым контрактам <span class="text-gold">и сопровождение поставок</span>
         </h1>
+        <!-- TODO: заменить на реальные цифры клиента, когда компания начнёт их фиксировать.
+             Значения живут в site-config.js → proof (там же выключатель show). -->
+        <p class="hero-proof reveal" data-reveal-delay="1" data-loko-proof hidden>
+          <svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-check"></use></svg>
+          <span>Более <b data-loko-stat="payments">—</b> платежей на сумму <b data-loko-stat="volume">—</b> млн ₽ проведено в <span data-loko-stat="period">—</span> · <b data-loko-stat="blocked">0</b> заблокированных переводов</span>
+        </p>
         <p class="page-hero__lead reveal" data-reveal-delay="2">
           Исполняем платёжные поручения в Китай, Гонконг, ОАЭ, Турцию, страны ЕС и Великобританию —
           от 1 рабочего дня. При необходимости берём на себя перевозку, таможенное оформление и хранение груза.
         </p>
         <div class="page-hero__actions reveal" data-reveal-delay="3">
-          <a class="btn btn--gold btn--lg" href="#zayavka">Рассчитать платёж</a>
-          <a class="btn btn--ghost btn--lg" href="https://t.me/lokomotivneva" rel="nofollow">
-            <svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-telegram"></use></svg>Написать в Telegram
+          <a class="btn btn--gold btn--lg" href="#qualify">Оставить заявку</a>
+          <a class="btn btn--ghost btn--lg" data-messenger="auto" href="tel:+74952409065" rel="nofollow">
+            <svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-phone"></use></svg><span data-messenger-label>Позвонить +7 (495) 240-90-65</span>
           </a>
         </div>
+        <p class="page-hero__note reveal" data-reveal-delay="3">Ответим в течение рабочего дня.</p>
         <ul class="markers reveal" data-reveal-delay="4">
           <li><svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-shield"></use></svg>ООО, зарегистрировано в РФ. Расчёты — по агентскому договору и ДКП</li>
           <li><svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-clock"></use></svg>Срок исполнения поручения — от 1 рабочего дня по большинству направлений</li>
@@ -90,6 +99,77 @@
         <img src="/assets/img/logo-512.jpg" width="512" height="512" alt="">
       </figure>
       </div>
+      </div>
+    </section>
+
+    <!-- КВАЛИФИКАЦИЯ (2 шага). Курс НЕ рассчитывается — только ориентиры из конфига. -->
+    <section class="section section--navy" id="qualify" aria-labelledby="qualify-title">
+      <div class="container">
+        <header class="section__head">
+          <h2 class="section__title section__title--center reveal" id="qualify-title" data-reveal-delay="1">
+            Подберём условия <span class="text-gold">по вашей сделке</span>
+          </h2>
+          <p class="section__sub reveal" data-reveal-delay="2">Два коротких шага. Покажем ориентировочный срок и вилку комиссии по направлению — курс не рассчитываем.</p>
+        </header>
+
+        <div class="qualify reveal" data-reveal-delay="2" id="qualify-widget">
+
+          <!-- ШАГ 1 — без контактных данных -->
+          <div class="qualify__form">
+            <p class="qualify__step">Шаг 1 из 2 · контакты пока не нужны</p>
+            <div class="qualify__row">
+              <div class="calc__field">
+                <label for="q-route">Направление платежа</label>
+                <select id="q-route"></select>
+              </div>
+              <div class="calc__field">
+                <label for="q-category">Категория товара или услуги</label>
+                <select id="q-category"></select>
+              </div>
+            </div>
+            <div class="qualify__row qualify__row--amount">
+              <div class="calc__field">
+                <label for="q-amount">Примерная сумма сделки</label>
+                <input type="text" id="q-amount" inputmode="numeric" autocomplete="off" placeholder="например, 5 000 000">
+              </div>
+              <div class="calc__field">
+                <label for="q-currency">Валюта</label>
+                <select id="q-currency"></select>
+              </div>
+            </div>
+            <button class="btn btn--gold btn--block btn--lg" type="button" data-qualify-show>Показать ориентиры</button>
+            <p class="qualify__error" data-qualify-error role="alert" hidden></p>
+          </div>
+
+          <!-- РЕЗУЛЬТАТ ШАГА 1 + ШАГ 2 -->
+          <div class="qualify__panel">
+            <p class="qualify__placeholder" data-qualify-placeholder>
+              Заполните шаг 1 — покажем ориентировочный срок исполнения и диапазон комиссии по выбранному направлению.
+            </p>
+
+            <div data-qualify-result hidden>
+              <p class="calc__result-title">Ориентировочные параметры</p>
+              <div class="calc__line"><span>Срок исполнения</span><b data-qualify-term>—</b></div>
+              <div class="calc__line"><span>Комиссия агента</span><b data-qualify-fee>—</b></div>
+              <p class="qualify__disclaimer" data-qualify-disclaimer></p>
+            </div>
+
+            <form class="qualify__step2" id="qualify-form" data-qualify-step2 novalidate hidden>
+              <p class="qualify__step">Шаг 2 из 2</p>
+              <p class="qualify__invite">Хотите получить точный расчёт по вашей сделке? Оставьте контакт.</p>
+              <div aria-hidden="true" style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden"><label>Компания<input type="text" name="company" tabindex="-1" autocomplete="off"></label></div>
+              <div class="calc__field"><label for="q-name">Имя</label><input type="text" id="q-name" name="name" autocomplete="name" placeholder="Как к вам обращаться"></div>
+              <div class="calc__field"><label for="q-phone">Телефон</label><input type="tel" id="q-phone" name="phone" autocomplete="tel" inputmode="tel" placeholder="+7 (___) ___-__-__ или +код страны"></div>
+              <div class="calc__field"><label for="q-email">Эл. почта</label><input type="email" id="q-email" name="email" autocomplete="email" inputmode="email" placeholder="you@example.com"></div>
+              <div class="calc__field"><label for="q-tg">Telegram или WhatsApp <span class="qualify__opt">— если удобнее в мессенджере</span></label><input type="text" id="q-tg" name="messenger" autocomplete="off" placeholder="@username или номер"></div>
+              <label class="checkbox"><input type="checkbox" id="q-consent"><span>Я согласен с <a href="/privacy/" target="_blank" rel="noopener">политикой обработки персональных данных</a></span></label>
+              <p class="qualify__error" data-qualify-error2 role="alert" hidden></p>
+              <button class="btn btn--gold btn--block btn--lg" type="submit">Получить точный расчёт</button>
+              <p class="qualify__free">Ответим в течение рабочего дня.</p>
+            </form>
+          </div>
+
+        </div>
       </div>
     </section>
 
@@ -124,6 +204,46 @@
           <li class="step"><h3>Исполнение поручения</h3><p>Проводим платёж поставщику одним из маршрутов.</p></li>
           <li class="step"><h3>Закрывающие документы</h3><p>Отчёт агента, акт и подтверждение платежа.</p></li>
         </ol>
+      </div>
+    </section>
+
+    <!-- BONUS STACK: усилители оффера + лид-магнит -->
+    <section class="section section--navy" id="bonus" aria-labelledby="bonus-title">
+      <div class="container">
+        <header class="section__head">
+          <p class="section__eyebrow reveal">Дополнительно</p>
+          <h2 class="section__title section__title--center reveal" id="bonus-title" data-reveal-delay="1">Что мы даём <span class="text-gold">сверх платежа</span></h2>
+        </header>
+
+        <div class="bonus reveal" data-reveal-delay="2">
+          <ul class="bonus__list">
+            <li>
+              <span class="bonus__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-headset"></use></svg></span>
+              <div><h3>Бесплатная первая консультация по маршруту платежа</h3>
+              <p>Разберём вашу сделку и подскажем, каким маршрутом платёж пройдёт быстрее и с меньшим риском. Без обязательств и без оплаты.</p></div>
+            </li>
+            <li>
+              <span class="bonus__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-doc"></use></svg></span>
+              <div><h3>Шаблон документов для бухгалтерии — в подарок при первой сделке</h3>
+              <p>Готовый комплект: поручение, отчёт агента, акт. Бухгалтеру не придётся собирать формы с нуля.</p></div>
+            </li>
+          </ul>
+
+          <!-- ЛИД-МАГНИТ. TODO(заказчик): подготовить PDF и указать путь к нему
+               в site-config.js → leadMagnet.file. Пока файла нет, заявка всё равно
+               попадает менеджеру, и чек-лист отправляется вручную. -->
+          <form class="form-card bonus__form" id="magnet-form" novalidate>
+            <h3 class="form-card__title">Чек-лист по валютному контролю — бесплатно</h3>
+            <p class="form-card__sub">Что банк проверяет по платежу в адрес иностранного поставщика и из-за чего перевод чаще всего зависает. PDF, без воды.</p>
+            <div aria-hidden="true" style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden"><label>Компания<input type="text" name="company" tabindex="-1" autocomplete="off"></label></div>
+            <div class="field"><label class="field__label" for="m-name">Имя</label><input class="field__input" type="text" id="m-name" name="name" autocomplete="name" placeholder="Как к вам обращаться"></div>
+            <div class="field"><label class="field__label" for="m-phone">Телефон</label><input class="field__input" type="tel" id="m-phone" name="phone" autocomplete="tel" inputmode="tel" placeholder="+7 (___) ___-__-__ или +код страны"></div>
+            <div class="field"><label class="field__label" for="m-email">Эл. почта <span class="qualify__opt">— на неё пришлём файл</span></label><input class="field__input" type="email" id="m-email" name="email" autocomplete="email" inputmode="email" placeholder="you@example.com"></div>
+            <label class="checkbox"><input type="checkbox" id="m-consent"><span>Я согласен с <a href="/privacy/" target="_blank" rel="noopener">политикой обработки персональных данных</a></span></label>
+            <p class="qualify__error" data-magnet-error role="alert" hidden></p>
+            <button class="btn btn--gold btn--block btn--lg" type="submit">Получить чек-лист</button>
+          </form>
+        </div>
       </div>
     </section>
 
@@ -170,10 +290,25 @@
           <h2 class="section__title section__title--center reveal" id="docs-title" data-reveal-delay="1">Документы <span class="text-gold-dark">открыты</span></h2>
         </header>
         <ul class="docpack reveal">
-          <li><svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-doc"></use></svg><span><b>Выписка ЕГРЮЛ</b><span>Актуальная, с реквизитами</span></span></li>
-          <li><svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-doc"></use></svg><span><b>Образец агентского договора</b><span>Для изучения вашим юристом</span></span></li>
-          <li><svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-doc"></use></svg><span><b>Пример закрывающего пакета</b><span>Отчёт агента, акт, подтверждение</span></span></li>
+          <li class="docpack__item--link"><a href="/assets/docs/egrul-lokomotiv.pdf" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-doc"></use></svg><span><b>Выписка ЕГРЮЛ</b><span>С сайта ФНС, от 19.08.2026 · PDF</span></span></a></li>
+          <li class="docpack__item--link"><a href="/assets/docs/kartochka-lokomotiv.jpg" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-doc"></use></svg><span><b>Карточка предприятия</b><span>Реквизиты и банковские данные · JPG</span></span></a></li>
         </ul>
+        <!-- Цифры доверия. ОДИН источник с hero — site-config.js → proof.
+             Пока proof.show = false, блок скрыт (см. TODO в конфиге). -->
+        <ul class="trust-stats reveal" data-loko-proof hidden>
+          <li><b data-loko-stat="payments">—</b><span>платежей проведено</span></li>
+          <li><b data-loko-stat="volume">—</b><span>млн ₽ суммарный оборот</span></li>
+          <li><b data-loko-stat="avg">—</b><span>часов средний срок исполнения</span></li>
+          <li><b data-loko-stat="blocked">0</b><span>заблокированных переводов</span></li>
+        </ul>
+
+        <!-- Отзывы. Выводятся только когда в конфиге reviews.show = true
+             (то есть когда появятся настоящие отзывы с согласием клиентов). -->
+        <div class="reviews-wrap reveal" data-loko-reviews-section hidden>
+          <h3 class="reviews-wrap__title">Что говорят клиенты</h3>
+          <ul class="reviews" data-loko-reviews></ul>
+        </div>
+
         <div class="cta-row reveal" style="justify-content:center"><a class="btn btn--navy" href="/trust/">Как проверить агента</a></div>
       </div>
     </section>
@@ -184,13 +319,14 @@
         <header class="section__head">
           <p class="section__eyebrow reveal">Заявка</p>
           <h2 class="section__title section__title--center reveal" id="zv-title" data-reveal-delay="1">Рассчитаем условия <span class="text-gold">по вашей сделке</span></h2>
-          <p class="section__sub reveal" data-reveal-delay="2">Пришлите инвойс и направление — вернёмся с расчётом и фиксированным курсом</p>
+          <p class="section__sub reveal" data-reveal-delay="2">Пришлите инвойс и направление — вернёмся с расчётом. Курс и вознаграждение фиксируются в счёте</p>
         </header>
         <div class="contacts__grid">
           <div class="contacts__info reveal">
             <ul class="contacts__list">
               <li><span class="contacts__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-phone"></use></svg></span><span><span class="contacts__label">Телефон</span><a class="contacts__value" href="tel:+74952409065">+7 (495) 240-90-65</a></span></li>
-              <li><span class="contacts__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-telegram"></use></svg></span><span><span class="contacts__label">Telegram / WhatsApp</span><a class="contacts__value" href="https://t.me/lokomotivneva" rel="nofollow">Написать в мессенджер</a></span></li>
+              <li data-messenger-row="telegram" hidden><span class="contacts__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-telegram"></use></svg></span><span><span class="contacts__label">Telegram</span><a class="contacts__value" data-messenger="telegram" href="tel:+74952409065" rel="nofollow"><span data-messenger-label>Написать в Telegram</span></a></span></li>
+              <li data-messenger-row="whatsapp" hidden><span class="contacts__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-whatsapp"></use></svg></span><span><span class="contacts__label">WhatsApp</span><a class="contacts__value" data-messenger="whatsapp" href="tel:+74952409065" rel="nofollow"><span data-messenger-label>Написать в WhatsApp</span></a></span></li>
               <li><span class="contacts__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-mail"></use></svg></span><span><span class="contacts__label">Почта</span><a class="contacts__value" href="mailto:lokomotiv.neva@mail.ru">lokomotiv.neva@mail.ru</a></span></li>
             </ul>
             <div class="requisites-card">
@@ -200,7 +336,7 @@
                 <div><dt>ОГРН</dt><dd>1267700222899</dd></div>
                 <div><dt>ИНН</dt><dd>9703250829</dd></div>
                 <div><dt>КПП</dt><dd>770301001</dd></div>
-                <div><dt>Юр. адрес</dt><dd>г. Москва, пр-д 1-й Красногвардейский, д. 22, стр. 1, этаж 30, помещ. 52</dd></div>
+                <div><dt>Юр. адрес</dt><dd>г. Москва, пр-д 1-й Красногвардейский, д. 22, стр. 2, помещ. 173</dd></div>
               </dl>
             </div>
           </div>
@@ -239,10 +375,10 @@
       <nav class="footer__nav" aria-label="Компания"><h2 class="footer__heading">Компания</h2><ul>
         <li><a href="/complex/">Платёж + доставка</a></li><li><a href="/sellers/">Для селлеров</a></li>
         <li><a href="/logistics/">Логистика</a></li><li><a href="/trust/">Проверьте нас</a></li>
-        <li><a href="/cases/">Кейсы</a></li><li><a href="/contacts/">Контакты</a></li>
+        <li><a href="/contacts/">Контакты</a></li>
       </ul></nav>
       <div class="footer__legal"><h2 class="footer__heading">Реквизиты</h2>
-        <p>ООО «Локомотив»</p><p>ОГРН 1267700222899 · ИНН 9703250829 · КПП 770301001</p><p>г. Москва, пр-д 1-й Красногвардейский, д. 22, стр. 1, этаж 30, помещ. 52</p>
+        <p>ООО «Локомотив»</p><p>ОГРН 1267700222899 · ИНН 9703250829 · КПП 770301001</p><p>г. Москва, пр-д 1-й Красногвардейский, д. 22, стр. 2, помещ. 173</p>
       </div>
     </div>
     <div class="container footer__bottom"><p>© <span id="year">2026</span> ООО «Локомотив». Все права защищены.</p><p><a href="/privacy/">Политика обработки персональных данных</a> · <a href="#hero">Наверх</a></p></div>
@@ -253,6 +389,9 @@
     <span class="toast__text"></span>
   </div>
 
-  <script src="/assets/js/main.js?v=20260817c" defer></script>
+  <script src="/assets/js/site-config.js?v=20260820b" defer></script>
+  <script src="/assets/js/site.js?v=20260820b" defer></script>
+  <script src="/assets/js/qualify.js?v=20260820b" defer></script>
+  <script src="/assets/js/main.js?v=20260820b" defer></script>
 </body>
 </html>
