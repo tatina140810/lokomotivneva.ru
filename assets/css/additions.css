@@ -484,3 +484,54 @@
 .prose ol { list-style: decimal; }
 .prose li { margin-top: .5rem; }
 .prose li::marker { color: var(--gold-600); }
+
+/* =============================================================================
+   НОВЫЕ БЛОКИ (оживление сайта): FAQ-аккордеон + плавающая кнопка связи
+   ============================================================================= */
+
+/* ---- FAQ: нативный <details>/<summary> — доступно, без JS ---- */
+.faq { max-width: 860px; margin: 0 auto; display: grid; gap: .8rem; }
+.faq__item {
+  background: var(--white); color: var(--text-dark);
+  border: 1px solid var(--light-2); border-radius: var(--radius);
+  box-shadow: var(--shadow-soft); overflow: hidden;
+  transition: border-color .2s var(--ease), box-shadow .2s var(--ease);
+}
+.faq__item[open] { border-color: rgba(212, 175, 55, .5); box-shadow: var(--shadow-card); }
+.faq__q {
+  display: flex; align-items: center; gap: .9rem;
+  padding: 1.1rem 1.3rem; cursor: pointer; list-style: none;
+  font-weight: 700; font-size: 1.05rem; color: var(--text-dark);
+}
+.faq__q::-webkit-details-marker { display: none; }
+.faq__q::after {
+  content: ""; margin-left: auto; flex: none;
+  width: .62rem; height: .62rem;
+  border-right: 2px solid var(--gold-600); border-bottom: 2px solid var(--gold-600);
+  transform: rotate(45deg); transition: transform .25s var(--ease);
+}
+.faq__item[open] .faq__q::after { transform: rotate(-135deg); }
+.faq__q:hover { color: var(--gold-700); }
+.faq__a { padding: 0 1.3rem 1.2rem; color: var(--text-muted-dark); }
+.faq__a p { margin: 0; line-height: 1.6; }
+
+/* ---- Плавающая кнопка связи (создаётся main.js, есть на всех страницах) ---- */
+.fab-contact {
+  position: fixed; z-index: 90;
+  right: clamp(1rem, 3vw, 2rem); bottom: clamp(1rem, 3vw, 2rem);
+  display: inline-flex; align-items: center; gap: .55rem;
+  padding: .8rem 1.2rem;
+  background: var(--gold-fill); color: var(--navy-900);
+  font-weight: 700; border-radius: 999px;
+  box-shadow: 0 12px 30px rgba(212, 175, 55, .4);
+  transition: transform .25s var(--ease), box-shadow .25s var(--ease);
+}
+.fab-contact:hover { transform: translateY(-3px); box-shadow: 0 18px 42px rgba(212, 175, 55, .5); }
+.fab-contact__icon { width: 1.4em; height: 1.4em; flex: none; }
+@media (max-width: 560px) {
+  .fab-contact { padding: 0; width: 54px; height: 54px; justify-content: center; }
+  .fab-contact__label { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .fab-contact { transition: none; }
+}

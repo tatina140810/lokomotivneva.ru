@@ -38,7 +38,7 @@
   --fs-body: clamp(.95rem, .9rem + .25vw, 1.06rem);
 
   /* Раскладка */
-  --container: 1200px;
+  --container: 100%;   /* контейнер на всю ширину экрана (отступы держит --gutter) */
   --gutter: clamp(1rem, .5rem + 2vw, 2.5rem);
   --header-h: 84px;
   --radius: 14px;
@@ -166,15 +166,15 @@ a { color: inherit; text-decoration: none; }
   /* sticky, а не fixed: микрострочка над шапкой остаётся видимой, шапка
      не накладывается на контент — уходит двоение текста от GPU-слоя fixed. */
   position: sticky; top: 0; z-index: 100;
-  background: #0B1E3F;
-  border-bottom: 1px solid rgba(212, 175, 55, .22);
+  background: var(--white);
+  border-bottom: 1px solid rgba(212, 175, 55, .35);
   transition: background-color .3s var(--ease), box-shadow .3s var(--ease),
               padding .3s var(--ease);
 }
 /* Класс добавляется скриптом после прокрутки страницы */
 .header.is-scrolled {
-  background: #071630;
-  box-shadow: 0 12px 34px rgba(0, 0, 0, .35);
+  background: var(--white);
+  box-shadow: 0 8px 26px rgba(7, 22, 48, .12);
 }
 
 .header__inner {
@@ -206,7 +206,7 @@ a { color: inherit; text-decoration: none; }
    целиком рядом с меню, телефоном и кнопкой. */
 .brand__text { display: flex; flex-direction: column; line-height: 1.2; flex: none; }
 .brand__name {
-  color: var(--white); font-weight: 700;   /* реальный вес шрифта (не синтетический 800 → без двоения) */
+  color: var(--text-dark); font-weight: 700;   /* реальный вес шрифта (не синтетический 800 → без двоения) */
   font-synthesis: none;
   -webkit-font-smoothing: antialiased;
   font-size: 1.1rem; letter-spacing: .04em;
@@ -219,7 +219,7 @@ a { color: inherit; text-decoration: none; }
 .nav { flex: none; }   /* меню не сжимается — сжимается бренд слева */
 .nav__list { display: flex; align-items: center; gap: 1.15rem; }
 .nav__link {
-  color: var(--text-light);
+  color: var(--text-dark);
   font-size: .89rem; font-weight: 600;
   padding: .4rem 0;
   white-space: nowrap;   /* «О компании» не должно ломаться на две строки */
@@ -232,7 +232,7 @@ a { color: inherit; text-decoration: none; }
   transform: scaleX(0); transform-origin: left;
   transition: transform .3s var(--ease);
 }
-.nav__link:hover, .nav__link.is-active { color: var(--gold-400); }
+.nav__link:hover, .nav__link.is-active { color: var(--gold-700); }
 .nav__link:hover::after, .nav__link.is-active::after { transform: scaleX(1); }
 
 .nav__mobile-actions { display: none; }
@@ -240,11 +240,11 @@ a { color: inherit; text-decoration: none; }
 .header__actions { display: flex; align-items: center; gap: 1.1rem; flex: none; }
 .header__phone {
   display: inline-flex; align-items: center; gap: .45rem;
-  color: var(--white); font-weight: 700; white-space: nowrap;
+  color: var(--text-dark); font-weight: 700; white-space: nowrap;
   transition: color .25s var(--ease);
 }
-.header__phone:hover { color: var(--gold-400); }
-.header__phone .icon { color: var(--gold-500); }
+.header__phone:hover { color: var(--gold-700); }
+.header__phone .icon { color: var(--gold-600); }
 
 /* Бургер-кнопка мобильного меню */
 .burger {
@@ -255,7 +255,7 @@ a { color: inherit; text-decoration: none; }
 }
 .burger span {
   display: block; width: 20px; height: 2px; margin: 4px auto;
-  background: var(--gold-400);
+  background: var(--navy-800);
   transition: transform .3s var(--ease), opacity .2s var(--ease);
 }
 .burger.is-open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
@@ -786,9 +786,10 @@ a.contacts__value:hover { color: var(--gold-700); }
     position: fixed; inset: var(--header-h) 0 auto 0;
     display: grid; gap: 1.5rem;
     padding: 1.75rem var(--gutter) 2.25rem;
-    background: rgba(7, 22, 48, .98);
+    background: var(--white);
     backdrop-filter: blur(16px);
-    border-bottom: 1px solid rgba(212, 175, 55, .25);
+    border-bottom: 1px solid rgba(212, 175, 55, .35);
+    box-shadow: 0 18px 34px rgba(7, 22, 48, .12);
     transform: translateY(-140%);
     transition: transform .4s var(--ease);
     max-height: calc(100dvh - var(--header-h));
@@ -799,7 +800,7 @@ a.contacts__value:hover { color: var(--gold-700); }
   .nav__link {
     display: block; padding: .85rem 0;
     font-size: 1.05rem;
-    border-bottom: 1px solid rgba(255, 255, 255, .07);
+    border-bottom: 1px solid var(--light-2);
   }
   .nav__link::after { display: none; }
   .nav__mobile-actions { display: block; }

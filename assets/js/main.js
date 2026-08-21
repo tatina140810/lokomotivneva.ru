@@ -519,6 +519,20 @@
     });
   }
 
+  /* ===== Плавающая кнопка связи (Telegram) — на всех страницах ===== */
+  if (!document.querySelector('.fab-contact')) {
+    var fab = document.createElement('a');
+    fab.className = 'fab-contact';
+    fab.href = 'https://t.me/lokomotivneva';
+    fab.target = '_blank';
+    fab.rel = 'nofollow noopener';
+    fab.setAttribute('aria-label', 'Написать нам в Telegram');
+    fab.innerHTML =
+      '<svg class="fab-contact__icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-telegram"></use></svg>' +
+      '<span class="fab-contact__label">Написать в Telegram</span>';
+    document.body.appendChild(fab);
+  }
+
   /* Год в подвале — чтобы копирайт не устаревал */
   var yearEl = $('#year');
   if (yearEl) yearEl.textContent = String(new Date().getFullYear());
