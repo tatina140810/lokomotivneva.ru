@@ -91,6 +91,15 @@
 }
 .page-hero__actions { display: flex; flex-wrap: wrap; gap: .8rem; margin-top: 1.4rem; }
 
+/* Главная: hero занимает высоту экрана и центрирует контент по вертикали,
+   чтобы тёмная полоса сверху (под шапкой) и снизу была одинаковой. */
+.page-hero--home {
+  display: flex; align-items: center;
+  min-height: calc(100vh - var(--header-h));
+  min-height: calc(100dvh - var(--header-h));
+}
+.page-hero--home > .container { width: 100%; }
+
 /* ------------------------------ 4. Крошки -------------------------------- */
 .crumbs { font-size: .85rem; margin-bottom: 1rem; color: var(--text-muted-light); }
 .crumbs ol { display: flex; flex-wrap: wrap; gap: .3rem .55rem; }
