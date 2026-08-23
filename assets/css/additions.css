@@ -219,6 +219,31 @@
 .proof h3 { font-size: 1.1rem; margin-bottom: .4rem; }
 .proof p { margin: 0; font-size: .94rem; color: var(--text-muted-dark); }
 
+/* Красивая анимация карточек: подъём + золотая линия сверху + «оживающая» иконка */
+.proof {
+  position: relative; overflow: hidden;
+  transition: transform .3s var(--ease), box-shadow .3s var(--ease), border-color .3s var(--ease);
+}
+.proof::before {
+  content: ""; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: var(--gold-line);
+  transform: scaleX(0); transform-origin: left;
+  transition: transform .4s var(--ease);
+}
+.proof:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-card);
+  border-color: rgba(212, 175, 55, .5);
+}
+.proof:hover::before { transform: scaleX(1); }
+.proof__icon {
+  transition: transform .35s var(--ease), background-color .35s var(--ease), color .35s var(--ease);
+}
+.proof:hover .proof__icon {
+  transform: translateY(-3px) rotate(-6deg);
+  background: rgba(212, 175, 55, .16); color: var(--gold-600);
+}
+
 /* ----------------- 10. Длинный блок доверия (страница /trust) ------------ */
 .trust-item {
   padding: 1.6rem clamp(1.2rem, 1rem + 1vw, 2rem);
