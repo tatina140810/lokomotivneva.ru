@@ -216,45 +216,6 @@
       </div>
     </section>
 
-    <!-- BONUS STACK: усилители оффера + лид-магнит -->
-    <section class="section section--navy" id="bonus" aria-labelledby="bonus-title">
-      <div class="container">
-        <header class="section__head">
-          <p class="section__eyebrow reveal">Дополнительно</p>
-          <h2 class="section__title section__title--center reveal" id="bonus-title" data-reveal-delay="1">Что мы даём <span class="text-gold">сверх платежа</span></h2>
-        </header>
-
-        <div class="bonus reveal" data-reveal-delay="2">
-          <ul class="bonus__list">
-            <li>
-              <span class="bonus__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-headset"></use></svg></span>
-              <div><h3>Бесплатная первая консультация по маршруту платежа</h3>
-              <p>Разберём вашу сделку и подскажем, каким маршрутом платёж пройдёт быстрее и с меньшим риском. Без обязательств и без оплаты.</p></div>
-            </li>
-            <li>
-              <span class="bonus__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-doc"></use></svg></span>
-              <div><h3>Шаблон документов для бухгалтерии — в подарок при первой сделке</h3>
-              <p>Готовый комплект: поручение, отчёт агента, акт. Бухгалтеру не придётся собирать формы с нуля.</p></div>
-            </li>
-          </ul>
-
-          <!-- ЛИД-МАГНИТ. TODO(заказчик): подготовить PDF и указать путь к нему
-               в site-config.js → leadMagnet.file. Пока файла нет, заявка всё равно
-               попадает менеджеру, и чек-лист отправляется вручную. -->
-          <form class="form-card bonus__form" id="magnet-form" novalidate>
-            <h3 class="form-card__title">Чек-лист по валютному контролю — бесплатно</h3>
-            <p class="form-card__sub">Что банк проверяет по платежу в адрес иностранного поставщика и из-за чего перевод чаще всего зависает. PDF, без воды.</p>
-            <div aria-hidden="true" style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden"><label>Компания<input type="text" name="company" tabindex="-1" autocomplete="off"></label></div>
-            <div class="field"><label class="field__label" for="m-name">Имя</label><input class="field__input" type="text" id="m-name" name="name" autocomplete="name" placeholder="Как к вам обращаться"></div>
-            <div class="field"><label class="field__label" for="m-phone">Телефон</label><input class="field__input" type="tel" id="m-phone" name="phone" autocomplete="tel" inputmode="tel" placeholder="+7 (___) ___-__-__ или +код страны"></div>
-            <div class="field"><label class="field__label" for="m-email">Эл. почта <span class="qualify__opt">— на неё пришлём файл</span></label><input class="field__input" type="email" id="m-email" name="email" autocomplete="email" inputmode="email" placeholder="you@example.com"></div>
-            <label class="checkbox"><input type="checkbox" id="m-consent"><span>Я согласен с <a href="/privacy/" target="_blank" rel="noopener">политикой обработки персональных данных</a></span></label>
-            <p class="qualify__error" data-magnet-error role="alert" hidden></p>
-            <button class="btn btn--gold btn--block btn--lg" type="submit">Получить чек-лист</button>
-          </form>
-        </div>
-      </div>
-    </section>
 
     <!-- ПРЕИМУЩЕСТВА -->
     <section class="section section--light" aria-labelledby="adv-title">
