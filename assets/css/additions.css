@@ -95,8 +95,10 @@
    чтобы тёмная полоса сверху (под шапкой) и снизу была одинаковой. */
 .page-hero--home {
   display: flex; align-items: center;
-  min-height: calc(100vh - var(--header-h));
-  min-height: calc(100dvh - var(--header-h));
+  /* Ниже hero остаётся видна белая полоса секции «Условия» высотой с шапку:
+     hero = экран − шапка сверху − такая же полоса снизу. */
+  min-height: calc(100vh - var(--header-h) * 2);
+  min-height: calc(100dvh - var(--header-h) * 2);
 }
 .page-hero--home > .container { width: 100%; }
 
