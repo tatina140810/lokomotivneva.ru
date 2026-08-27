@@ -84,6 +84,7 @@
         { id: 'china',  label: 'Китай',           term: '18–24 часа',  feeFrom: 1, feeTo: 1.5 },
         { id: 'turkey', label: 'Турция',          term: '24–48 часов', feeFrom: 1, feeTo: 1.5 },
         { id: 'uae',    label: 'ОАЭ',             term: '24–48 часов', feeFrom: 1, feeTo: 1.5 },
+        { id: 'europe', label: 'Европа',          term: 'от 1 рабочего дня', feeFrom: 1, feeTo: 1.5 },
         { id: 'other',  label: 'Другое направление', term: 'от 2 рабочих дней', feeFrom: 1, feeTo: 1.5 }
       ],
       currencies: ['₽', '$', '¥', '€', '₺', 'AED'],
