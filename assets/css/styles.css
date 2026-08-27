@@ -209,7 +209,7 @@ a { color: inherit; text-decoration: none; }
   color: var(--text-dark); font-weight: 700;   /* реальный вес шрифта (не синтетический 800 → без двоения) */
   font-synthesis: none;
   -webkit-font-smoothing: antialiased;
-  font-size: 1.1rem; letter-spacing: .04em;
+  font-size: 1.265rem; letter-spacing: .04em;   /* 1.1rem + 15 % — запрос 28.08.2026 */
   white-space: nowrap;
 }
 /* В шапке подпись не показываем: контейнер ограничен 1200px и строка
@@ -812,7 +812,7 @@ a.contacts__value:hover { color: var(--gold-700); }
   :root { --header-h: 72px; }
   .brand__seal { width: 44px; height: 44px; }
   .brand__tagline { display: none; }
-  .brand__name { font-size: .9rem; }
+  .brand__name { font-size: 1.035rem; }   /* .9rem + 15 %, пропорция с десктопом */
 
   .hero__actions .btn { width: 100%; }
 
