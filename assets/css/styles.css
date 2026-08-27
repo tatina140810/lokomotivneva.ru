@@ -763,6 +763,9 @@ a.contacts__value:hover { color: var(--gold-700); }
 
 /* Меню и контакты важнее названия: до включения бургера
    в шапке остаётся только эмблема */
+/* 901–1130px — самый тесный диапазон: меню ещё горизонтальное, но контейнер
+   уже узкий, и имя вытесняет пункты. Скрываем только здесь; ниже 900px меню
+   уходит в бургер и место освобождается — там имя возвращаем. */
 @media (max-width: 1130px) {
   .brand__text { display: none; }
 }
@@ -780,6 +783,10 @@ a.contacts__value:hover { color: var(--gold-700); }
   .header__phone .icon { width: 20px; height: 20px; }
 
   .burger { display: block; }
+
+  /* Меню свернулось в бургер — в шапке остались эмблема, телефон-кружок
+     и бургер. Места хватает, возвращаем имя рядом с логотипом. */
+  .brand__text { display: flex; }
 
   /* Мобильное меню — выезжающая панель */
   .nav {
@@ -812,7 +819,7 @@ a.contacts__value:hover { color: var(--gold-700); }
   :root { --header-h: 72px; }
   .brand__seal { width: 44px; height: 44px; }
   .brand__tagline { display: none; }
-  .brand__name { font-size: 1.035rem; }   /* .9rem + 15 %, пропорция с десктопом */
+  .brand__name { font-size: 1.1rem; }   /* имя вернулось в мобильную шапку — держим крупным */
 
   .hero__actions .btn { width: 100%; }
 
@@ -835,6 +842,13 @@ a.contacts__value:hover { color: var(--gold-700); }
 }
 
 /* ------------------- 15. Уважение к системным настройкам ----------------- */
+/* Экраны уже 380px (iPhone SE и подобные): имя влезает, но встаёт вплотную
+   к бургеру. Отыгрываем место на отступе и эмблеме, размер не трогаем. */
+@media (max-width: 380px) {
+  .brand { gap: .55rem; }
+  .brand__seal { width: 40px; height: 40px; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after {
