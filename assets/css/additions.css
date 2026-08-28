@@ -62,6 +62,10 @@
   position: relative; z-index: 2;
   display: grid; grid-template-columns: minmax(0, 1fr) clamp(240px, 30vw, 400px);
   gap: clamp(1.5rem, 4vw, 4rem); align-items: center;
+  /* Эмблема занимает всю правую колонку, поэтому без этого отступа она
+     упиралась в край контейнера. Отводим её к центру — на широких экранах
+     сильнее, на узких отступ сходит в ноль, чтобы не отнимать место. */
+  padding-right: clamp(0rem, 3.5vw, 4.5rem);
 }
 .hero-2col .page-hero__inner { max-width: none; }
 .hero-emblem { position: relative; margin: 0; display: grid; place-items: center; }
@@ -76,7 +80,7 @@
   filter: blur(28px);
 }
 @media (max-width: 900px) {
-  .hero-2col { grid-template-columns: 1fr; justify-items: center; }
+  .hero-2col { grid-template-columns: 1fr; justify-items: center; padding-right: 0; }
   .hero-emblem { order: -1; width: clamp(180px, 46vw, 280px); }
   .hero-2col .page-hero__inner { text-align: left; }
 }
