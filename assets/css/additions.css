@@ -175,15 +175,18 @@
 }
 .dir:hover { transform: translateY(-4px); box-shadow: var(--shadow-card); border-color: var(--gold-400); }
 .dir__top { display: flex; align-items: center; gap: .7rem; }
+/* Иерархия плитки: страна — главное, «Валюта/Срок» — уточнение. Раньше они
+   различались едва (18.4 против 13.8px при почти одинаковом весе), и взгляд
+   не цеплялся за название направления. */
 .dir__flag {
-  width: 42px; height: 42px; flex: 0 0 auto;
-  display: grid; place-items: center; border-radius: 11px;
+  width: 52px; height: 52px; flex: 0 0 auto;
+  display: grid; place-items: center; border-radius: 13px;
   background: var(--light); color: var(--gold-700);
 }
-.dir__flag .icon { width: 1.4em; height: 1.4em; }
-.dir__name { font-size: 1.15rem; font-weight: 800; }
+.dir__flag .icon { width: 1.7em; height: 1.7em; }
+.dir__name { font-size: 1.45rem; font-weight: 800; line-height: 1.2; }
 .dir__meta { display: flex; flex-wrap: wrap; gap: .35rem .9rem; font-size: .86rem; color: var(--text-muted-dark); }
-.dir__meta b { color: var(--text-dark); font-weight: 700; }
+.dir__meta b { color: var(--text-muted-dark); font-weight: 600; }
 .dir__link {
   margin-top: auto; padding-top: .4rem; font-weight: 700; color: var(--gold-700);
   display: inline-flex; align-items: center; gap: .4rem;
@@ -238,8 +241,12 @@
 .step::before {
   counter-increment: step; content: counter(step, decimal-leading-zero);
   display: inline-block; margin-bottom: .6rem;
-  font-size: 1.35rem; font-weight: 800; color: var(--gold-500);
+  font-size: 1.8rem; font-weight: 800; color: var(--gold-500);
+  line-height: 1;
 }
+/* На тёмной секции берём более светлый оттенок золота — 500-й на navy-700
+   выглядел приглушённо, а цифры здесь работают якорями. */
+.section--navy .step::before { color: var(--gold-400); }
 .step h3 { font-size: 1.08rem; margin-bottom: .35rem; }
 .step p { margin: 0; font-size: .93rem; color: var(--text-muted-dark); }
 .section--navy .step p { color: var(--text-muted-light); }
@@ -636,9 +643,11 @@
 /* ---- Плавающая кнопка связи (создаётся main.js, есть на всех страницах) ---- */
 .fab-contact {
   position: fixed; z-index: 90;
-  right: clamp(1rem, 3vw, 2rem); bottom: clamp(1rem, 3vw, 2rem);
-  display: inline-flex; align-items: center; gap: .55rem;
-  padding: .8rem 1.2rem;
+  /* Приподнята и ужата: в правом нижнем углу под ней всегда чей-то контент,
+     и чем меньше её площадь, тем меньше она его закрывает. */
+  right: clamp(1rem, 3vw, 2rem); bottom: clamp(1.25rem, 3.2vw, 2.4rem);
+  display: inline-flex; align-items: center; gap: .5rem;
+  padding: .68rem 1.1rem; font-size: .95rem;
   background: var(--gold-fill); color: var(--navy-900);
   font-weight: 700; border-radius: 999px;
   box-shadow: 0 12px 30px rgba(212, 175, 55, .4);
@@ -646,8 +655,30 @@
 }
 .fab-contact:hover { transform: translateY(-3px); box-shadow: 0 18px 42px rgba(212, 175, 55, .5); }
 .fab-contact__icon { width: 1.4em; height: 1.4em; flex: none; }
+
+/* Кнопка свёрнута в круг: в правом нижнем углу под ней всегда чей-то контент
+   (карточка «05» в «Пяти этапах», плитки направлений), и широкая плашка
+   закрывала его целиком. Подпись раскрывается по наведению и с клавиатуры;
+   для скринридеров текст остаётся в aria-label (см. main.js). */
+.fab-contact {
+  padding: 0; width: 56px; height: 56px; justify-content: center;
+  overflow: hidden;
+  transition: transform .25s var(--ease), box-shadow .25s var(--ease),
+              width .3s var(--ease), padding .3s var(--ease);
+}
+.fab-contact__label {
+  max-width: 0; opacity: 0; white-space: nowrap;
+  transition: max-width .3s var(--ease), opacity .2s var(--ease);
+}
+.fab-contact:hover, .fab-contact:focus-visible {
+  width: auto; padding: 0 1.15rem;
+}
+.fab-contact:hover .fab-contact__label,
+.fab-contact:focus-visible .fab-contact__label { max-width: 12rem; opacity: 1; }
 @media (max-width: 560px) {
-  .fab-contact { padding: 0; width: 54px; height: 54px; justify-content: center; }
+  /* На телефоне подпись не раскрываем даже по тапу — места нет. */
+  .fab-contact { width: 54px; height: 54px; }
+  .fab-contact:hover, .fab-contact:focus-visible { width: 54px; padding: 0; }
   .fab-contact__label { display: none; }
 }
 @media (prefers-reduced-motion: reduce) {
