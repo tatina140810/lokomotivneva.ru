@@ -116,6 +116,19 @@
   color: var(--text-muted-light); max-width: 62ch;
 }
 .page-hero__actions { display: flex; flex-wrap: wrap; gap: .8rem; margin-top: 1.4rem; }
+/* Главный CTA первого экрана. Раньше он был мельче заголовков в карточках
+   ниже и терялся на их фоне: глаз шёл заголовок → кнопка → «нарядные»
+   карточки. Кнопка должна быть первой по весу — крупнее, с ореолом,
+   с подписью не мельче заголовка карточки (17.6px). */
+.page-hero__actions .btn--gold.btn--lg {
+  padding: 1.15rem 2.6rem;
+  font-size: 1.15rem;
+  border-radius: 999px;
+  box-shadow: 0 14px 34px rgba(212, 175, 55, .34), 0 0 0 7px rgba(212, 175, 55, .10);
+}
+.page-hero__actions .btn--gold.btn--lg:hover {
+  box-shadow: 0 20px 44px rgba(212, 175, 55, .46), 0 0 0 9px rgba(212, 175, 55, .15);
+}
 
 /* Главная: hero занимает высоту экрана и центрирует контент по вертикали,
    чтобы тёмная полоса сверху (под шапкой) и снизу была одинаковой. */
