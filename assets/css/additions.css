@@ -63,18 +63,29 @@
 /* Hero в 2 колонки: слева текст, справа эмблема компании */
 .hero-2col {
   position: relative; z-index: 2;
-  display: grid; grid-template-columns: minmax(0, 1fr) clamp(190px, 22vw, 300px);
+  display: grid; grid-template-columns: minmax(0, 1fr) clamp(170px, 19vw, 260px);
   gap: clamp(1.5rem, 4vw, 4rem); align-items: center;
   /* Эмблема занимает всю правую колонку, поэтому без этого отступа она
      упиралась в край контейнера. Отводим её к центру — на широких экранах
      сильнее, на узких отступ сходит в ноль, чтобы не отнимать место. */
-  padding-right: clamp(0rem, 3.5vw, 4.5rem);
+  padding-right: clamp(0rem, 5vw, 7rem);
 }
 .hero-2col .page-hero__inner { max-width: none; }
-.hero-emblem { position: relative; margin: 0; display: grid; place-items: center; }
+/* Размер печати ограничен и высотой экрана: на невысоких окнах (ноутбук,
+   окно не на весь экран) она иначе съезжала под нижний край секции и
+   попадала под плавающую кнопку связи в правом нижнем углу. */
+.hero-emblem {
+  position: relative; margin: 0; display: grid; place-items: center;
+  width: min(100%, 38vh); justify-self: center;
+}
 /* Печать поддерживает текст, а не спорит с ним: меньше по размеру, мягче
    рамка и тень, приглушённое свечение. Главный акцент первого экрана —
    заголовок и кнопка слева. */
+/* Низкое окно: центрированная печать оказывалась ровно на уровне плавающей
+   кнопки связи. Поднимаем её к верху колонки — пересечение уходит. */
+@media (min-width: 1001px) and (max-height: 760px) {
+  .hero-emblem { align-self: start; }
+}
 .hero-emblem img {
   width: 100%; height: auto; border-radius: 50%;
   box-shadow: 0 18px 42px rgba(0, 0, 0, .38);
@@ -91,6 +102,8 @@
   .hero-emblem { order: -1; width: clamp(140px, 34vw, 210px); }   /* печать не должна съедать первый экран телефона */
   .hero-2col .page-hero__inner { text-align: left; }
 }
+/* Надзаголовок стоял почти вплотную к h1 — разводим их. */
+.page-hero__inner .section__eyebrow { margin-bottom: clamp(1rem, 1.8vw, 1.6rem); }
 .page-hero h1 {
   font-size: clamp(1.7rem, 1.2rem + 2.6vw, 3rem);
   color: var(--white);
@@ -568,24 +581,36 @@
    Заполняют пустоту первого экрана и снимают вопросы до скролла. Ряд на
    широких экранах, столбец на узких. Иконки — из общего спрайта. */
 .hero-facts {
-  list-style: none; margin: clamp(1.5rem, 3vw, 2.5rem) 0 0; padding: 0;
+  list-style: none; margin: clamp(1.1rem, 2vw, 1.6rem) 0 0; padding: 0;
   display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: clamp(.9rem, 2vw, 1.75rem);
+  gap: clamp(.6rem, 1.4vw, 1rem);
   max-width: 760px;
 }
+/* Подложка вместо тонкой линии сверху: пунктир слабо связывал блоки с текстом,
+   и они читались как оторванный низ экрана. */
 .hero-facts li {
-  display: flex; align-items: flex-start; gap: .6rem;
-  padding-top: .9rem;
-  border-top: 1px solid rgba(212, 175, 55, .28);
+  display: flex; align-items: flex-start; gap: .7rem;
+  padding: .85rem .95rem;
+  border: 1px solid rgba(212, 175, 55, .2);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, .045);
   color: var(--text-light);
   font-size: .82rem; line-height: 1.45;
 }
-.hero-facts .icon { width: 20px; height: 20px; flex: none; color: var(--gold-500); margin-top: .1rem; }
+/* Иконка на золотистой плашке — цепляет взгляд при беглом просмотре
+   и держит один тон с кнопками. */
+.hero-facts .icon {
+  width: 22px; height: 22px; flex: none;
+  padding: 6px; box-sizing: content-box;
+  border-radius: 10px;
+  background: rgba(212, 175, 55, .14);
+  color: var(--gold-400);
+}
 .hero-facts b { display: block; font-size: .96rem; font-weight: 700; color: var(--white); margin-bottom: .15rem; }
 .hero-facts br { display: none; }
 @media (max-width: 720px) {
   .hero-facts { grid-template-columns: 1fr; gap: .75rem; max-width: none; }
-  .hero-facts li { padding-top: .7rem; }
+  .hero-facts li { padding: .75rem .9rem; }
 }
 
 /* ---- Плавающая кнопка связи (создаётся main.js, есть на всех страницах) ---- */
