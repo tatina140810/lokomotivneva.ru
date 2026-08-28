@@ -595,18 +595,25 @@
   border-radius: 14px;
   background: rgba(255, 255, 255, .045);
   color: var(--text-light);
-  font-size: .82rem; line-height: 1.45;
+  font-size: .8rem; line-height: 1.55;
 }
 /* Иконка на золотистой плашке — цепляет взгляд при беглом просмотре
    и держит один тон с кнопками. */
 .hero-facts .icon {
-  width: 22px; height: 22px; flex: none;
-  padding: 6px; box-sizing: content-box;
-  border-radius: 10px;
+  width: 26px; height: 26px; flex: none;
+  padding: 8px; box-sizing: content-box;
+  border-radius: 12px;
   background: rgba(212, 175, 55, .14);
   color: var(--gold-400);
 }
-.hero-facts b { display: block; font-size: .96rem; font-weight: 700; color: var(--white); margin-bottom: .15rem; }
+/* Иерархия внутри карточки: сначала факт, потом деталь. Раньше строки шли
+   почти одним кеглем и слипались — факт не считывался с одного взгляда. */
+.hero-facts b {
+  display: block;
+  font-size: 1.1rem; font-weight: 800; line-height: 1.25;
+  color: var(--white);
+  margin-bottom: .4rem;
+}
 .hero-facts br { display: none; }
 @media (max-width: 720px) {
   .hero-facts { grid-template-columns: 1fr; gap: .75rem; max-width: none; }
