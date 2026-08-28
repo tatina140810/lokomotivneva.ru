@@ -776,7 +776,11 @@ a.contacts__value:hover { color: var(--gold-700); }
   .footer__grid { grid-template-columns: 1fr 1fr; }
 }
 
-@media (max-width: 900px) {
+/* Шапка уходит в бургер раньше остальной вёрстки: на 901–945px горизонтальное
+   меню + телефон + кнопка уже не помещаются и распирали страницу на 14px
+   (проверено на 901/910/920/940/960px). Переносим порог на 960px, где даже
+   без бургера оставалось всего 16px. Контентные правила остались на 900px. */
+@media (max-width: 960px) {
   .header__actions .header__cta { display: none; }
   .header__phone span { display: none; }
   .header__phone { width: 44px; height: 44px; justify-content: center; border: 1px solid rgba(212,175,55,.4); border-radius: 50%; }
@@ -811,7 +815,9 @@ a.contacts__value:hover { color: var(--gold-700); }
   }
   .nav__link::after { display: none; }
   .nav__mobile-actions { display: block; }
+}
 
+@media (max-width: 900px) {
   .stats { grid-template-columns: repeat(2, 1fr); }
 }
 
