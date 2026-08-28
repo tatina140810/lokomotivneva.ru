@@ -12,8 +12,8 @@
   <meta property="og:image" content="/assets/img/logo-512.jpg">
   <meta property="og:locale" content="ru_RU">
   <link rel="icon" href="/assets/img/logo-160.jpg">
-  <link rel="stylesheet" href="/assets/css/styles.css?v=20260828d">
-  <link rel="stylesheet" href="/assets/css/additions.css?v=20260828d">
+  <link rel="stylesheet" href="/assets/css/styles.css?v=20260828g">
+  <link rel="stylesheet" href="/assets/css/additions.css?v=20260828g">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org", "@type": "FinancialService",
@@ -80,13 +80,32 @@
           Исполняем платёжные поручения в Китай, Гонконг, ОАЭ, Турцию, страны ЕС и Великобританию —
           от 1 рабочего дня. При необходимости берём на себя перевозку, таможенное оформление и хранение груза.
         </p>
+        <!-- Вторая кнопка убрана: связь в мессенджере дублировала плавающую
+             кнопку в правом нижнем углу, которую main.js добавляет на все
+             страницы. В hero остаётся один главный CTA. -->
         <div class="page-hero__actions reveal" data-reveal-delay="3">
           <a class="btn btn--gold btn--lg" href="#qualify">Оставить заявку</a>
-          <a class="btn btn--ghost btn--lg" data-messenger="auto" href="tel:+74952409065" rel="nofollow">
-            <svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-phone"></use></svg><span data-messenger-label>Позвонить +7 (495) 240-90-65</span>
-          </a>
         </div>
         <p class="page-hero__note reveal" data-reveal-delay="3">Ответим в течение рабочего дня.</p>
+        <!-- Опоры доверия на первом экране. Только проверяемые факты: срок и
+             направления совпадают с разделом «Расчёты по ключевым рынкам ВЭД»,
+             реквизиты — с блоком «Документы открыты» и выпиской ЕГРЮЛ.
+             Выдуманных цифр здесь быть не должно (см. proof.show в
+             site-config.js: лучше молчать, чем показать несуществующее). -->
+        <ul class="hero-facts reveal" data-reveal-delay="4">
+          <li>
+            <svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-clock"></use></svg>
+            <span><b>От 1 рабочего дня</b><br>срок исполнения поручения</span>
+          </li>
+          <li>
+            <svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-globe"></use></svg>
+            <span><b>6 направлений</b><br>Китай, Гонконг, ОАЭ, Турция, ЕС, Великобритания</span>
+          </li>
+          <li>
+            <svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-doc"></use></svg>
+            <span><b>Агентский договор</b><br>с российским юрлицом, ИНН и ОГРН открыты</span>
+          </li>
+        </ul>
       </div>
       <figure class="hero-emblem reveal" data-reveal-delay="2" aria-hidden="true">
         <img src="/assets/img/logo-512.jpg" width="512" height="512" alt="">
@@ -399,9 +418,9 @@
     <span class="toast__text"></span>
   </div>
 
-  <script src="/assets/js/site-config.js?v=20260828d" defer></script>
-  <script src="/assets/js/site.js?v=20260828d" defer></script>
-  <script src="/assets/js/qualify.js?v=20260828d" defer></script>
-  <script src="/assets/js/main.js?v=20260828d" defer></script>
+  <script src="/assets/js/site-config.js?v=20260828g" defer></script>
+  <script src="/assets/js/site.js?v=20260828g" defer></script>
+  <script src="/assets/js/qualify.js?v=20260828g" defer></script>
+  <script src="/assets/js/main.js?v=20260828g" defer></script>
 </body>
 </html>

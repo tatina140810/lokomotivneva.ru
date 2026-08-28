@@ -238,12 +238,18 @@ a { color: inherit; text-decoration: none; }
 .nav__mobile-actions { display: none; }
 
 .header__actions { display: flex; align-items: center; gap: 1.1rem; flex: none; }
+/* Телефон — второй по важности канал после заявки, поэтому он оформлен
+   как контурная кнопка: не спорит с золотым CTA рядом, но и не теряется
+   среди пунктов меню, как раньше (обычный текст того же кегля). */
 .header__phone {
   display: inline-flex; align-items: center; gap: .45rem;
-  color: var(--text-dark); font-weight: 700; white-space: nowrap;
-  transition: color .25s var(--ease);
+  padding: .5rem .85rem;
+  border: 1px solid rgba(212, 175, 55, .55); border-radius: 999px;
+  color: var(--text-dark); font-weight: 700; font-size: .95rem;
+  letter-spacing: .01em; white-space: nowrap;
+  transition: color .25s var(--ease), border-color .25s var(--ease), background .25s var(--ease);
 }
-.header__phone:hover { color: var(--gold-700); }
+.header__phone:hover { color: var(--gold-700); border-color: var(--gold-500); background: rgba(212, 175, 55, .08); }
 .header__phone .icon { color: var(--gold-600); }
 
 /* Бургер-кнопка мобильного меню */
@@ -763,10 +769,10 @@ a.contacts__value:hover { color: var(--gold-700); }
 
 /* Меню и контакты важнее названия: до включения бургера
    в шапке остаётся только эмблема */
-/* 901–1130px — самый тесный диапазон: меню ещё горизонтальное, но контейнер
-   уже узкий, и имя вытесняет пункты. Скрываем только здесь; ниже 900px меню
+/* 1001–1180px — самый тесный диапазон: меню ещё горизонтальное, но контейнер
+   уже узкий, и имя вытесняет пункты. Скрываем только здесь; ниже 1000px меню
    уходит в бургер и место освобождается — там имя возвращаем. */
-@media (max-width: 1130px) {
+@media (max-width: 1180px) {
   .brand__text { display: none; }
 }
 
@@ -778,12 +784,13 @@ a.contacts__value:hover { color: var(--gold-700); }
 
 /* Шапка уходит в бургер раньше остальной вёрстки: на 901–945px горизонтальное
    меню + телефон + кнопка уже не помещаются и распирали страницу на 14px
-   (проверено на 901/910/920/940/960px). Переносим порог на 960px, где даже
-   без бургера оставалось всего 16px. Контентные правила остались на 900px. */
-@media (max-width: 960px) {
+   (проверено на 901/910/920/940/960px). Порог перенесён с 900px; после того
+   как телефон стал контурной кнопкой (+27px), поднят до 1000px. Контентные
+   правила остались на 900px. */
+@media (max-width: 1000px) {
   .header__actions .header__cta { display: none; }
   .header__phone span { display: none; }
-  .header__phone { width: 44px; height: 44px; justify-content: center; border: 1px solid rgba(212,175,55,.4); border-radius: 50%; }
+  .header__phone { width: 44px; height: 44px; padding: 0; justify-content: center; border: 1px solid rgba(212,175,55,.4); border-radius: 50%; }
   .header__phone .icon { width: 20px; height: 20px; }
 
   .burger { display: block; }

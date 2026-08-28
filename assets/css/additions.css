@@ -54,13 +54,16 @@
   padding-block: clamp(2.2rem, 1.5rem + 3vw, 4rem);
   overflow: hidden;
 }
-.page-hero .worldmap { opacity: .5; }
+/* Паттерн — фон, а не рисунок: при .5 точки читались поверх заголовка.
+   Держим их на грани заметности. */
+.page-hero .worldmap { opacity: .28; }
+.page-hero .worldmap .map-dot { fill: rgba(159, 178, 208, .42); }
 .page-hero__inner { position: relative; z-index: 2; max-width: 820px; }
 
 /* Hero в 2 колонки: слева текст, справа эмблема компании */
 .hero-2col {
   position: relative; z-index: 2;
-  display: grid; grid-template-columns: minmax(0, 1fr) clamp(240px, 30vw, 400px);
+  display: grid; grid-template-columns: minmax(0, 1fr) clamp(190px, 22vw, 300px);
   gap: clamp(1.5rem, 4vw, 4rem); align-items: center;
   /* Эмблема занимает всю правую колонку, поэтому без этого отступа она
      упиралась в край контейнера. Отводим её к центру — на широких экранах
@@ -69,19 +72,23 @@
 }
 .hero-2col .page-hero__inner { max-width: none; }
 .hero-emblem { position: relative; margin: 0; display: grid; place-items: center; }
+/* Печать поддерживает текст, а не спорит с ним: меньше по размеру, мягче
+   рамка и тень, приглушённое свечение. Главный акцент первого экрана —
+   заголовок и кнопка слева. */
 .hero-emblem img {
   width: 100%; height: auto; border-radius: 50%;
-  box-shadow: 0 26px 60px rgba(0, 0, 0, .5);
-  border: 3px solid rgba(212, 175, 55, .5);
+  box-shadow: 0 18px 42px rgba(0, 0, 0, .38);
+  border: 2px solid rgba(212, 175, 55, .32);
+  opacity: .92;
 }
 .hero-emblem::before {
-  content: ""; position: absolute; inset: -12%; z-index: -1; border-radius: 50%;
-  background: radial-gradient(circle, rgba(212, 175, 55, .30), transparent 66%);
-  filter: blur(28px);
+  content: ""; position: absolute; inset: -10%; z-index: -1; border-radius: 50%;
+  background: radial-gradient(circle, rgba(212, 175, 55, .16), transparent 66%);
+  filter: blur(30px);
 }
 @media (max-width: 900px) {
   .hero-2col { grid-template-columns: 1fr; justify-items: center; padding-right: 0; }
-  .hero-emblem { order: -1; width: clamp(180px, 46vw, 280px); }
+  .hero-emblem { order: -1; width: clamp(140px, 34vw, 210px); }   /* печать не должна съедать первый экран телефона */
   .hero-2col .page-hero__inner { text-align: left; }
 }
 .page-hero h1 {
@@ -554,6 +561,30 @@
 .faq__q:hover { color: var(--gold-700); }
 .faq__a { padding: 0 1.3rem 1.2rem; color: var(--text-muted-dark); }
 .faq__a p { margin: 0; line-height: 1.6; }
+
+/* ---- Опоры доверия под кнопкой в hero -----------------------------------
+   Заполняют пустоту первого экрана и снимают вопросы до скролла. Ряд на
+   широких экранах, столбец на узких. Иконки — из общего спрайта. */
+.hero-facts {
+  list-style: none; margin: clamp(1.5rem, 3vw, 2.5rem) 0 0; padding: 0;
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(.9rem, 2vw, 1.75rem);
+  max-width: 760px;
+}
+.hero-facts li {
+  display: flex; align-items: flex-start; gap: .6rem;
+  padding-top: .9rem;
+  border-top: 1px solid rgba(212, 175, 55, .28);
+  color: var(--text-light);
+  font-size: .82rem; line-height: 1.45;
+}
+.hero-facts .icon { width: 20px; height: 20px; flex: none; color: var(--gold-500); margin-top: .1rem; }
+.hero-facts b { display: block; font-size: .96rem; font-weight: 700; color: var(--white); margin-bottom: .15rem; }
+.hero-facts br { display: none; }
+@media (max-width: 720px) {
+  .hero-facts { grid-template-columns: 1fr; gap: .75rem; max-width: none; }
+  .hero-facts li { padding-top: .7rem; }
+}
 
 /* ---- Плавающая кнопка связи (создаётся main.js, есть на всех страницах) ---- */
 .fab-contact {
