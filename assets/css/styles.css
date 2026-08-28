@@ -114,6 +114,19 @@ a { color: inherit; text-decoration: none; }
 .text-gold { color: var(--gold-500); }
 .text-gold-dark { color: var(--gold-700); }
 
+/* Заголовки одноцветные (решение 28.08.2026). Золотые вставки в h1/h2 разбивали
+   строку на два цвета и спорили с золотыми кнопками; акцент остаётся за CTA.
+   Классы .text-gold/.text-gold-dark сохранены — они размечают смысловую часть
+   заголовка и продолжают работать в обычном тексте. Правило перекрывает и
+   .page-hero h1 .text-gold в additions.css, и варианты заголовков из
+   site-config.js (hero.variants), где золотой span зашит в строку. */
+h1 .text-gold, h1 .text-gold-dark,
+h2 .text-gold, h2 .text-gold-dark,
+h3 .text-gold, h3 .text-gold-dark,
+h4 .text-gold, h4 .text-gold-dark,
+h5 .text-gold, h5 .text-gold-dark,
+h6 .text-gold, h6 .text-gold-dark { color: inherit; }
+
 /* ------------------------------ 3. Кнопки -------------------------------- */
 .btn {
   --btn-bg: transparent;
