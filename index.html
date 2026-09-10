@@ -6,14 +6,15 @@
   <title>Расчёты по внешнеторговым контрактам — ООО «Локомотив» | Москва</title>
   <meta name="description" content="Платёжный агент ВЭД с собственной логистикой. Исполняем платёжные поручения в Китай, Гонконг, ОАЭ, Турцию, страны ЕС и Великобританию от 1 рабочего дня, в долларах США без ограничений. Перевозка, таможенное оформление и хранение груза по одному договору.">
   <meta name="theme-color" content="#0B1E3F">
+  <link rel="canonical" href="https://lokomotivneva.ru/">
   <meta property="og:type" content="website">
   <meta property="og:title" content="ООО «Локомотив» — расчёты по внешнеторговым контрактам">
   <meta property="og:description" content="Платёжный агент ВЭД с собственной логистикой. Китай, Гонконг, ОАЭ, Турция, ЕС, Великобритания — от 1 рабочего дня.">
   <meta property="og:image" content="/assets/img/logo-512.jpg">
   <meta property="og:locale" content="ru_RU">
   <link rel="icon" href="/assets/img/logo-160.jpg">
-  <link rel="stylesheet" href="/assets/css/styles.css?v=20260823c">
-  <link rel="stylesheet" href="/assets/css/additions.css?v=20260823c">
+  <link rel="stylesheet" href="/assets/css/styles.css?v=20260904i">
+  <link rel="stylesheet" href="/assets/css/additions.css?v=20260904i">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org", "@type": "FinancialService",
@@ -27,6 +28,19 @@
     "areaServed": ["Китай", "Гонконг", "ОАЭ", "Турция", "Европейский союз", "Великобритания"]
   }
   </script>
+  <!-- Yandex.Metrika counter -->
+  <script type="text/javascript">
+      (function(m,e,t,r,i,k,a){
+          m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+          m[i].l=1*new Date();
+          for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+          k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
+      })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=112180979', 'ym');
+
+      ym(112180979, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", referrer: document.referrer, url: location.href, accurateTrackBounce:true, trackLinks:true});
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/112180979" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+  <!-- /Yandex.Metrika counter -->
 </head>
 <body>
   <a class="skip-link" href="#main">Перейти к основному содержанию</a>
@@ -43,7 +57,8 @@
           <li><a class="nav__link" href="/logistics/">Логистика</a></li>
           <li><a class="nav__link" href="/trust/">Проверьте нас</a></li>
           <li><a class="nav__link" href="/individuals/">Для физлиц</a></li>
-          <li><a class="nav__link" href="/contacts/">Контакты</a></li>
+          <li><a class="nav__link" href="/cabinet/">Личный кабинет</a></li>
+      <li><a class="nav__link" href="/contacts/">Контакты</a></li>
         </ul>
         <div class="nav__mobile-actions"><a class="btn btn--gold btn--block" href="#qualify">Рассчитать платёж</a></div>
       </nav>
@@ -68,7 +83,7 @@
         <!-- Вариант заголовка переключается в assets/js/site-config.js → hero.variant
              ('control' = текст ниже, 'a'/'b'/'c' = варианты для A/B-теста). -->
         <h1 class="reveal" data-reveal-delay="1" id="hero-title" data-hero-title>
-          Расчёты по внешнеторговым контрактам <span class="text-gold">и сопровождение поставок</span>
+          Расчёты по внешнеторговым контрактам и&nbsp;<span class="text-gold">сопровождение поставок</span>
         </h1>
         <!-- TODO: заменить на реальные цифры клиента, когда компания начнёт их фиксировать.
              Значения живут в site-config.js → proof (там же выключатель show). -->
@@ -80,13 +95,32 @@
           Исполняем платёжные поручения в Китай, Гонконг, ОАЭ, Турцию, страны ЕС и Великобританию —
           от 1 рабочего дня. При необходимости берём на себя перевозку, таможенное оформление и хранение груза.
         </p>
+        <!-- Вторая кнопка убрана: связь в мессенджере дублировала плавающую
+             кнопку в правом нижнем углу, которую main.js добавляет на все
+             страницы. В hero остаётся один главный CTA. -->
         <div class="page-hero__actions reveal" data-reveal-delay="3">
           <a class="btn btn--gold btn--lg" href="#qualify">Оставить заявку</a>
-          <a class="btn btn--ghost btn--lg" data-messenger="auto" href="tel:+74952409065" rel="nofollow">
-            <svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-phone"></use></svg><span data-messenger-label>Позвонить +7 (495) 240-90-65</span>
-          </a>
         </div>
         <p class="page-hero__note reveal" data-reveal-delay="3">Ответим в течение рабочего дня.</p>
+        <!-- Опоры доверия на первом экране. Только проверяемые факты: срок и
+             направления совпадают с разделом «Расчёты по ключевым рынкам ВЭД»,
+             реквизиты — с блоком «Документы открыты» и выпиской ЕГРЮЛ.
+             Выдуманных цифр здесь быть не должно (см. proof.show в
+             site-config.js: лучше молчать, чем показать несуществующее). -->
+        <ul class="hero-facts reveal" data-reveal-delay="4">
+          <li>
+            <svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-clock"></use></svg>
+            <span><b>От 1 рабочего дня</b><br>срок исполнения поручения</span>
+          </li>
+          <li>
+            <svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-globe"></use></svg>
+            <span><b>6 направлений</b><br>Китай, Гонконг, ОАЭ, Турция, ЕС, Великобритания</span>
+          </li>
+          <li>
+            <svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-doc"></use></svg>
+            <span><b>Агентский договор</b><br>с российским юрлицом, ИНН и ОГРН открыты</span>
+          </li>
+        </ul>
       </div>
       <figure class="hero-emblem reveal" data-reveal-delay="2" aria-hidden="true">
         <img src="/assets/img/logo-512.jpg" width="512" height="512" alt="">
@@ -115,6 +149,9 @@
     <section class="section section--navy" id="qualify" aria-labelledby="qualify-title">
       <div class="container">
         <header class="section__head">
+          <!-- Надзаголовок разводит эту секцию с блоком «Заявка» ниже: здесь
+               ориентир без контактов, там — точный расчёт по документам. -->
+          <p class="section__eyebrow reveal">Предварительный расчёт</p>
           <h2 class="section__title section__title--center reveal" id="qualify-title" data-reveal-delay="1">
             Подберём условия <span class="text-gold">по вашей сделке</span>
           </h2>
@@ -194,7 +231,7 @@
           <li class="dir"><div class="dir__top"><span class="dir__flag"><svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-globe"></use></svg></span><span class="dir__name">Китай</span></div><div class="dir__meta"><span>Валюта: <b>CNY</b></span><span>Срок: <b>от 1 дня</b></span></div><a class="dir__link" href="/payments/china/">Оплата в Китай <svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-arrow-right"></use></svg></a></li>
           <li class="dir"><div class="dir__top"><span class="dir__flag"><svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-globe"></use></svg></span><span class="dir__name">Турция</span></div><div class="dir__meta"><span>Валюта: <b>USD·EUR·TRY</b></span><span>Срок: <b>от 1 дня</b></span></div><a class="dir__link" href="/payments/turkey/">Оплата в Турцию <svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-arrow-right"></use></svg></a></li>
           <li class="dir"><div class="dir__top"><span class="dir__flag"><svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-globe"></use></svg></span><span class="dir__name">ОАЭ</span></div><div class="dir__meta"><span>Валюта: <b>AED·USD</b></span><span>Срок: <b>от 2 дней</b></span></div><a class="dir__link" href="/payments/uae/">Оплата в ОАЭ <svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-arrow-right"></use></svg></a></li>
-          <li class="dir"><div class="dir__top"><span class="dir__flag"><svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-globe"></use></svg></span><span class="dir__name">Европа</span></div><div class="dir__meta"><span>Валюта: <b>EUR</b></span><span>Срок: <b>от 2 дней</b></span></div><a class="dir__link" href="/payments/europe/">Оплата в Европу <svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-arrow-right"></use></svg></a></li>
+          <li class="dir"><div class="dir__top"><span class="dir__flag"><svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-globe"></use></svg></span><span class="dir__name">Европа</span></div><div class="dir__meta"><span>Валюта: <b>EUR</b></span><span>Срок: <b>от 1 дня</b></span></div><a class="dir__link" href="/payments/europe/">Оплата в Европу <svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-arrow-right"></use></svg></a></li>
         </ul>
       </div>
     </section>
@@ -211,7 +248,7 @@
           <li class="step"><h3>Расчёт и фиксация курса</h3><p>Считаем вознаграждение и срок, фиксируем курс в счёте.</p></li>
           <li class="step"><h3>Агентский договор</h3><p>Заключаем договор с вашим юрлицом или ИП.</p></li>
           <li class="step"><h3>Исполнение поручения</h3><p>Проводим платёж поставщику одним из маршрутов.</p></li>
-          <li class="step"><h3>Закрывающие документы</h3><p>Отчёт агента, акт и подтверждение платежа.</p></li>
+          <li class="step"><h3>Пакет документов</h3><p>Отчёт агента, акт и подтверждение платежа.</p></li>
         </ol>
       </div>
     </section>
@@ -328,8 +365,8 @@
       <div class="container">
         <header class="section__head">
           <p class="section__eyebrow reveal">Заявка</p>
-          <h2 class="section__title section__title--center reveal" id="zv-title" data-reveal-delay="1">Рассчитаем условия <span class="text-gold">по вашей сделке</span></h2>
-          <p class="section__sub reveal" data-reveal-delay="2">Пришлите инвойс и направление — вернёмся с расчётом. Курс и вознаграждение фиксируются в счёте</p>
+          <h2 class="section__title section__title--center reveal" id="zv-title" data-reveal-delay="1">Отправьте заявку — <span class="text-gold">вернёмся с расчётом</span></h2>
+          <p class="section__sub reveal" data-reveal-delay="2">Считаем по вашим документам: точный срок, маршрут и сумма к оплате. Курс и вознаграждение фиксируются в счёте</p>
         </header>
         <div class="contacts__grid">
           <div class="contacts__info reveal">
@@ -385,7 +422,7 @@
       <nav class="footer__nav" aria-label="Компания"><h2 class="footer__heading">Компания</h2><ul>
         <li><a href="/complex/">Платёж + доставка</a></li><li><a href="/sellers/">Для селлеров</a></li>
         <li><a href="/logistics/">Логистика</a></li><li><a href="/trust/">Проверьте нас</a></li>
-        <li><a href="/contacts/">Контакты</a></li>
+        <li><a href="/cabinet/">Личный кабинет</a></li><li><a href="/contacts/">Контакты</a></li>
       </ul></nav>
       <div class="footer__legal"><h2 class="footer__heading">Реквизиты</h2>
         <p>ООО «Локомотив»</p><p>ОГРН 1267700222899 · ИНН 9703250829 · КПП 770301001</p><p>г. Москва, пр-д 1-й Красногвардейский, д. 22, стр. 2, помещ. 173</p>
@@ -399,9 +436,9 @@
     <span class="toast__text"></span>
   </div>
 
-  <script src="/assets/js/site-config.js?v=20260823c" defer></script>
-  <script src="/assets/js/site.js?v=20260823c" defer></script>
-  <script src="/assets/js/qualify.js?v=20260823c" defer></script>
-  <script src="/assets/js/main.js?v=20260823c" defer></script>
+  <script src="/assets/js/site-config.js?v=20260828q" defer></script>
+  <script src="/assets/js/site.js?v=20260828q" defer></script>
+  <script src="/assets/js/qualify.js?v=20260828q" defer></script>
+  <script src="/assets/js/main.js?v=20260828q" defer></script>
 </body>
 </html>

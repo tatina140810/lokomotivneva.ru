@@ -54,42 +54,122 @@
   padding-block: clamp(2.2rem, 1.5rem + 3vw, 4rem);
   overflow: hidden;
 }
-.page-hero .worldmap { opacity: .5; }
+/* Паттерн — фон, а не рисунок: при .5 точки читались поверх заголовка.
+   Держим их на грани заметности. */
+.page-hero .worldmap { opacity: .28; }
+.page-hero .worldmap .map-dot { fill: rgba(159, 178, 208, .42); }
 .page-hero__inner { position: relative; z-index: 2; max-width: 820px; }
 
 /* Hero в 2 колонки: слева текст, справа эмблема компании */
 .hero-2col {
   position: relative; z-index: 2;
-  display: grid; grid-template-columns: minmax(0, 1fr) clamp(240px, 30vw, 400px);
+  display: grid; grid-template-columns: minmax(0, 1fr) clamp(170px, 19vw, 260px);
   gap: clamp(1.5rem, 4vw, 4rem); align-items: center;
+  /* Эмблема занимает всю правую колонку, поэтому без этого отступа она
+     упиралась в край контейнера. Отводим её к центру — на широких экранах
+     сильнее, на узких отступ сходит в ноль, чтобы не отнимать место. */
+  padding-right: clamp(0rem, 5vw, 7rem);
 }
 .hero-2col .page-hero__inner { max-width: none; }
-.hero-emblem { position: relative; margin: 0; display: grid; place-items: center; }
+/* Печать — фоновый декор, а не картинка рядом с текстом. Поэтому она вынута
+   из потока (position: absolute), а правая колонка грида сохранена: ширина
+   текстового блока и переносы строк остаются теми же, что и раньше.
+   margin-top тянет её на половину высоты вверх (картинка квадратная, высота
+   равна --emblem).
+   Отступ справа растёт вместе с экраном (50vw - 865px): круг целиком остаётся
+   в кадре и не режется краем секции. Вычитаемое поднято с 715px 04.09.2026 —
+   раньше левый край печати намеренно подходил под хвост заголовка, и слово
+   «контрактам» ложилось на круг на 126px; теперь на 1854px между ними 24px
+   зазора, а до правого края секции остаётся 102px. На узких экранах
+   выражение уходит в минус и упирается в нижнюю границу clamp — печать
+   просто прижимается к правому краю. Начиная примерно с 1714px и ниже
+   работает именно эта ветка: правее печать сдвинуть уже некуда, и небольшой
+   заход текста на круг там остаётся. */
+.hero-emblem {
+  /* Размер ограничен и высотой окна. У .page-hero--home есть
+     min-height: calc(100dvh - header*2), поэтому на невысоком окне секция
+     короче печати, а overflow: hidden срезает её ровной полосой сверху и
+     снизу. Второй аргумент min() держит круг внутри этой высоты. */
+  --emblem: min(clamp(400px, 44vw, 685px), calc(100dvh - var(--header-h) * 2 - 2rem));
+  /* 04.09.2026: печать снова плоская — 3D-разворот (perspective + rotateX/Y/Z)
+     снят по просьбе заказчика. Размер и прозрачность не тронуты. */
+  position: absolute; top: 50%; right: clamp(1rem, 50vw - 865px, 22rem); z-index: 0;
+  width: var(--emblem);
+  margin: calc(var(--emblem) / -2) 0 0 0;
+  display: grid; place-items: center;
+  pointer-events: none;
+}
+/* Печать поддерживает текст, а не спорит с ним: сильно приглушена по
+   прозрачности и лежит ПОД текстовым блоком (.page-hero__inner держит z-index: 2),
+   так что заголовок и подзаголовок читаются поверх круга. Тень и рамка
+   ослаблены — у фонового элемента не должно быть «карточного» контура.
+   Маска лишь чуть приглушает левый край под текстом — гасить его сильнее
+   не нужно, иначе край растворяется и разворот читается неверно. */
 .hero-emblem img {
   width: 100%; height: auto; border-radius: 50%;
-  box-shadow: 0 26px 60px rgba(0, 0, 0, .5);
-  border: 3px solid rgba(212, 175, 55, .5);
+  border: 2px solid rgba(212, 175, 55, .16);
+  /* 04.09.2026: прозрачность убавлена на 5 пунктов (.25 → .30) — печать
+     стала заметнее. Заголовок её больше не перекрывает (см. отступ справа
+     выше), так что контрасту текста это не мешает. */
+  opacity: .30;
+  /* Никаких поворотов: печать стоит ровным кругом. Маска оставлена — она
+     гасит левый край под текстом, чтобы заголовок не терял контраст. */
+  -webkit-mask-image: linear-gradient(to left, #000 0%, #000 55%, rgba(0, 0, 0, .7) 100%);
+          mask-image: linear-gradient(to left, #000 0%, #000 55%, rgba(0, 0, 0, .7) 100%);
 }
 .hero-emblem::before {
-  content: ""; position: absolute; inset: -12%; z-index: -1; border-radius: 50%;
-  background: radial-gradient(circle, rgba(212, 175, 55, .30), transparent 66%);
-  filter: blur(28px);
+  content: ""; position: absolute; inset: -10%; z-index: -1; border-radius: 50%;
+  background: radial-gradient(circle, rgba(212, 175, 55, .10), transparent 66%);
+  filter: blur(40px);
+}
+/* Подложка под текстом: мягкое затемнение слева направо, чтобы на светлых
+   участках печати заголовок и лид не теряли контраст. Только там, где печать
+   есть — ниже 1000px она скрыта, затемнять нечего. */
+@media (min-width: 1001px) {
+  .hero-2col::before {
+    content: ""; position: absolute; inset: -25% -10% -25% -50%; z-index: 1;
+    background: linear-gradient(to right, rgba(11, 30, 63, .5) 38%, rgba(11, 30, 63, .3) 64%, transparent 84%);
+    pointer-events: none;
+  }
+}
+/* Печать вынута из потока, и чем уже экран, тем глубже она заходит на текст:
+   к 1000px заголовок и лид ложатся уже на середину круга. Поэтому на планшете
+   и телефоне печати нет вовсе. Порог (1000px) намеренно ВЫШЕ брейкпоинта
+   сетки (900px): трогать колонки .hero-2col нельзя — это сдвинуло бы текст. */
+@media (max-width: 1000px) {
+  .hero-emblem { display: none; }
 }
 @media (max-width: 900px) {
-  .hero-2col { grid-template-columns: 1fr; justify-items: center; }
-  .hero-emblem { order: -1; width: clamp(180px, 46vw, 280px); }
+  .hero-2col { grid-template-columns: 1fr; justify-items: center; padding-right: 0; }
   .hero-2col .page-hero__inner { text-align: left; }
 }
+/* Надзаголовок стоял почти вплотную к h1 — разводим их. */
+.page-hero__inner .section__eyebrow { margin-bottom: clamp(1rem, 1.8vw, 1.6rem); }
 .page-hero h1 {
   font-size: clamp(1.7rem, 1.2rem + 2.6vw, 3rem);
   color: var(--white);
 }
-.page-hero h1 .text-gold { color: var(--gold-400); }
+/* Заголовки одноцветные — см. правило h1 .text-gold в styles.css.
+   Здесь раньше был свой оттенок золота для hero, снят вместе с остальными. */
+.page-hero h1 .text-gold { color: inherit; }
 .page-hero__lead {
   font-size: clamp(1rem, .95rem + .4vw, 1.2rem);
   color: var(--text-muted-light); max-width: 62ch;
 }
 .page-hero__actions { display: flex; flex-wrap: wrap; gap: .8rem; margin-top: 1.4rem; }
+/* Главный CTA первого экрана. Раньше он был мельче заголовков в карточках
+   ниже и терялся на их фоне: глаз шёл заголовок → кнопка → «нарядные»
+   карточки. Кнопка должна быть первой по весу — крупнее, с ореолом,
+   с подписью не мельче заголовка карточки (17.6px). */
+.page-hero__actions .btn--gold.btn--lg {
+  padding: 1.15rem 2.6rem;
+  font-size: 1.15rem;
+  border-radius: 999px;
+  box-shadow: 0 14px 34px rgba(212, 175, 55, .34), 0 0 0 7px rgba(212, 175, 55, .10);
+}
+.page-hero__actions .btn--gold.btn--lg:hover {
+  box-shadow: 0 20px 44px rgba(212, 175, 55, .46), 0 0 0 9px rgba(212, 175, 55, .15);
+}
 
 /* Главная: hero занимает высоту экрана и центрирует контент по вертикали,
    чтобы тёмная полоса сверху (под шапкой) и снизу была одинаковой. */
@@ -136,15 +216,18 @@
 }
 .dir:hover { transform: translateY(-4px); box-shadow: var(--shadow-card); border-color: var(--gold-400); }
 .dir__top { display: flex; align-items: center; gap: .7rem; }
+/* Иерархия плитки: страна — главное, «Валюта/Срок» — уточнение. Раньше они
+   различались едва (18.4 против 13.8px при почти одинаковом весе), и взгляд
+   не цеплялся за название направления. */
 .dir__flag {
-  width: 42px; height: 42px; flex: 0 0 auto;
-  display: grid; place-items: center; border-radius: 11px;
+  width: 52px; height: 52px; flex: 0 0 auto;
+  display: grid; place-items: center; border-radius: 13px;
   background: var(--light); color: var(--gold-700);
 }
-.dir__flag .icon { width: 1.4em; height: 1.4em; }
-.dir__name { font-size: 1.15rem; font-weight: 800; }
+.dir__flag .icon { width: 1.7em; height: 1.7em; }
+.dir__name { font-size: 1.45rem; font-weight: 800; line-height: 1.2; }
 .dir__meta { display: flex; flex-wrap: wrap; gap: .35rem .9rem; font-size: .86rem; color: var(--text-muted-dark); }
-.dir__meta b { color: var(--text-dark); font-weight: 700; }
+.dir__meta b { color: var(--text-muted-dark); font-weight: 600; }
 .dir__link {
   margin-top: auto; padding-top: .4rem; font-weight: 700; color: var(--gold-700);
   display: inline-flex; align-items: center; gap: .4rem;
@@ -199,8 +282,12 @@
 .step::before {
   counter-increment: step; content: counter(step, decimal-leading-zero);
   display: inline-block; margin-bottom: .6rem;
-  font-size: 1.35rem; font-weight: 800; color: var(--gold-500);
+  font-size: 1.8rem; font-weight: 800; color: var(--gold-500);
+  line-height: 1;
 }
+/* На тёмной секции берём более светлый оттенок золота — 500-й на navy-700
+   выглядел приглушённо, а цифры здесь работают якорями. */
+.section--navy .step::before { color: var(--gold-400); }
 .step h3 { font-size: 1.08rem; margin-bottom: .35rem; }
 .step p { margin: 0; font-size: .93rem; color: var(--text-muted-dark); }
 .section--navy .step p { color: var(--text-muted-light); }
@@ -551,12 +638,67 @@
 .faq__a { padding: 0 1.3rem 1.2rem; color: var(--text-muted-dark); }
 .faq__a p { margin: 0; line-height: 1.6; }
 
+/* Заголовки «Подберём условия…» и «Отправьте заявку…» должны читаться одной
+   строкой: при кегле 44px им нужно 782 и 903px, а общий .section__head
+   ограничен 780px и ломал их надвое. Расширяем только эти две секции;
+   подзаголовок оставляем прежней ширины, иначе строка станет слишком длинной
+   для чтения. */
+#qualify .section__head,
+#zayavka .section__head { max-width: 1120px; }
+#qualify .section__sub,
+#zayavka .section__sub { max-width: 780px; margin-left: auto; margin-right: auto; }
+
+/* ---- Опоры доверия под кнопкой в hero -----------------------------------
+   Заполняют пустоту первого экрана и снимают вопросы до скролла. Ряд на
+   широких экранах, столбец на узких. Иконки — из общего спрайта. */
+.hero-facts {
+  list-style: none; margin: clamp(1.1rem, 2vw, 1.6rem) 0 0; padding: 0;
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(.6rem, 1.4vw, 1rem);
+  max-width: 760px;
+}
+/* Подложка вместо тонкой линии сверху: пунктир слабо связывал блоки с текстом,
+   и они читались как оторванный низ экрана. */
+.hero-facts li {
+  display: flex; align-items: flex-start; gap: .7rem;
+  padding: .85rem .95rem;
+  border: 1px solid rgba(212, 175, 55, .2);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, .045);
+  color: var(--text-light);
+  font-size: .8rem; line-height: 1.55;
+}
+/* Иконка на золотистой плашке — цепляет взгляд при беглом просмотре
+   и держит один тон с кнопками. */
+.hero-facts .icon {
+  width: 26px; height: 26px; flex: none;
+  padding: 8px; box-sizing: content-box;
+  border-radius: 12px;
+  background: rgba(212, 175, 55, .14);
+  color: var(--gold-400);
+}
+/* Иерархия внутри карточки: сначала факт, потом деталь. Раньше строки шли
+   почти одним кеглем и слипались — факт не считывался с одного взгляда. */
+.hero-facts b {
+  display: block;
+  font-size: 1.1rem; font-weight: 800; line-height: 1.25;
+  color: var(--white);
+  margin-bottom: .4rem;
+}
+.hero-facts br { display: none; }
+@media (max-width: 720px) {
+  .hero-facts { grid-template-columns: 1fr; gap: .75rem; max-width: none; }
+  .hero-facts li { padding: .75rem .9rem; }
+}
+
 /* ---- Плавающая кнопка связи (создаётся main.js, есть на всех страницах) ---- */
 .fab-contact {
   position: fixed; z-index: 90;
-  right: clamp(1rem, 3vw, 2rem); bottom: clamp(1rem, 3vw, 2rem);
-  display: inline-flex; align-items: center; gap: .55rem;
-  padding: .8rem 1.2rem;
+  /* Приподнята и ужата: в правом нижнем углу под ней всегда чей-то контент,
+     и чем меньше её площадь, тем меньше она его закрывает. */
+  right: clamp(1rem, 3vw, 2rem); bottom: clamp(1.25rem, 3.2vw, 2.4rem);
+  display: inline-flex; align-items: center; gap: .5rem;
+  padding: .68rem 1.1rem; font-size: .95rem;
   background: var(--gold-fill); color: var(--navy-900);
   font-weight: 700; border-radius: 999px;
   box-shadow: 0 12px 30px rgba(212, 175, 55, .4);
@@ -564,10 +706,80 @@
 }
 .fab-contact:hover { transform: translateY(-3px); box-shadow: 0 18px 42px rgba(212, 175, 55, .5); }
 .fab-contact__icon { width: 1.4em; height: 1.4em; flex: none; }
+
+/* Кнопка свёрнута в круг: в правом нижнем углу под ней всегда чей-то контент
+   (карточка «05» в «Пяти этапах», плитки направлений), и широкая плашка
+   закрывала его целиком. Подпись раскрывается по наведению и с клавиатуры;
+   для скринридеров текст остаётся в aria-label (см. main.js). */
+.fab-contact {
+  padding: 0; width: 56px; height: 56px; justify-content: center;
+  overflow: hidden;
+  transition: transform .25s var(--ease), box-shadow .25s var(--ease),
+              width .3s var(--ease), padding .3s var(--ease);
+}
+.fab-contact__label {
+  max-width: 0; opacity: 0; white-space: nowrap;
+  transition: max-width .3s var(--ease), opacity .2s var(--ease);
+}
+.fab-contact:hover, .fab-contact:focus-visible {
+  width: auto; padding: 0 1.15rem;
+}
+.fab-contact:hover .fab-contact__label,
+.fab-contact:focus-visible .fab-contact__label { max-width: 12rem; opacity: 1; }
 @media (max-width: 560px) {
-  .fab-contact { padding: 0; width: 54px; height: 54px; justify-content: center; }
+  /* На телефоне подпись не раскрываем даже по тапу — места нет. */
+  .fab-contact { width: 54px; height: 54px; }
+  .fab-contact:hover, .fab-contact:focus-visible { width: 54px; padding: 0; }
   .fab-contact__label { display: none; }
 }
 @media (prefers-reduced-motion: reduce) {
   .fab-contact { transition: none; }
 }
+
+/* ================= Текстурный фон тёмных секций (04.09.2026) ==============
+   Раньше тёмно-синие блоки различались рисунком: в hero лежала точечная
+   карта мира (.worldmap--hero), в секциях с .section--pattern — диагональная
+   штриховка. Заказчик попросил один фон на весь сайт: фотографическая
+   текстура тёмно-синей потёртой поверхности.
+
+   Как собран фон (порядок слоёв сверху вниз):
+     1) linear-gradient — сплошная плёнка цвета --navy-800 поверх снимка.
+        Текстура сама по себе заметно светлее фирменного синего (её середина
+        ~#37466a против #0B1E3F), и без притемнения белый текст на ней терял
+        контраст, а секция «выпадала» из палитры. Плёнка гасит светлоту,
+        оставляя рельеф: на просвет проходит ~28 % исходной картинки.
+     2) сам снимок, background-size: cover.
+   background-color под ними — фирменный синий: он же фолбэк, если картинка
+   не загрузилась, и он же не даёт просвету «сереть» по краям.
+
+   cover, а не repeat: у снимка выражена виньетка (центр светлее краёв), при
+   тайлинге стыки читались бы сеткой. Растяжение текстуре не вредит — рисунок
+   крупный и мягкий.
+
+   Оговорка про no-repeat + cover: на очень длинной секции картинка тянется
+   по высоте вместе с ней, рисунок становится мягче — это допустимо, потому
+   что фон здесь работает как фактура, а не как изображение. */
+.page-hero,
+.hero,
+.section--navy,
+.footer {
+  background-color: var(--navy-800);
+  background-image:
+    linear-gradient(rgba(11, 30, 63, .72), rgba(11, 30, 63, .72)),
+    url("/assets/img/bg-texture.jpg?v=20260904");
+  background-size: auto, cover;
+  background-position: center, center;
+  background-repeat: no-repeat, no-repeat;
+}
+/* Футер держит самый тёмный оттенок палитры — плёнку берём от navy-900,
+   иначе он сравнялся бы по светлоте с секциями над ним и граница пропала. */
+.footer {
+  background-color: var(--navy-900);
+  background-image:
+    linear-gradient(rgba(7, 22, 48, .80), rgba(7, 22, 48, .80)),
+    url("/assets/img/bg-texture.jpg?v=20260904");
+}
+/* Точечная карта мира в hero уступила место текстуре. Карта в секции
+   «География» (.worldmap--geo) — самостоятельный блок с маршрутами,
+   её оставляем. */
+.worldmap--hero { display: none; }

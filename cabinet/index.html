@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Личный кабинет клиента — ООО «Локомотив»</title>
+  <meta name="description" content="Личный кабинет клиента ООО «Локомотив»: регистрация онлайн, документы и платёжные поручения, согласование курса, SWIFT и чат с менеджером. Инструкция по установке на телефон.">
+  <meta name="theme-color" content="#0B1E3F">
+  <link rel="canonical" href="https://lokomotivneva.ru/cabinet/">
+  <link rel="icon" href="/assets/img/logo-160.jpg">
+  <link rel="stylesheet" href="/assets/css/styles.css?v=20260904i">
+  <link rel="stylesheet" href="/assets/css/additions.css?v=20260904i">
+  <!-- Yandex.Metrika counter -->
+  <script type="text/javascript">
+      (function(m,e,t,r,i,k,a){
+          m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+          m[i].l=1*new Date();
+          for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+          k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
+      })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=112180979', 'ym');
+
+      ym(112180979, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", referrer: document.referrer, url: location.href, accurateTrackBounce:true, trackLinks:true});
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/112180979" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+  <!-- /Yandex.Metrika counter -->
+  <style>
+    .guide{display:grid;gap:22px;grid-template-columns:repeat(auto-fit,minmax(320px,1fr))}
+    .guide__card{background:var(--white);border-radius:var(--radius-lg);padding:26px 24px 22px;box-shadow:var(--shadow-soft);border:1px solid rgba(20,38,92,.08)}
+    .guide__title{font-size:var(--fs-h3);margin:0 0 6px;color:var(--text-dark)}
+    .guide__note{margin:0 0 14px;color:var(--text-muted-dark);font-size:.94rem}
+    .guide__steps{margin:0;padding-left:1.15em;color:var(--text-dark)}
+    .guide__steps li{margin:0 0 8px;line-height:1.5}
+    .guide__fig{margin:16px 0 0}
+    .guide__fig svg{width:100%;height:auto;display:block}
+    .guide__cap{margin:8px 0 0;font-size:.86rem;color:var(--text-muted-dark);text-align:center}
+    .kbd{display:inline-block;padding:1px 7px;border-radius:6px;background:var(--light-2);border:1px solid rgba(20,38,92,.12);font-size:.9em}
+    .cab-cta{display:flex;flex-wrap:wrap;gap:14px;align-items:center;margin-top:26px}
+    .cab-note{color:var(--text-muted-light);font-size:.95rem;margin-top:12px}
+    .cab-note a{color:var(--gold-400)}
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">Перейти к основному содержанию</a>
+  <header class="header" id="header"><div class="container header__inner">
+    <a class="brand" href="/" aria-label="ООО «Локомотив» — на главную">
+      <span class="brand__seal"><img src="/assets/img/logo-160.jpg" width="160" height="160" alt="Эмблема ООО «Локомотив»"></span>
+      <span class="brand__text"><span class="brand__name">ЛОКОМОТИВ</span><span class="brand__tagline">Международные платежи и логистика</span></span>
+    </a>
+    <nav class="nav" id="nav" aria-label="Основная навигация"><ul class="nav__list">
+      <li><a class="nav__link" href="/payments/">Платежи</a></li>
+      <li><a class="nav__link" href="/logistics/">Логистика</a></li>
+      <li><a class="nav__link" href="/trust/">Проверьте нас</a></li>
+      <li><a class="nav__link" href="/individuals/">Для физлиц</a></li>
+      <li><a class="nav__link" href="/cabinet/">Личный кабинет</a></li>
+      <li><a class="nav__link" href="/contacts/">Контакты</a></li>
+    </ul><div class="nav__mobile-actions"><a class="btn btn--gold btn--block" href="#lead-form">Оставить заявку</a></div></nav>
+    <div class="header__actions">
+      <a class="header__phone" href="tel:+74952409065"><svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-phone"></use></svg><span>+7 (495) 240-90-65</span></a>
+      <a class="btn btn--gold header__cta" href="#lead-form">Оставить заявку</a>
+    </div>
+    <button class="burger" id="burger" type="button" aria-label="Открыть меню" aria-expanded="false" aria-controls="nav"><span></span><span></span><span></span></button>
+  </div></header>
+
+  <main id="main">
+    <section class="page-hero">
+      <div class="hero__glow" aria-hidden="true"></div>
+      <div class="container page-hero__inner">
+        <nav class="crumbs" aria-label="Хлебные крошки"><ol><li><a href="/">Главная</a></li><li aria-current="page">Личный кабинет</li></ol></nav>
+        <h1>Личный кабинет <span class="text-gold">клиента</span></h1>
+        <p class="page-hero__lead">
+          Всё по вашим платежам в одном месте: документы, статус каждого поручения, курс на согласование,
+          SWIFT после отправки и прямая переписка с менеджером. Регистрация занимает минуту —
+          логин и пароль вы придумываете сами.
+        </p>
+        <ul class="markers">
+          <li><svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-clock"></use></svg>Регистрация за минуту</li>
+          <li><svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-doc"></use></svg>Документы и SWIFT онлайн</li>
+          <li><svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-lock"></use></svg>Доступ только вашей команде</li>
+        </ul>
+        <div class="page-hero__actions">
+          <a class="btn btn--gold btn--lg" href="https://app.lokomotivneva.ru/cabinet/#signup">Зарегистрировать личный кабинет</a>
+          <a class="btn btn--ghost btn--lg" href="https://app.lokomotivneva.ru/cabinet/">Войти в кабинет</a>
+        </div>
+        <p class="page-hero__note">Кабинет работает в браузере и устанавливается на телефон как приложение — ниже инструкция.</p>
+      </div>
+    </section>
+
+    <section class="section section--light">
+      <div class="container">
+        <header class="section__head">
+          <p class="section__eyebrow reveal">Возможности</p>
+          <h2 class="section__title section__title--center reveal">Что вы делаете <span class="text-gold-dark">в кабинете</span></h2>
+        </header>
+        <ul class="cards reveal">
+          <li class="card"><span class="card__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-doc"></use></svg></span><h3 class="card__title">Отправляете документы</h3><p class="card__text">Инвойс, контракт, спецификация — загружаете прямо в кабинет. Видно, какой документ принят, какой на проверке, а какой вернули с замечанием.</p></li>
+          <li class="card"><span class="card__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-clipboard"></use></svg></span><h3 class="card__title">Согласовываете платёж</h3><p class="card__text">Мы готовим платёжное поручение по вашему инвойсу, вы открываете его и подтверждаете. Если что-то не так — возвращаете на доработку с комментарием.</p></li>
+          <li class="card"><span class="card__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-scale"></use></svg></span><h3 class="card__title">Подтверждаете курс</h3><p class="card__text">Курс приходит в кабинет на согласование. Подтвердили — заявка уходит в работу, сумма и курс фиксируются.</p></li>
+          <li class="card"><span class="card__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-globe"></use></svg></span><h3 class="card__title">Получаете SWIFT</h3><p class="card__text">Подтверждение платежа появляется в разделе «SWIFT»: открыть, скачать и переслать поставщику.</p></li>
+          <li class="card"><span class="card__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-coins"></use></svg></span><h3 class="card__title">Видите баланс</h3><p class="card__text">Остатки по каждой валюте и выписка: из чего сложилась сумма, что списано за платёж, что за комиссию.</p></li>
+          <li class="card"><span class="card__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-headset"></use></svg></span><h3 class="card__title">Пишете менеджеру</h3><p class="card__text">Чат внутри кабинета: можно отметить сотрудника, приложить документ и обсуждать конкретный платёж, а не искать переписку в мессенджерах.</p></li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section section--navy section--pattern">
+      <div class="container">
+        <header class="section__head">
+          <p class="section__eyebrow reveal">Регистрация</p>
+          <h2 class="section__title section__title--center reveal">Как открыть кабинет</h2>
+        </header>
+        <ol class="steps reveal">
+          <li class="step"><h3>Открываете форму</h3><p>Кнопка «Зарегистрировать личный кабинет» — форма откроется на app.lokomotivneva.ru.</p></li>
+          <li class="step"><h3>Заполняете поля</h3><p>Компания, ваше имя, телефон, почта, логин и пароль. Отдельной строкой — что планируете оплачивать: направление и валюта.</p></li>
+          <li class="step"><h3>Входите сразу</h3><p>Кабинет открывается немедленно, менеджер получает уведомление о регистрации и связывается в рабочее время.</p></li>
+          <li class="step"><h3>Добавляете свою команду</h3><p>В профиле — раздел «Моя команда»: заводите своих сотрудников, каждому свой логин и пароль.</p></li>
+        </ol>
+        <div class="cta-row reveal" style="justify-content:center"><a class="btn btn--gold btn--lg" href="https://app.lokomotivneva.ru/cabinet/#signup">Зарегистрировать личный кабинет</a></div>
+      </div>
+    </section>
+
+    <section class="section section--light">
+      <div class="container">
+        <header class="section__head">
+          <p class="section__eyebrow reveal">Установка</p>
+          <h2 class="section__title section__title--center reveal">Поставьте кабинет <span class="text-gold-dark">на главный экран</span></h2>
+          <p class="section__sub reveal">Кабинет работает как обычное приложение: значок на экране, вход без адресной строки и уведомления о новых документах и ответах менеджера. Скачивать что-либо из App Store или Google Play не нужно.</p>
+        </header>
+
+        <div class="guide reveal">
+          <article class="guide__card">
+            <h3 class="guide__title">iPhone и iPad — браузер Safari</h3>
+            <p class="guide__note">Именно Safari: из других браузеров на iPhone значок не добавляется.</p>
+            <ol class="guide__steps">
+              <li>Откройте <span class="kbd">app.lokomotivneva.ru/cabinet/</span></li>
+              <li>Нажмите кнопку «Поделиться» — квадрат со стрелкой вверх внизу экрана.</li>
+              <li>Пролистайте список и выберите <b>«На экран „Домой“»</b>.</li>
+              <li>Нажмите «Добавить» — значок появится на рабочем столе.</li>
+            </ol>
+            <figure class="guide__fig"><svg viewBox="0 0 340 210" role="img" aria-label="Safari: кнопка Поделиться внизу экрана, затем пункт «На экран „Домой“» в меню">
+  <rect x="6" y="6" width="132" height="198" rx="18" fill="#F5F7FA" stroke="#C6D2E6"/>
+  <rect x="18" y="18" width="108" height="20" rx="7" fill="#fff" stroke="#C6D2E6"/>
+  <text x="30" y="32" font-size="9" fill="#5A6784" font-family="Helvetica Neue, Arial, sans-serif">app.lokomotivneva.ru</text>
+  <rect x="18" y="46" width="108" height="118" rx="10" fill="#fff" stroke="#E3EAF3"/>
+  <rect x="30" y="60" width="84" height="10" rx="5" fill="#0B1E3F" opacity=".85"/>
+  <rect x="30" y="78" width="66" height="7" rx="3.5" fill="#C6D2E6"/>
+  <rect x="30" y="92" width="74" height="7" rx="3.5" fill="#C6D2E6"/>
+  <rect x="30" y="118" width="84" height="22" rx="8" fill="#D4AF37"/>
+  <rect x="18" y="172" width="108" height="24" rx="9" fill="#EAEFF6" stroke="#C6D2E6"/>
+  <g transform="translate(66,177)" stroke="#0B1E3F" stroke-width="1.6" fill="none" stroke-linecap="round">
+    <path d="M6 12.5V3M6 3 2.8 6.3M6 3l3.2 3.3"/>
+    <path d="M1 8.5v7.5a1.6 1.6 0 0 0 1.6 1.6h6.8A1.6 1.6 0 0 0 11 16V8.5" stroke-linejoin="round"/>
+  </g>
+  <circle cx="72" cy="185" r="16" fill="none" stroke="#C9A227" stroke-width="2.2"/>
+  <text x="72" y="209" font-size="9" fill="#5A6784" text-anchor="middle" font-family="Helvetica Neue, Arial, sans-serif">1. «Поделиться»</text>
+  <path d="M152 104h30" stroke="#C9A227" stroke-width="2.2" stroke-linecap="round"/>
+  <path d="M176 98.5l6.5 5.5-6.5 5.5" stroke="#C9A227" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="196" y="36" width="138" height="138" rx="16" fill="#fff" stroke="#C6D2E6"/>
+  <rect x="208" y="48" width="114" height="22" rx="8" fill="#F5F7FA"/>
+  <text x="218" y="63" font-size="9.5" fill="#5A6784" font-family="Helvetica Neue, Arial, sans-serif">Скопировать</text>
+  <rect x="208" y="76" width="114" height="22" rx="8" fill="#F5F7FA"/>
+  <text x="218" y="91" font-size="9.5" fill="#5A6784" font-family="Helvetica Neue, Arial, sans-serif">Добавить в закладки</text>
+  <rect x="208" y="104" width="114" height="26" rx="8" fill="#FCF3D8" stroke="#C9A227" stroke-width="1.5"/>
+  <text x="218" y="120" font-size="9.5" fill="#7A5E00" font-weight="700" font-family="Helvetica Neue, Arial, sans-serif">На экран «Домой»</text>
+  <rect x="208" y="136" width="114" height="22" rx="8" fill="#F5F7FA"/>
+  <text x="218" y="151" font-size="9.5" fill="#5A6784" font-family="Helvetica Neue, Arial, sans-serif">Напечатать</text>
+  <text x="265" y="192" font-size="9" fill="#5A6784" text-anchor="middle" font-family="Helvetica Neue, Arial, sans-serif">2. «На экран „Домой“»</text>
+</svg><figcaption class="guide__cap">Safari: «Поделиться» → «На экран „Домой“»</figcaption></figure>
+          </article>
+
+          <article class="guide__card">
+            <h3 class="guide__title">Android — браузер Chrome</h3>
+            <p class="guide__note">В Яндекс.Браузере пункт называется «Добавить на главный экран».</p>
+            <ol class="guide__steps">
+              <li>Откройте <span class="kbd">app.lokomotivneva.ru/cabinet/</span></li>
+              <li>Нажмите три точки в правом верхнем углу.</li>
+              <li>Выберите <b>«Установить приложение»</b>.</li>
+              <li>Подтвердите — значок появится среди приложений.</li>
+            </ol>
+            <figure class="guide__fig"><svg viewBox="0 0 340 210" role="img" aria-label="Chrome: три точки в правом верхнем углу, затем пункт «Установить приложение»">
+  <rect x="6" y="6" width="132" height="198" rx="18" fill="#F5F7FA" stroke="#C6D2E6"/>
+  <rect x="18" y="18" width="88" height="20" rx="7" fill="#fff" stroke="#C6D2E6"/>
+  <text x="26" y="32" font-size="8.5" fill="#5A6784" font-family="Helvetica Neue, Arial, sans-serif">app.lokomotivneva.ru</text>
+  <g fill="#0B1E3F"><circle cx="120" cy="22" r="2.1"/><circle cx="120" cy="28" r="2.1"/><circle cx="120" cy="34" r="2.1"/></g>
+  <circle cx="120" cy="28" r="13" fill="none" stroke="#C9A227" stroke-width="2.2"/>
+  <rect x="18" y="48" width="108" height="148" rx="10" fill="#fff" stroke="#E3EAF3"/>
+  <rect x="30" y="62" width="84" height="10" rx="5" fill="#0B1E3F" opacity=".85"/>
+  <rect x="30" y="80" width="66" height="7" rx="3.5" fill="#C6D2E6"/>
+  <rect x="30" y="94" width="74" height="7" rx="3.5" fill="#C6D2E6"/>
+  <rect x="30" y="120" width="84" height="22" rx="8" fill="#D4AF37"/>
+  <text x="72" y="209" font-size="9" fill="#5A6784" text-anchor="middle" font-family="Helvetica Neue, Arial, sans-serif">1. Три точки</text>
+  <path d="M152 104h30" stroke="#C9A227" stroke-width="2.2" stroke-linecap="round"/>
+  <path d="M176 98.5l6.5 5.5-6.5 5.5" stroke="#C9A227" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="196" y="36" width="138" height="138" rx="16" fill="#fff" stroke="#C6D2E6"/>
+  <rect x="208" y="48" width="114" height="22" rx="8" fill="#F5F7FA"/>
+  <text x="218" y="63" font-size="9.5" fill="#5A6784" font-family="Helvetica Neue, Arial, sans-serif">Новая вкладка</text>
+  <rect x="208" y="76" width="114" height="22" rx="8" fill="#F5F7FA"/>
+  <text x="218" y="91" font-size="9.5" fill="#5A6784" font-family="Helvetica Neue, Arial, sans-serif">История</text>
+  <rect x="208" y="104" width="114" height="26" rx="8" fill="#FCF3D8" stroke="#C9A227" stroke-width="1.5"/>
+  <text x="218" y="120" font-size="9.5" fill="#7A5E00" font-weight="700" font-family="Helvetica Neue, Arial, sans-serif">Установить приложение</text>
+  <rect x="208" y="136" width="114" height="22" rx="8" fill="#F5F7FA"/>
+  <text x="218" y="151" font-size="9.5" fill="#5A6784" font-family="Helvetica Neue, Arial, sans-serif">Настройки</text>
+  <text x="265" y="192" font-size="8.5" fill="#5A6784" text-anchor="middle" font-family="Helvetica Neue, Arial, sans-serif">2. «Установить»</text>
+</svg><figcaption class="guide__cap">Chrome: три точки → «Установить приложение»</figcaption></figure>
+          </article>
+
+          <article class="guide__card">
+            <h3 class="guide__title">Результат и уведомления</h3>
+            <p class="guide__note">На компьютере (Chrome, Edge, Яндекс.Браузер) значок установки появляется справа в адресной строке — нажмите его и подтвердите «Установить».</p>
+            <ol class="guide__steps">
+              <li>Кабинет открывается отдельным окном, без вкладок и адресной строки.</li>
+              <li>При первом входе разрешите уведомления — тогда вы сразу узнаете, что документ приняли, платёж согласован или пришёл SWIFT.</li>
+              <li>Вход по вашему логину и паролю; у каждого сотрудника команды — свой.</li>
+            </ol>
+            <figure class="guide__fig"><svg viewBox="0 0 340 190" role="img" aria-label="Значок кабинета на главном экране телефона рядом с другими приложениями">
+  <rect x="104" y="6" width="132" height="178" rx="18" fill="#0B1E3F" stroke="#12294F"/>
+  <rect x="118" y="22" width="104" height="8" rx="4" fill="#24447A"/>
+  <g>
+    <rect x="120" y="44" width="34" height="34" rx="9" fill="#1B3765"/>
+    <rect x="163" y="44" width="34" height="34" rx="9" fill="#1B3765"/>
+    <rect x="206" y="44" width="16" height="34" rx="9" fill="#1B3765"/>
+    <rect x="120" y="96" width="34" height="34" rx="9" fill="#1B3765"/>
+    <rect x="163" y="96" width="34" height="34" rx="9" fill="#F5F7FA" stroke="#D4AF37" stroke-width="2"/>
+    <text x="180" y="118" font-size="15" font-weight="700" fill="#0B1E3F" text-anchor="middle" font-family="Helvetica Neue, Arial, sans-serif">Л</text>
+    <text x="180" y="141" font-size="8" fill="#E9EEF7" text-anchor="middle" font-family="Helvetica Neue, Arial, sans-serif">Локомотив</text>
+    <rect x="206" y="96" width="16" height="34" rx="9" fill="#1B3765"/>
+  </g>
+  <circle cx="180" cy="113" r="27" fill="none" stroke="#D4AF37" stroke-width="2" opacity=".55"/>
+  <rect x="126" y="158" width="92" height="18" rx="9" fill="#12294F"/>
+  <text x="170" y="189" font-size="9" fill="#5A6784" text-anchor="middle" font-family="Helvetica Neue, Arial, sans-serif">3. Готово: вход как в приложении</text>
+</svg><figcaption class="guide__cap">Значок кабинета на главном экране</figcaption></figure>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--navy">
+      <div class="container">
+        <header class="section__head">
+          <p class="section__eyebrow reveal">Разделы</p>
+          <h2 class="section__title section__title--center reveal">Как пользоваться кабинетом</h2>
+        </header>
+        <ul class="cards reveal">
+          <li class="card"><span class="card__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-compass-star"></use></svg></span><h3 class="card__title">Главная</h3><p class="card__text">Остатки по валютам и строка «Текущие действия» — то, что ждёт вас: согласовать платёжное поручение, подтвердить курс, заменить документ. Нажимаете строку и попадаете туда, где нужно действие.</p></li>
+          <li class="card"><span class="card__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-doc"></use></svg></span><h3 class="card__title">Документы</h3><p class="card__text">Вкладки по назначению: на оплату, на входящие платежи, инвойсы на проверку, на подпись и SWIFT. Загружаете файлы кнопкой, видите статус и дату; комплект из нескольких файлов приходит одной карточкой.</p></li>
+          <li class="card"><span class="card__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-scale"></use></svg></span><h3 class="card__title">Конвертация</h3><p class="card__text">Заявка на обмен: указываете сумму и валюты. Когда менеджер выставит курс, он придёт на подтверждение — принимаете или отклоняете.</p></li>
+          <li class="card"><span class="card__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-clipboard"></use></svg></span><h3 class="card__title">История</h3><p class="card__text">Все движения по счёту: поступления, платежи, конвертации, комиссии. По клику на валюту — выписка с остатком после каждой операции.</p></li>
+          <li class="card"><span class="card__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-coins"></use></svg></span><h3 class="card__title">Наличные</h3><p class="card__text">Заявка внести или получить наличные со счёта: сумма, валюта, комментарий. Статус заявки виден в том же разделе.</p></li>
+          <li class="card"><span class="card__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-handshake"></use></svg></span><h3 class="card__title">Профиль и команда</h3><p class="card__text">Реквизиты вашей компании и раздел «Моя команда»: добавляете сотрудников, каждому свой логин и пароль. Они видят те же документы и переписку.</p></li>
+        </ul>
+        <div class="cta-row reveal" style="justify-content:center"><a class="btn btn--gold btn--lg" href="https://app.lokomotivneva.ru/cabinet/#signup">Зарегистрировать личный кабинет</a></div>
+      </div>
+    </section>
+
+    <section class="section section--light">
+      <div class="container">
+        <header class="section__head">
+          <p class="section__eyebrow reveal">Вопросы</p>
+          <h2 class="section__title section__title--center reveal">Частые вопросы о кабинете</h2>
+        </header>
+        <div class="faq reveal">
+          <details class="faq__item">
+            <summary class="faq__q">Кабинет платный?</summary>
+            <div class="faq__a"><p>Нет. Кабинет бесплатный для клиентов ООО «Локомотив» — вы платите только вознаграждение агента по конкретной сделке.</p></div>
+          </details>
+          <details class="faq__item">
+            <summary class="faq__q">Обязательно ли устанавливать приложение?</summary>
+            <div class="faq__a"><p>Нет, кабинет полностью работает в браузере. Установка на главный экран нужна для быстрого входа и уведомлений о новых документах.</p></div>
+          </details>
+          <details class="faq__item">
+            <summary class="faq__q">Что делать, если забыли пароль?</summary>
+            <div class="faq__a"><p>Напишите менеджеру или позвоните — восстановим доступ. Пароли сотрудников вашей команды вы видите и меняете сами в разделе «Моя команда».</p></div>
+          </details>
+          <details class="faq__item">
+            <summary class="faq__q">Кто видит мои документы?</summary>
+            <div class="faq__a"><p>Только вы, сотрудники, которых вы сами добавили в свою команду, и наши сотрудники, ведущие ваши платежи. Другим клиентам ваши данные недоступны.</p></div>
+          </details>
+          <details class="faq__item">
+            <summary class="faq__q">Можно ли зарегистрироваться до заключения договора?</summary>
+            <div class="faq__a"><p>Да. Зарегистрируйтесь, опишите задачу — менеджер свяжется, посчитает условия и подготовит агентский договор.</p></div>
+          </details>
+        </div>
+        <div class="cta-row reveal" style="justify-content:center;margin-top:26px">
+          <a class="btn btn--gold btn--lg" href="https://app.lokomotivneva.ru/cabinet/#signup">Зарегистрировать личный кабинет</a>
+          <a class="btn btn--navy btn--lg" href="/contacts/">Задать вопрос менеджеру</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer" id="footer"><div class="container footer__grid">
+    <div class="footer__brand"><span class="brand__seal brand__seal--lg"><img src="/assets/img/logo-160.jpg" width="160" height="160" loading="lazy" alt="Эмблема ООО «Локомотив»"></span>
+      <div><p class="footer__name">ООО «Локомотив»</p><p class="footer__slogan">Международные платежи · логистика · таможня</p></div></div>
+    <nav class="footer__nav" aria-label="Платежи"><h2 class="footer__heading">Платежи</h2><ul>
+      <li><a href="/payments/china/">Китай</a></li><li><a href="/payments/turkey/">Турция</a></li>
+      <li><a href="/payments/uae/">ОАЭ</a></li><li><a href="/payments/europe/">Европа</a></li>
+      <li><a href="/payments/services/">Услуги и ПО</a></li><li><a href="/payments/export/">Экспортная выручка</a></li></ul></nav>
+    <nav class="footer__nav" aria-label="Компания"><h2 class="footer__heading">Компания</h2><ul>
+      <li><a href="/complex/">Комплексно под ключ</a></li><li><a href="/sellers/">Для селлеров</a></li>
+      <li><a href="/logistics/">Логистика</a></li><li><a href="/trust/">Проверьте нас</a></li>
+      <li><a href="/cabinet/">Личный кабинет</a></li><li><a href="/contacts/">Контакты</a></li></ul></nav>
+    <div class="footer__legal"><h2 class="footer__heading">Реквизиты</h2>
+      <p>ООО «Локомотив»</p><p>ОГРН 1267700222899 · ИНН 9703250829 · КПП 770301001</p><p>г. Москва, пр-д 1-й Красногвардейский, д. 22, стр. 2, помещ. 173</p></div>
+  </div>
+  <div class="container footer__bottom"><p>© <span id="year">2026</span> ООО «Локомотив». Все права защищены.</p><p><a href="/privacy/">Политика обработки персональных данных</a> · <a href="/">На главную</a></p></div></footer>
+
+  <div class="toast" id="toast" role="status" aria-live="polite" hidden>
+    <span class="toast__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-check"></use></svg></span>
+    <span class="toast__text"></span>
+  </div>
+
+  <script src="/assets/js/site-config.js?v=20260828q" defer></script>
+  <script src="/assets/js/site.js?v=20260828q" defer></script>
+  <script src="/assets/js/main.js?v=20260828q" defer></script>
+</body>
+</html>

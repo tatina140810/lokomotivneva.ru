@@ -114,6 +114,19 @@ a { color: inherit; text-decoration: none; }
 .text-gold { color: var(--gold-500); }
 .text-gold-dark { color: var(--gold-700); }
 
+/* Заголовки одноцветные (решение 28.08.2026). Золотые вставки в h1/h2 разбивали
+   строку на два цвета и спорили с золотыми кнопками; акцент остаётся за CTA.
+   Классы .text-gold/.text-gold-dark сохранены — они размечают смысловую часть
+   заголовка и продолжают работать в обычном тексте. Правило перекрывает и
+   .page-hero h1 .text-gold в additions.css, и варианты заголовков из
+   site-config.js (hero.variants), где золотой span зашит в строку. */
+h1 .text-gold, h1 .text-gold-dark,
+h2 .text-gold, h2 .text-gold-dark,
+h3 .text-gold, h3 .text-gold-dark,
+h4 .text-gold, h4 .text-gold-dark,
+h5 .text-gold, h5 .text-gold-dark,
+h6 .text-gold, h6 .text-gold-dark { color: inherit; }
+
 /* ------------------------------ 3. Кнопки -------------------------------- */
 .btn {
   --btn-bg: transparent;
@@ -200,6 +213,17 @@ a { color: inherit; text-decoration: none; }
 }
 .brand__seal img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
 .brand__seal--lg { width: 96px; height: 96px; }
+/* 04.09.2026: в шапке золотой обод убран — остаётся только тёмно-синяя печать.
+   Обод рисовался CSS-рамкой (отдельного файла логотипа с ободом нет), поэтому
+   обрезка через overflow/scale не нужна: достаточно снять border и белый
+   медальон вместе с его тенью — шапка светлая, круг всё равно был не виден.
+   Медальон в футере (.brand__seal--lg на тёмном фоне) не трогаем. */
+.header .brand__seal {
+  background: none;
+  border: 0;
+  padding: 0;
+  box-shadow: none;
+}
 
 /* В шапке — короткое имя «Локомотив» (полное «ООО «Локомотив»» есть в
    микрострочке и футере), поэтому обрезка не нужна: имя всегда помещается
@@ -209,7 +233,7 @@ a { color: inherit; text-decoration: none; }
   color: var(--text-dark); font-weight: 700;   /* реальный вес шрифта (не синтетический 800 → без двоения) */
   font-synthesis: none;
   -webkit-font-smoothing: antialiased;
-  font-size: 1.1rem; letter-spacing: .04em;
+  font-size: 1.265rem; letter-spacing: .04em;   /* 1.1rem + 15 % — запрос 28.08.2026 */
   white-space: nowrap;
 }
 /* В шапке подпись не показываем: контейнер ограничен 1200px и строка
@@ -238,12 +262,18 @@ a { color: inherit; text-decoration: none; }
 .nav__mobile-actions { display: none; }
 
 .header__actions { display: flex; align-items: center; gap: 1.1rem; flex: none; }
+/* Телефон — второй по важности канал после заявки, поэтому он оформлен
+   как контурная кнопка: не спорит с золотым CTA рядом, но и не теряется
+   среди пунктов меню, как раньше (обычный текст того же кегля). */
 .header__phone {
   display: inline-flex; align-items: center; gap: .45rem;
-  color: var(--text-dark); font-weight: 700; white-space: nowrap;
-  transition: color .25s var(--ease);
+  padding: .5rem .85rem;
+  border: 1px solid rgba(212, 175, 55, .55); border-radius: 999px;
+  color: var(--text-dark); font-weight: 700; font-size: .95rem;
+  letter-spacing: .01em; white-space: nowrap;
+  transition: color .25s var(--ease), border-color .25s var(--ease), background .25s var(--ease);
 }
-.header__phone:hover { color: var(--gold-700); }
+.header__phone:hover { color: var(--gold-700); border-color: var(--gold-500); background: rgba(212, 175, 55, .08); }
 .header__phone .icon { color: var(--gold-600); }
 
 /* Бургер-кнопка мобильного меню */
@@ -271,13 +301,10 @@ a { color: inherit; text-decoration: none; }
 .section--light { background: var(--light); }
 .section--navy { background: var(--navy-800); color: var(--text-light); }
 
-/* Едва заметная диагональная штриховка на тёмных блоках */
-.section--pattern::before {
-  content: ""; position: absolute; inset: 0; pointer-events: none;
-  background-image: repeating-linear-gradient(
-    135deg, rgba(212, 175, 55, .05) 0 1px, transparent 1px 14px);
-  mask-image: radial-gradient(120% 80% at 50% 0%, #000 20%, transparent 75%);
-}
+/* 04.09.2026: диагональная штриховка снята — на всех тёмных секциях теперь
+   единый фон-текстура (см. блок «Текстурный фон тёмных секций» в additions.css).
+   Класс .section--pattern оставлен в разметке как no-op, чтобы не править
+   два десятка страниц; своего рисунка он больше не даёт. */
 
 .section__head { text-align: center; max-width: 780px; margin: 0 auto clamp(2rem, 4vw, 3.25rem); }
 
@@ -763,7 +790,10 @@ a.contacts__value:hover { color: var(--gold-700); }
 
 /* Меню и контакты важнее названия: до включения бургера
    в шапке остаётся только эмблема */
-@media (max-width: 1130px) {
+/* 1001–1180px — самый тесный диапазон: меню ещё горизонтальное, но контейнер
+   уже узкий, и имя вытесняет пункты. Скрываем только здесь; ниже 1000px меню
+   уходит в бургер и место освобождается — там имя возвращаем. */
+@media (max-width: 1180px) {
   .brand__text { display: none; }
 }
 
@@ -773,13 +803,22 @@ a.contacts__value:hover { color: var(--gold-700); }
   .footer__grid { grid-template-columns: 1fr 1fr; }
 }
 
-@media (max-width: 900px) {
+/* Шапка уходит в бургер раньше остальной вёрстки: на 901–945px горизонтальное
+   меню + телефон + кнопка уже не помещаются и распирали страницу на 14px
+   (проверено на 901/910/920/940/960px). Порог перенесён с 900px; после того
+   как телефон стал контурной кнопкой (+27px), поднят до 1000px. Контентные
+   правила остались на 900px. */
+@media (max-width: 1000px) {
   .header__actions .header__cta { display: none; }
   .header__phone span { display: none; }
-  .header__phone { width: 44px; height: 44px; justify-content: center; border: 1px solid rgba(212,175,55,.4); border-radius: 50%; }
+  .header__phone { width: 44px; height: 44px; padding: 0; justify-content: center; border: 1px solid rgba(212,175,55,.4); border-radius: 50%; }
   .header__phone .icon { width: 20px; height: 20px; }
 
   .burger { display: block; }
+
+  /* Меню свернулось в бургер — в шапке остались эмблема, телефон-кружок
+     и бургер. Места хватает, возвращаем имя рядом с логотипом. */
+  .brand__text { display: flex; }
 
   /* Мобильное меню — выезжающая панель */
   .nav {
@@ -804,7 +843,9 @@ a.contacts__value:hover { color: var(--gold-700); }
   }
   .nav__link::after { display: none; }
   .nav__mobile-actions { display: block; }
+}
 
+@media (max-width: 900px) {
   .stats { grid-template-columns: repeat(2, 1fr); }
 }
 
@@ -812,7 +853,7 @@ a.contacts__value:hover { color: var(--gold-700); }
   :root { --header-h: 72px; }
   .brand__seal { width: 44px; height: 44px; }
   .brand__tagline { display: none; }
-  .brand__name { font-size: .9rem; }
+  .brand__name { font-size: 1.1rem; }   /* имя вернулось в мобильную шапку — держим крупным */
 
   .hero__actions .btn { width: 100%; }
 
@@ -835,6 +876,13 @@ a.contacts__value:hover { color: var(--gold-700); }
 }
 
 /* ------------------- 15. Уважение к системным настройкам ----------------- */
+/* Экраны уже 380px (iPhone SE и подобные): имя влезает, но встаёт вплотную
+   к бургеру. Отыгрываем место на отступе и эмблеме, размер не трогаем. */
+@media (max-width: 380px) {
+  .brand { gap: .55rem; }
+  .brand__seal { width: 40px; height: 40px; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after {
@@ -849,5 +897,8 @@ a.contacts__value:hover { color: var(--gold-700); }
 @media print {
   .header, .burger, .toast, .hero__glow, .worldmap, .socials { display: none !important; }
   body { background: #fff; color: #000; }
-  .section--navy, .footer, .form-card { background: #fff !important; color: #000 !important; }
+  /* .page-hero добавлен вместе с фоном-текстурой: без него на печать уходил
+     тёмный снимок во всю первую страницу. */
+  .page-hero, .hero, .section--navy, .footer, .form-card { background: #fff !important; color: #000 !important; }
+  .page-hero h1, .page-hero .page-hero__lead, .page-hero .crumbs { color: #000 !important; }
 }

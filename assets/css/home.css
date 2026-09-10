@@ -145,7 +145,7 @@ h1, h2, h3, .stat__num, .brand__name { font-family: var(--font-head); }
   text-transform: none;
   font-size: clamp(2.25rem, 4.5vw, 4rem); line-height: 1.08; letter-spacing: -.02em;
 }
-.hero2__title .text-gold { color: var(--gold-500); }
+.hero2__title .text-gold { color: inherit; }   /* заголовки одноцветные */
 .hero2__sub {
   max-width: 34em; font-size: 1.06rem; color: var(--text-secondary);
   margin: 0 0 var(--sp-4);
