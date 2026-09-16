@@ -177,4 +177,21 @@
     addEventListener('resize', maybe, { passive: true });
   }
 
+
+  /* ------------------- Живая печать в первом экране -----------------------
+     Видео грузим только на широких экранах и только когда страница уже
+     отрисована: на телефоне его не показываем вовсе (там блок скрыт), а на
+     десктопе оно не конкурирует за канал с текстом и калькулятором.        */
+  (function () {
+    var v = d.querySelector('[data-hero-video]');
+    if (!v) return;
+    if (innerWidth < 1001) return;                       // на узком экране печати нет
+    if (w.matchMedia && w.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var start = function () {
+      v.src = v.getAttribute('data-hero-video');
+      v.play().catch(function () { /* автозапуск заблокирован — останется постер */ });
+    };
+    if ('requestIdleCallback' in w) requestIdleCallback(start, { timeout: 2500 });
+    else setTimeout(start, 1200);
+  })();
 })(window, document);

@@ -370,3 +370,36 @@
   .express__note { display: none; }
 }
 
+
+/* ----------------- 13. Живая печать в первом экране ----------------------
+   Видео заменило статичную эмблему. Оно не «карточка поверх фона», а сам фон
+   правой половины экрана: края растворяются маской, поэтому стык с текстурой
+   hero не читается. Текстовый блок держит z-index: 2 и остаётся сверху.    */
+.hero-seal {
+  position: absolute;
+  inset: 0 0 0 auto;
+  width: min(62%, 980px);
+  margin: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+.hero-seal__video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 62% center;
+  opacity: .5;
+  /* Слева — плавный уход в фон под текстом, справа и по краям — лёгкое
+     затухание, чтобы граница кадра не превращалась в видимую рамку. */
+  -webkit-mask-image:
+    linear-gradient(to left, #000 62%, rgba(0,0,0,.35) 88%, transparent 100%),
+    linear-gradient(to bottom, transparent 0, #000 12%, #000 86%, transparent 100%);
+          mask-image:
+    linear-gradient(to left, #000 62%, rgba(0,0,0,.35) 88%, transparent 100%),
+    linear-gradient(to bottom, transparent 0, #000 12%, #000 86%, transparent 100%);
+  -webkit-mask-composite: source-in;
+          mask-composite: intersect;
+}
+/* Ниже 1001px печать и раньше не показывалась: узкий экран занимает текст. */
+@media (max-width: 1000px) { .hero-seal { display: none; } }
