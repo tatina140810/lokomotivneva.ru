@@ -2,7 +2,7 @@
    site.js — подстановка данных из site-config.js в вёрстку
    -----------------------------------------------------------------------------
    Отвечает за: ссылки мессенджеров, вариант заголовка первого экрана,
-   цифры доверия, отзывы, имя оффера.
+   цифры доверия, отзывы, имя оффера, промо-полосу над шапкой.
    Никакой бизнес-логики и никаких расчётов курса здесь нет.
    Подключается ПОСЛЕ site-config.js, до/после main.js — неважно.
    ============================================================================= */
@@ -128,9 +128,51 @@
     $$('[data-loko-offer]').forEach(function (el) { el.textContent = name; });
   }
 
+  /* ====================== 7. Промо-полоса над шапкой ======================== */
+  /* Разметка полосы лежит в index.html и видна без JS. Здесь только три
+     причины её убрать: выключена в конфиге, срок вышел, посетитель закрыл.
+     Тексты подставляются из конфига, чтобы правка акции не требовала HTML. */
+  function applyPromo() {
+    var bar = $('#promo');
+    if (!bar) return;                       // страница без полосы — ничего не делаем
+    var p = CFG.promo || {};
+
+    /* Дата сравнивается по местному времени и включает последний день целиком:
+       акция «до 30 ноября» действует весь день 30-го. Кривую дату в конфиге
+       (until разобрался в NaN) считаем «без срока», а не «истекла». */
+    var expired = false;
+    if (p.until) {
+      var end = new Date(p.until + 'T23:59:59');
+      expired = !isNaN(end) && end < new Date();
+    }
+
+    /* localStorage может быть недоступен (приватный режим, запрет хранилища) —
+       тогда полоса просто не запоминает закрытие, но не ломается. */
+    var key = 'loko:promo:' + (p.id || 'default');
+    var closed = false;
+    try { closed = localStorage.getItem(key) === '1'; } catch (e) {}
+
+    if (p.show === false || expired || closed) { bar.hidden = true; return; }
+
+    $$('[data-loko-promo]', bar).forEach(function (el) {
+      var val = p[el.getAttribute('data-loko-promo')];
+      if (val) el.textContent = val;
+    });
+    bar.hidden = false;
+
+    var close = $('#promo-close', bar);
+    if (close) {
+      close.addEventListener('click', function () {
+        bar.hidden = true;
+        try { localStorage.setItem(key, '1'); } catch (e) {}
+      });
+    }
+  }
+
   applyMessengers();
   applyHeroVariant();
   applyProof();
   applyReviews();
   applyOfferName();
+  applyPromo();
 })();

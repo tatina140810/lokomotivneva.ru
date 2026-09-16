@@ -96,6 +96,8 @@
 
   function fmtFee(from, to) {
     var f = function (n) { return String(n).replace('.', ','); };
+    // Когда ставка одна (0,3 %), вилка «0,3–0,3 %» читается как сбой расчёта.
+    if (Number(from) === Number(to)) return f(from) + ' %';
     return f(from) + '–' + f(to) + ' %';
   }
 

@@ -23,6 +23,164 @@
 .topbar__sep { opacity: .35; }
 .topbar__spacer { margin-inline-start: auto; }
 
+/* ------------------- 1b. Промо-полоса над шапкой (главная) ---------------
+   Узкая строка во всю ширину, до шапки и отдельно от hero. Палитра та же,
+   что у .topbar: тёмно-синий фон, золото — только на самой оферте, чтобы
+   полоса не спорила с кнопкой «Рассчитать платёж» в шапке под ней.
+   Полоса НЕ липкая: уезжает вверх при прокрутке, sticky остаётся за шапкой. */
+.promo {
+  /* Золотое свечение слева — тот же приём, что у ореола главного CTA: полоса
+     читается как акцент, а не как служебная строка, но фон остаётся navy. */
+  background:
+    radial-gradient(120% 200% at 0% 50%, rgba(212, 175, 55, .20), transparent 62%),
+    var(--navy-900);
+  border-bottom: 1px solid rgba(212, 175, 55, .35);
+  color: var(--text-muted-light);
+  font-size: .92rem;
+}
+.promo__inner {
+  display: flex; align-items: center; flex-wrap: wrap;
+  gap: .3rem .9rem;
+  min-height: var(--promo-h);
+  padding-block: .45rem;
+}
+.promo__text { margin: 0; line-height: 1.35; }
+.promo__accent {
+  color: var(--gold-400);
+  font-weight: 800;
+  font-size: 1.02em;
+  letter-spacing: .01em;
+}
+/* Сноска обязательна: ниже на странице стоит вилка комиссии 1–1,5 %,
+   и без оговорки промо ей противоречит. Мельче и тусклее оферты, но не
+   настолько, чтобы её нельзя было прочесть. */
+.promo__note { margin: 0; font-size: .8rem; opacity: .78; }
+.promo__close {
+  margin-inline-start: auto;
+  flex: none;
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 30px; height: 30px; padding: 0;
+  background: none; border: 0; border-radius: 999px;
+  color: var(--text-muted-light); opacity: .65; cursor: pointer;
+  transition: opacity .2s var(--ease), background-color .2s var(--ease), color .2s var(--ease);
+}
+.promo__close svg { width: 16px; height: 16px; }
+.promo__close:hover { opacity: 1; color: var(--gold-300); background: rgba(212, 175, 55, .12); }
+.promo__close:focus-visible { opacity: 1; outline: 2px solid var(--gold-500); outline-offset: 2px; }
+
+/* Первый экран считается от 100vh минус шапка сверху и такая же полоса снизу
+   (см. .page-hero--home). Промо-полоса добавляет свою высоту — вычитаем её,
+   иначе низ hero уезжает за край экрана. Правило само исчезает, когда полосы
+   нет: после 30 ноября, при show:false или когда посетитель её закрыл.
+   45px = строка 44px (--promo-h) плюс её нижняя граница. На узких экранах
+   полоса занимает две строки (94px), но там hero и так выше экрана из-за
+   карточек — min-height не работает ограничителем, и уточнять цифру незачем. */
+body:has(.promo:not([hidden])) .page-hero--home {
+  min-height: calc(100vh - var(--header-h) * 2 - 45px);
+  min-height: calc(100dvh - var(--header-h) * 2 - 45px);
+}
+
+@media (max-width: 560px) {
+  /* На телефоне три элемента в ряд не помещаются. Раскладываем в две строки:
+     оферта и крестик сверху, сноска целиком под ними. Порядок задаём явно —
+     в разметке сноска идёт перед кнопкой, иначе крестик уезжает в третью
+     строку и полоса набирает лишнюю высоту. */
+  .promo__inner { gap: .2rem .6rem; }
+  .promo__text { order: 1; flex: 1 1 auto; }
+  .promo__close { order: 2; }
+  .promo__note { order: 3; flex: 1 0 100%; }
+}
+
+/* ----------------------- 1c. Поиск по сайту ------------------------------
+   Кнопка-лупа в шапке и окно поиска (разметку окна создаёт search.js).
+   Кнопка повторяет телефон-кружок из мобильной шапки, чтобы пара иконок
+   читалась как один блок действий. */
+.header__search {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 42px; height: 42px; padding: 0; flex: none;
+  color: var(--gold-600);
+  background: none;
+  border: 1px solid rgba(212, 175, 55, .4);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: color .25s var(--ease), background-color .25s var(--ease),
+              border-color .25s var(--ease);
+}
+.header__search .icon { width: 20px; height: 20px; }
+.header__search:hover { color: var(--gold-700); border-color: var(--gold-500); background: rgba(212, 175, 55, .08); }
+.header__search:focus-visible { outline: 2px solid var(--gold-500); outline-offset: 2px; }
+
+/* Окно поиска. Держится поверх всего, но не на весь экран: короткий список
+   переходов, а не отдельная страница выдачи. */
+.search { position: fixed; inset: 0; z-index: 200; }
+.search__backdrop { position: absolute; inset: 0; background: rgba(7, 22, 48, .55); backdrop-filter: blur(2px); }
+.search__dialog {
+  position: relative;
+  width: min(640px, calc(100vw - 2rem));
+  margin: clamp(3rem, 12vh, 9rem) auto 0;
+  background: var(--white);
+  border: 1px solid rgba(212, 175, 55, .35);
+  border-radius: 18px;
+  box-shadow: 0 30px 60px rgba(7, 22, 48, .35);
+  overflow: hidden;
+}
+.search__field { display: flex; align-items: center; gap: .6rem; padding: .9rem 1rem; border-bottom: 1px solid var(--light-2); }
+.search__icon { width: 20px; height: 20px; flex: none; color: var(--gold-600); }
+.search__input {
+  flex: 1 1 auto; min-width: 0;
+  font: inherit; font-size: 1.05rem;
+  color: var(--navy-900);
+  background: none; border: 0; outline: none;
+}
+.search__input::placeholder { color: var(--text-muted); }
+.search__close {
+  flex: none; display: inline-flex; align-items: center; justify-content: center;
+  width: 32px; height: 32px; padding: 0;
+  color: var(--text-muted); background: none; border: 0; border-radius: 50%; cursor: pointer;
+}
+.search__close svg { width: 16px; height: 16px; }
+.search__close:hover { color: var(--navy-900); background: var(--light-2); }
+.search__status { margin: 0; padding: .6rem 1rem 0; font-size: .8rem; color: var(--text-muted); }
+.search__list { list-style: none; margin: 0; padding: .4rem; max-height: min(58vh, 460px); overflow-y: auto; }
+.search__hit {
+  display: grid; gap: .15rem;
+  padding: .7rem .8rem;
+  border-radius: 12px;
+  color: var(--navy-900); text-decoration: none;
+}
+/* Подсветка строки одна и та же для мыши, клавиатуры и стрелок —
+   иначе непонятно, что откроется по Enter. */
+.search__hit:hover, .search__hit:focus-visible, .search__hit.is-active {
+  background: rgba(212, 175, 55, .12);
+  outline: none;
+}
+.search__hit-title { font-weight: 700; line-height: 1.3; }
+.search__hit-desc { font-size: .85rem; color: var(--text-muted); line-height: 1.4; }
+.search__hit-url { font-size: .75rem; color: var(--gold-700); }
+.search__hit mark { background: rgba(212, 175, 55, .35); color: inherit; border-radius: 3px; padding: 0 .1em; }
+
+/* Пока окно открыто, страница под ним не прокручивается */
+body.is-search-open { overflow: hidden; }
+
+@media (max-width: 640px) {
+  /* В узкой шапке кружки жмутся друг к другу — ужимаем оба одинаково,
+     чтобы лого, поиск, телефон и бургер уместились в одну строку. */
+  .header__search { width: 38px; height: 38px; }
+  .header__search .icon { width: 18px; height: 18px; }
+  .search__dialog { margin-top: 1.5rem; width: calc(100vw - 1.5rem); }
+  .search__list { max-height: 62vh; }
+}
+
+@media (max-width: 380px) {
+  /* На 320px четвёртый элемент в шапке (лупа) уже не помещается: строка
+     распирала вёрстку на 20px и появлялась горизонтальная прокрутка.
+     Ужимаем промежутки и оба кружка — поиск остаётся доступен и здесь. */
+  .header__inner { gap: .5rem; }
+  .header__actions { gap: .45rem; }
+  .header__search, .header__phone { width: 34px; height: 34px; }
+  .header__search .icon, .header__phone .icon { width: 17px; height: 17px; }
+}
+
 /* --------------------- 2. Выпадающее подменю в шапке --------------------- */
 .nav__item--has-sub { position: relative; }
 .nav__sub {
@@ -157,18 +315,47 @@
   color: var(--text-muted-light); max-width: 62ch;
 }
 .page-hero__actions { display: flex; flex-wrap: wrap; gap: .8rem; margin-top: 1.4rem; }
-/* Главный CTA первого экрана. Раньше он был мельче заголовков в карточках
-   ниже и терялся на их фоне: глаз шёл заголовок → кнопка → «нарядные»
-   карточки. Кнопка должна быть первой по весу — крупнее, с ореолом,
-   с подписью не мельче заголовка карточки (17.6px). */
-.page-hero__actions .btn--gold.btn--lg {
+/* Кнопки первого экрана. Размер общий для обеих — «Оставить заявку» и
+   «Личный кабинет» совпадают по паддингам, скруглению и кеглю, различаясь
+   только заливкой, поэтому правило висит на .btn--lg, а не на .btn--gold.
+   Крупными они стали не случайно: раньше CTA был мельче заголовков в
+   карточках ниже и терялся на их фоне — подпись не мельче 17.6px, ореол
+   остаётся привилегией главного CTA. */
+.page-hero__actions .btn--lg {
   padding: 1.15rem 2.6rem;
   font-size: 1.15rem;
   border-radius: 999px;
+}
+.page-hero__actions .btn--gold.btn--lg {
   box-shadow: 0 14px 34px rgba(212, 175, 55, .34), 0 0 0 7px rgba(212, 175, 55, .10);
 }
 .page-hero__actions .btn--gold.btn--lg:hover {
   box-shadow: 0 20px 44px rgba(212, 175, 55, .46), 0 0 0 9px rgba(212, 175, 55, .15);
+}
+/* Вторичная кнопка: та же форма, вместо жёлтой плашки — рамка и текст
+   в тон золота. Тень мягче, чтобы не спорить с главным CTA. */
+.page-hero__actions .btn--ghost.btn--lg {
+  border-color: rgba(227, 196, 106, .55);
+  color: var(--gold-300);
+  background: rgba(255, 255, 255, .03);
+  box-shadow: 0 10px 26px rgba(11, 30, 63, .28);
+}
+.page-hero__actions .btn--ghost.btn--lg:hover {
+  border-color: var(--gold-500);
+  background: rgba(212, 175, 55, .12);
+  box-shadow: 0 14px 32px rgba(11, 30, 63, .34);
+}
+/* Узкие экраны: пара кнопок в строку уже не помещается (nowrap в .btn не даёт
+   им сжаться), поэтому переносим их друг под друга во всю ширину колонки —
+   иначе вторая кнопка выпирала бы за край и поджимала строку
+   «Ответим в течение рабочего дня». */
+@media (max-width: 560px) {
+  .page-hero__actions { gap: .7rem; }
+  .page-hero__actions .btn--lg {
+    width: 100%;
+    padding-left: 1.4rem; padding-right: 1.4rem;
+    font-size: 1.05rem;
+  }
 }
 
 /* Главная: hero занимает высоту экрана и центрирует контент по вертикали,

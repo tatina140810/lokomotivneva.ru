@@ -14,7 +14,7 @@
   'use strict';
 
   var LEAD_ENDPOINT = 'https://app.lokomotivneva.ru/api/site-leads/public';
-  var PHONE = '+7 (495) 240-90-65';
+  var PHONE = '+7 (495) 10-80-100';
 
   var $ = function (sel, ctx) { return (ctx || document).querySelector(sel); };
   var $$ = function (sel, ctx) { return [].slice.call((ctx || document).querySelectorAll(sel)); };

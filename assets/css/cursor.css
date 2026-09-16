@@ -1,0 +1,45 @@
+/* ------------------------- 12. Фирменный курсор --------------------------
+   Золотая стрелка вместо системного указателя и золотая пыльца следом за ней.
+   Системный курсор прячется только под классом .has-cursor, который ставит
+   v2.js: при выключенном JS указатель остаётся обычным.                  */
+.has-cursor,
+.has-cursor a,
+.has-cursor button,
+.has-cursor select,
+.has-cursor input,
+.has-cursor textarea,
+.has-cursor [role="button"] { cursor: none; }
+
+.cursor-arrow {
+  position: fixed;
+  top: 0; left: 0;
+  z-index: 10000;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity .2s ease;
+  will-change: transform;
+  filter: drop-shadow(0 2px 5px rgba(9, 20, 42, .45));
+}
+.cursor-arrow svg { display: block; transform: translate(-2px, -2px); }
+.cursor-dust {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity .2s ease;
+}
+.cursor-visible .cursor-arrow,
+.cursor-visible .cursor-dust { opacity: 1; }
+
+/* Над ссылкой или кнопкой стрелка чуть увеличивается и ярче светится —
+   видно, что элемент «живой». */
+.cursor-active .cursor-arrow { transform-origin: 0 0; filter: drop-shadow(0 0 8px rgba(212, 175, 55, .75)); }
+.cursor-active .cursor-arrow svg { transform: translate(-2px, -2px) scale(1.18); }
+.cursor-press .cursor-arrow svg { transform: translate(-2px, -2px) scale(.9); }
+
+@media (prefers-reduced-motion: reduce) {
+  .cursor-arrow, .cursor-dust { display: none; }
+  .has-cursor, .has-cursor a, .has-cursor button,
+  .has-cursor select, .has-cursor input, .has-cursor textarea { cursor: auto; }
+}

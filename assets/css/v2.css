@@ -1,0 +1,372 @@
+/* =============================================================================
+   v2.css — новый первый экран главной: мокап кабинета, лента курсов,
+   экспресс-расчёт, метрики, «Как мы защищаем платёж», мокап приложения.
+   -----------------------------------------------------------------------------
+   Подключается ТОЛЬКО на главной, после styles.css и additions.css.
+   Все токены берутся из styles.css (navy/gold) — новых цветов не вводим.
+   Анимации — исключительно transform/opacity (композитинг на GPU),
+   никаких библиотек: вес файла ~10 КБ, JS-зависимостей нет.
+   ========================================================================== */
+
+/* ------------------------------ 1. HERO ---------------------------------- */
+.hero-v2 {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr);
+  gap: clamp(1.5rem, 1rem + 2.5vw, 3.5rem);
+  align-items: center;
+}
+@media (max-width: 960px) { .hero-v2 { grid-template-columns: 1fr; } }
+
+/* Первый экран больше не растягивается на полтора экрана текстурой:
+   высоту задаёт содержимое, а не фон. */
+/* Первый экран — колонка: контент по центру, лента курсов прижата к нижней
+   кромке экрана. Раньше лента была отдельной секцией и уходила под сгиб. */
+.page-hero--v2 {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-block: clamp(1.2rem, .8rem + 1.6vw, 2.2rem) 0;
+  overflow: hidden;
+}
+.page-hero--v2 > .container { width: 100%; padding-bottom: 1rem; }
+.page-hero--v2 .rates {
+  margin-top: auto;
+  width: 100%;
+  border-bottom: 0;
+}
+.page-hero--v2 .page-hero__inner { max-width: 44rem; }
+/* Заголовок на главной чуть меньше базового --fs-hero: в первый экран теперь
+   встаёт ещё и экспресс-расчёт, и кнопка «Оставить заявку» должна оставаться
+   видимой без прокрутки на ноутбучном экране 1440×900. */
+.page-hero--v2 h1 { font-size: clamp(1.7rem, 1.05rem + 1.7vw, 2.6rem); margin-bottom: .7rem; }
+.page-hero--v2 .page-hero__lead { font-size: clamp(.92rem, .88rem + .2vw, 1.02rem); max-width: 40rem; }
+.page-hero--v2 .hero-facts { margin-top: 1.1rem; }
+
+/* Мягкое свечение за мокапом. Анимируется только opacity+scale раз в 9 с —
+   один композиторский слой, нагрузки на CPU нет. */
+.hero-v2__glow {
+  position: absolute;
+  inset: auto -10% -20% auto;
+  width: min(60vw, 720px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(212,175,55,.16), transparent 62%);
+  pointer-events: none;
+  animation: glowPulse 9s ease-in-out infinite;
+  will-change: transform, opacity;
+}
+@keyframes glowPulse {
+  0%, 100% { transform: scale(1);    opacity: .75; }
+  50%      { transform: scale(1.08); opacity: 1; }
+}
+
+/* --------------------- 2. Мокап личного кабинета -------------------------- */
+.app-mock {
+  position: relative;
+  border-radius: var(--radius-lg);
+  background: linear-gradient(160deg, #102A54 0%, #0B1E3F 62%, #081832 100%);
+  border: 1px solid rgba(212, 175, 55, .28);
+  box-shadow: 0 30px 70px rgba(4, 12, 28, .45);
+  padding: clamp(.9rem, .6rem + 1vw, 1.35rem);
+  color: var(--text-light);
+  overflow: hidden;
+}
+.app-mock__bar {
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  padding-bottom: .8rem;
+  border-bottom: 1px solid rgba(255, 255, 255, .09);
+}
+.app-mock__dots { display: flex; gap: .3rem; }
+.app-mock__dots i { width: .5rem; height: .5rem; border-radius: 50%; background: rgba(255,255,255,.22); }
+.app-mock__title { font-size: .8rem; letter-spacing: .04em; color: var(--text-muted-light); }
+.app-mock__live {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: .35rem;
+  font-size: .72rem;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--gold-400);
+}
+.app-mock__live::before {
+  content: "";
+  width: .42rem; height: .42rem;
+  border-radius: 50%;
+  background: var(--gold-500);
+  animation: livePulse 2.4s ease-in-out infinite;
+}
+@keyframes livePulse { 0%, 100% { opacity: .35; } 50% { opacity: 1; } }
+
+.app-mock__sum {
+  display: flex;
+  align-items: baseline;
+  gap: .6rem;
+  padding: 1rem 0 .2rem;
+}
+.app-mock__sum b { font-size: clamp(1.5rem, 1.1rem + 1.6vw, 2.1rem); letter-spacing: -.02em; }
+.app-mock__sum span { font-size: .82rem; color: var(--text-muted-light); }
+
+.app-mock__rows { display: grid; gap: .5rem; margin-top: .9rem; }
+.app-mock__row {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: .7rem;
+  padding: .7rem .8rem;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, .05);
+  border: 1px solid transparent;
+  transition: border-color .4s var(--ease), background .4s var(--ease);
+}
+/* Поочерёдная подсветка строк — имитация живой очереди поручений.
+   Цикл 9 с, три строки со сдвигом по 3 с. */
+.is-js .app-mock__row { animation: rowFocus 9s linear infinite; }
+.is-js .app-mock__row:nth-child(2) { animation-delay: -6s; }
+.is-js .app-mock__row:nth-child(3) { animation-delay: -3s; }
+@keyframes rowFocus {
+  0%, 22%   { background: rgba(212,175,55,.12); border-color: rgba(212,175,55,.42); }
+  30%, 100% { background: rgba(255,255,255,.05); border-color: transparent; }
+}
+.app-mock__flag {
+  width: 2rem; height: 2rem;
+  display: grid; place-items: center;
+  border-radius: 9px;
+  background: rgba(212, 175, 55, .16);
+  color: var(--gold-400);
+  font-size: .7rem;
+  font-weight: 700;
+  letter-spacing: .02em;
+}
+.app-mock__where { display: block; font-size: .9rem; }
+.app-mock__meta { display: block; font-size: .74rem; color: var(--text-muted-light); }
+.app-mock__amount { font-size: .92rem; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.app-mock__status {
+  display: block;
+  font-size: .7rem;
+  text-align: right;
+  color: var(--gold-400);
+}
+.app-mock__status--done { color: #7FD6A0; }
+
+/* Лента этапов внизу мокапа: бегунок проходит четыре шага за 9 с. */
+.app-mock__track { margin-top: 1rem; padding-top: .85rem; border-top: 1px solid rgba(255,255,255,.09); }
+.app-mock__steps { display: flex; justify-content: space-between; gap: .4rem; font-size: .68rem; color: var(--text-muted-light); }
+.app-mock__line { position: relative; height: 3px; border-radius: 3px; background: rgba(255,255,255,.1); margin-top: .5rem; overflow: hidden; }
+.app-mock__line::after {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 28%;
+  border-radius: 3px;
+  background: var(--gold-fill);
+  transform: translateX(-100%);
+}
+.is-js .app-mock__line::after { animation: trackRun 9s cubic-bezier(.65,0,.35,1) infinite; }
+@keyframes trackRun {
+  0%   { transform: translateX(-100%); }
+  18%  { transform: translateX(0); }
+  38%  { transform: translateX(90%); }
+  58%  { transform: translateX(180%); }
+  78%, 100% { transform: translateX(260%); }
+}
+.app-mock__caption {
+  margin: .6rem 0 0;
+  font-size: .68rem;
+  color: var(--text-muted-light);
+  text-align: right;
+}
+
+/* ------------------------- 3. Лента курсов ------------------------------- */
+.rates {
+  background: var(--navy-900);
+  border-block: 1px solid rgba(212, 175, 55, .2);
+  overflow: hidden;
+  padding: .7rem 0;
+}
+.rates__inner { display: flex; align-items: center; gap: 1.2rem; }
+.rates__label {
+  flex: none;
+  padding-left: var(--gutter);
+  font-size: .7rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--gold-400);
+}
+.rates__viewport { overflow: hidden; flex: 1 1 auto; -webkit-mask-image: linear-gradient(90deg, transparent, #000 4%, #000 92%, transparent); mask-image: linear-gradient(90deg, transparent, #000 4%, #000 92%, transparent); }
+.rates__track { display: flex; gap: 2rem; width: max-content; }
+.is-js .rates__track { animation: ratesRun 46s linear infinite; }
+.rates:hover .rates__track, .rates:focus-within .rates__track { animation-play-state: paused; }
+@keyframes ratesRun { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+.rate { display: inline-flex; align-items: baseline; gap: .45rem; white-space: nowrap; font-size: .86rem; color: var(--text-light); }
+.rate__code { color: var(--text-muted-light); letter-spacing: .06em; }
+.rate__val { font-variant-numeric: tabular-nums; }
+.rate__delta { font-size: .74rem; }
+.rate__delta--up { color: #7FD6A0; }
+.rate__delta--down { color: #E9A6A6; }
+.rates__note { flex: none; padding-right: var(--gutter); font-size: .68rem; color: var(--text-muted-light); }
+@media (max-width: 760px) { .rates__label, .rates__note { display: none; } }
+
+/* --------------------- 4. Экспресс-расчёт в первом экране ---------------- */
+.express {
+  margin-top: 1.1rem;
+  padding: .85rem 1rem 1rem;
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, .06);
+  border: 1px solid rgba(212, 175, 55, .26);
+}
+.express__title { margin: 0 0 .7rem; font-size: .76rem; letter-spacing: .12em; text-transform: uppercase; color: var(--gold-400); }
+.express__row { display: grid; grid-template-columns: 1.4fr .8fr 1.2fr; gap: .6rem; }
+@media (max-width: 620px) { .express__row { grid-template-columns: 1fr 1fr; } }
+.express__field { display: grid; gap: .25rem; }
+.express__field label { font-size: .72rem; color: var(--text-muted-light); }
+.express__field input,
+.express__field select {
+  width: 100%;
+  padding: .55rem .6rem;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, .18);
+  background: rgba(7, 22, 48, .6);
+  color: var(--text-light);
+  font: inherit;
+  font-size: .9rem;
+}
+.express__field input:focus-visible,
+.express__field select:focus-visible { outline: 2px solid var(--gold-500); outline-offset: 1px; }
+.express__out {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .4rem 1.4rem;
+  margin-top: .8rem;
+  padding-top: .7rem;
+  border-top: 1px dashed rgba(255, 255, 255, .16);
+  font-size: .86rem;
+}
+.express__out b { color: var(--gold-400); font-variant-numeric: tabular-nums; }
+.express__note { margin: .55rem 0 0; font-size: .7rem; color: var(--text-muted-light); }
+
+/* --------------------------- 5. Полоса метрик ---------------------------- */
+.metrics-band { background: var(--light-2); }
+.metrics-band__grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(1rem, .6rem + 1.6vw, 2.2rem);
+}
+@media (max-width: 860px) { .metrics-band__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.metric__val {
+  font-size: clamp(1.9rem, 1.3rem + 2.4vw, 3rem);
+  line-height: 1;
+  letter-spacing: -.03em;
+  color: var(--navy-800);
+  font-variant-numeric: tabular-nums;
+}
+.metric__lab { margin: .5rem 0 0; font-size: .9rem; color: var(--text-muted-dark); }
+
+/* ------------------- 6. Как мы защищаем ваш платёж ----------------------- */
+.safeguards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(1rem, .6rem + 1.4vw, 1.8rem); }
+@media (max-width: 900px) { .safeguards { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 560px) { .safeguards { grid-template-columns: 1fr; } }
+.safeguard {
+  position: relative;
+  padding: 1.15rem 1.2rem 1.25rem;
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, .05);
+  border: 1px solid rgba(255, 255, 255, .09);
+  transition: transform .35s var(--ease), border-color .35s var(--ease);
+}
+.safeguard:hover { transform: translateY(-4px); border-color: rgba(212, 175, 55, .45); }
+.safeguard__num {
+  display: block;
+  font-size: .78rem;
+  letter-spacing: .18em;
+  color: var(--gold-500);
+  margin-bottom: .55rem;
+}
+.safeguard h3 { margin: 0 0 .4rem; font-size: var(--fs-h3); color: var(--white); }
+.safeguard p { margin: 0; font-size: .92rem; color: var(--text-muted-light); }
+
+/* ----------------------- 7. Мокап приложения ----------------------------- */
+.cabinet-v2 { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: clamp(1.5rem, 1rem + 2.4vw, 3.5rem); align-items: center; }
+@media (max-width: 860px) { .cabinet-v2 { grid-template-columns: 1fr; } }
+.phone {
+  width: 268px;
+  max-width: 100%;
+  margin-inline: auto;
+  border-radius: 34px;
+  padding: .7rem .6rem;
+  background: linear-gradient(165deg, #16305C, #0A1B38);
+  border: 1px solid rgba(212, 175, 55, .3);
+  box-shadow: 0 26px 60px rgba(4, 12, 28, .42);
+  color: var(--text-light);
+}
+.phone__notch { width: 44%; height: 5px; border-radius: 4px; background: rgba(255,255,255,.2); margin: .1rem auto .8rem; }
+.phone__label { font-size: .68rem; letter-spacing: .1em; text-transform: uppercase; color: var(--gold-400); }
+.phone__sum { font-size: 1.45rem; margin: .25rem 0 .1rem; font-variant-numeric: tabular-nums; }
+.phone__sub { font-size: .72rem; color: var(--text-muted-light); }
+.phone__list { display: grid; gap: .45rem; margin-top: .9rem; }
+.phone__item { display: grid; grid-template-columns: 1fr auto; gap: .3rem; padding: .55rem .6rem; border-radius: 11px; background: rgba(255,255,255,.06); font-size: .78rem; }
+.phone__item span { color: var(--text-muted-light); font-size: .68rem; display: block; }
+.phone__item b { font-variant-numeric: tabular-nums; font-weight: 600; }
+.phone__cta { margin-top: .8rem; text-align: center; padding: .6rem; border-radius: 11px; background: var(--gold-fill); color: #23180A; font-size: .82rem; font-weight: 600; }
+
+/* --------------------------- 8. Доступность ------------------------------ */
+@media (prefers-reduced-motion: reduce) {
+  .is-js .rates__track,
+  .is-js .app-mock__row,
+  .is-js .app-mock__line::after,
+  .hero-v2__glow,
+  .app-mock__live::before { animation: none !important; }
+  .safeguard { transition: none; }
+}
+
+/* ------------- 9. Таблица расчёта в экспресс-калькуляторе ---------------- */
+.express__calc { margin: .85rem 0 0; display: grid; gap: .3rem; }
+.express__calc > div { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; font-size: .86rem; }
+.express__calc dt { color: var(--text-muted-light); margin: 0; }
+.express__calc dd { margin: 0; text-align: right; }
+.express__calc dd b { color: var(--text-light); font-variant-numeric: tabular-nums; font-weight: 600; }
+.express__calc dt span { color: var(--gold-400); }
+.express__total { margin-top: .35rem; padding-top: .45rem; border-top: 1px solid rgba(255,255,255,.16); }
+.express__total dt { color: var(--text-light); font-weight: 600; }
+.express__total dd b { color: var(--gold-400); font-size: 1.05rem; }
+
+/* --------------- 10. Реальный скриншот личного кабинета ------------------ */
+.cabinet-shot { margin: 0; justify-self: center; max-width: 320px; }
+.cabinet-shot img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 18px;
+  border: 1px solid rgba(11, 30, 63, .14);
+  box-shadow: 0 24px 56px rgba(7, 22, 48, .22);
+}
+.cabinet-shot figcaption { margin-top: .9rem; text-align: center; }
+/* Под скриншотом — действие, а не подпись: посетитель уже видит, как выглядит
+   кабинет, и следующий логичный шаг — завести свой. Ссылка ведёт прямо на
+   форму регистрации в app.lokomotivneva.ru. */
+.cabinet-shot__cta { display: inline-flex; }
+
+/* --------- 11. Невысокие экраны: ужимаем первый экран целиком -------------
+   На ноутбуке 13" под шапкой и промо-полосой остаётся ~700 px. Кнопки и лента
+   курсов должны оставаться видны, поэтому уменьшаем шрифты и внутренние
+   отступы, а не прячем содержимое. */
+@media (max-height: 1000px) {
+  .page-hero--v2 h1 { font-size: clamp(1.5rem, .95rem + 1.35vw, 2.15rem); margin-bottom: .5rem; }
+  .page-hero--v2 .page-hero__lead { font-size: .95rem; line-height: 1.4; max-width: 34rem; }
+  .express { margin-top: .85rem; padding: .7rem .85rem .8rem; }
+  .express__title { margin-bottom: .5rem; }
+  .express__calc { margin-top: .6rem; gap: .18rem; }
+  .express__calc > div { font-size: .8rem; }
+  .express__field input, .express__field select { padding: .45rem .55rem; font-size: .85rem; }
+  .page-hero--v2 .page-hero__actions { margin-top: .9rem; }
+  .page-hero--v2 .page-hero__actions .btn { padding-block: .7rem; }
+  .page-hero--v2 .page-hero__note { margin-top: .5rem; }
+  .rates { padding: .5rem 0; }
+}
+@media (max-height: 820px) {
+  .page-hero--v2 .page-hero__lead { display: none; }
+  .express__note { display: none; }
+}
+

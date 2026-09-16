@@ -8,8 +8,8 @@
   <meta name="theme-color" content="#0B1E3F">
   <link rel="canonical" href="https://lokomotivneva.ru/cabinet/">
   <link rel="icon" href="/assets/img/logo-160.jpg">
-  <link rel="stylesheet" href="/assets/css/styles.css?v=20260904i">
-  <link rel="stylesheet" href="/assets/css/additions.css?v=20260904i">
+  <link rel="stylesheet" href="/assets/css/styles.css?v=20260911b">
+  <link rel="stylesheet" href="/assets/css/additions.css?v=20260911b">
   <!-- Yandex.Metrika counter -->
   <script type="text/javascript">
       (function(m,e,t,r,i,k,a){
@@ -24,7 +24,7 @@
   <noscript><div><img src="https://mc.yandex.ru/watch/112180979" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
   <!-- /Yandex.Metrika counter -->
   <style>
-    .guide{display:grid;gap:22px;grid-template-columns:repeat(auto-fit,minmax(320px,1fr))}
+    .guide{display:grid;gap:22px;grid-template-columns:repeat(auto-fit,minmax(min(320px,100%),1fr))}
     .guide__card{background:var(--white);border-radius:var(--radius-lg);padding:26px 24px 22px;box-shadow:var(--shadow-soft);border:1px solid rgba(20,38,92,.08)}
     .guide__title{font-size:var(--fs-h3);margin:0 0 6px;color:var(--text-dark)}
     .guide__note{margin:0 0 14px;color:var(--text-muted-dark);font-size:.94rem}
@@ -38,6 +38,7 @@
     .cab-note{color:var(--text-muted-light);font-size:.95rem;margin-top:12px}
     .cab-note a{color:var(--gold-400)}
   </style>
+  <link rel="stylesheet" href="/assets/css/cursor.css?v=20260917a">
 </head>
 <body>
   <a class="skip-link" href="#main">Перейти к основному содержанию</a>
@@ -51,11 +52,11 @@
       <li><a class="nav__link" href="/logistics/">Логистика</a></li>
       <li><a class="nav__link" href="/trust/">Проверьте нас</a></li>
       <li><a class="nav__link" href="/individuals/">Для физлиц</a></li>
-      <li><a class="nav__link" href="/cabinet/">Личный кабинет</a></li>
       <li><a class="nav__link" href="/contacts/">Контакты</a></li>
     </ul><div class="nav__mobile-actions"><a class="btn btn--gold btn--block" href="#lead-form">Оставить заявку</a></div></nav>
     <div class="header__actions">
-      <a class="header__phone" href="tel:+74952409065"><svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-phone"></use></svg><span>+7 (495) 240-90-65</span></a>
+      <button class="header__search" type="button" data-search-open aria-label="Поиск по сайту" title="Поиск по сайту"><svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-search"></use></svg></button>
+      <a class="header__phone" href="tel:+74951080100"><svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-phone"></use></svg><span>+7 (495) 10-80-100</span></a>
       <a class="btn btn--gold header__cta" href="#lead-form">Оставить заявку</a>
     </div>
     <button class="burger" id="burger" type="button" aria-label="Открыть меню" aria-expanded="false" aria-controls="nav"><span></span><span></span><span></span></button>
@@ -309,8 +310,10 @@
     <span class="toast__text"></span>
   </div>
 
-  <script src="/assets/js/site-config.js?v=20260828q" defer></script>
-  <script src="/assets/js/site.js?v=20260828q" defer></script>
-  <script src="/assets/js/main.js?v=20260828q" defer></script>
+  <script src="/assets/js/site-config.js?v=20260911b" defer></script>
+  <script src="/assets/js/site.js?v=20260911b" defer></script>
+  <script src="/assets/js/main.js?v=20260911b" defer></script>
+  <script src="/assets/js/search.js?v=20260911b" defer></script>
+  <script src="/assets/js/cursor.js?v=20260917a" defer></script>
 </body>
 </html>
