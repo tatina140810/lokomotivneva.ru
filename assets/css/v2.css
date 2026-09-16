@@ -404,5 +404,19 @@
   -webkit-mask-composite: source-in;
           mask-composite: intersect;
 }
+/* Safari рисует поверх остановленного ролика собственную кнопку
+   воспроизведения. Видео здесь — фон, а не плеер: управлять им незачем,
+   поэтому все системные контролы скрываем. Если автозапуск заблокирован,
+   на месте ролика просто остаётся стоп-кадр (Тати, 17.09.2026). */
+.hero-seal__video::-webkit-media-controls,
+.hero-seal__video::-webkit-media-controls-enclosure,
+.hero-seal__video::-webkit-media-controls-panel,
+.hero-seal__video::-webkit-media-controls-overlay-play-button,
+.hero-seal__video::-webkit-media-controls-start-playback-button {
+  display: none !important;
+  -webkit-appearance: none;
+  opacity: 0;
+}
+
 /* Ниже 1001px печать и раньше не показывалась: узкий экран занимает текст. */
 @media (max-width: 1000px) { .hero-seal { display: none; } }
