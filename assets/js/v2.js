@@ -188,8 +188,27 @@
     if (innerWidth < 1001) return;                       // на узком экране печати нет
     if (w.matchMedia && w.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     var start = function () {
+      v.muted = true;                       // Safari стартует только беззвучное
       v.src = v.getAttribute('data-hero-video');
-      v.play().catch(function () { /* автозапуск заблокирован — останется постер */ });
+      v.load();                             // без этого при preload="none" play() отклоняется
+      var go = function () {
+        var pr = v.play();
+        if (pr && pr.catch) pr.catch(function () {
+          /* Автозапуск заблокирован (энергосбережение, настройки браузера).
+             Пробуем ещё раз при первом действии человека на странице. */
+          var once = function () {
+            v.play().catch(function () {});
+            d.removeEventListener('pointerdown', once);
+            d.removeEventListener('keydown', once);
+            d.removeEventListener('scroll', once);
+          };
+          d.addEventListener('pointerdown', once, { once: true });
+          d.addEventListener('keydown', once, { once: true });
+          d.addEventListener('scroll', once, { once: true, passive: true });
+        });
+      };
+      if (v.readyState >= 2) go();
+      else v.addEventListener('loadeddata', go, { once: true });
     };
     if ('requestIdleCallback' in w) requestIdleCallback(start, { timeout: 2500 });
     else setTimeout(start, 1200);
