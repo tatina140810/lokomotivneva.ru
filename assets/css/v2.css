@@ -377,8 +377,9 @@
    hero не читается. Текстовый блок держит z-index: 2 и остаётся сверху.    */
 .hero-seal {
   position: absolute;
-  inset: 0 0 0 auto;
-  width: min(62%, 980px);
+  /* Отступ справа, чтобы печать не касалась края экрана. */
+  inset: 0 clamp(1rem, 3vw, 3rem) 0 auto;
+  width: min(50%, 780px);
   margin: 0;
   z-index: 0;
   pointer-events: none;
@@ -387,8 +388,10 @@
 .hero-seal__video {
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  object-position: 62% center;
+  /* Вписываем кадр целиком: при cover блок шире кадра по пропорции и срезал
+     печать по бокам (Тати, 17.09.2026). */
+  object-fit: contain;
+  object-position: right center;
   opacity: .5;
   /* Слева — плавный уход в фон под текстом, справа и по краям — лёгкое
      затухание, чтобы граница кадра не превращалась в видимую рамку. */
