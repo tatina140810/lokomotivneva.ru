@@ -15,7 +15,7 @@
   <link rel="icon" href="/assets/img/logo-160.jpg">
   <link rel="stylesheet" href="/assets/css/styles.css?v=20260917j">
   <link rel="stylesheet" href="/assets/css/additions.css?v=20260917j">
-  <link rel="stylesheet" href="/assets/css/v2.css?v=20260917j">
+  <link rel="stylesheet" href="/assets/css/v2.css?v=20260917dir">
   <link rel="stylesheet" href="/assets/css/helper.css?v=20260917j">
   <script type="application/ld+json">
   {
@@ -142,6 +142,9 @@
               <select id="x-route" data-express-route></select>
             </div>
           </div>
+          <!-- Валюты зависят от направления: в Китай мы не платим в евро,
+               в Европу — только в евро (см. assets/js/v2.js, DIRECTIONS). -->
+          <p class="express__ccynote" data-express-ccy-note></p>
 
           <dl class="express__calc" data-express-calc>
             <div><dt>Курс</dt><dd><b data-express-rate>85,6234 ₽</b></dd></div>
@@ -496,7 +499,7 @@
   <script src="/assets/js/site.js?v=20260917j" defer></script>
   <script src="/assets/js/main.js?v=20260917j" defer></script>
   <script src="/assets/js/search.js?v=20260917j" defer></script>
-  <script src="/assets/js/v2.js?v=20260917j" defer></script>
+  <script src="/assets/js/v2.js?v=20260917dir" defer></script>
   <script src="/assets/js/helper-kb.js?v=20260917j" defer></script>
   <script src="/assets/js/helper.js?v=20260917j" defer></script>
 </body>

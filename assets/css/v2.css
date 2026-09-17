@@ -246,6 +246,9 @@
 }
 .express__out b { color: var(--gold-400); font-variant-numeric: tabular-nums; }
 .express__note { margin: .55rem 0 0; font-size: .7rem; color: var(--text-muted-light); }
+/* Какими валютами платим в выбранное направление. В отличие от общей сноски
+   не прячется на низких экранах: это не оговорка, а условие расчёта. */
+.express__ccynote { margin: .45rem 0 0; font-size: .72rem; color: var(--text-muted-light); }
 
 /* --------------------------- 5. Полоса метрик ---------------------------- */
 .metrics-band { background: var(--light-2); }
