@@ -269,8 +269,13 @@
       + '</ul><p style="margin-top:10px;margin-bottom:0">Для Яндекс.Директа метки не нужны — '
       + 'реклама размечается автоматически.</p></div>';
 
+    html += '<div id="mine"></div>';
+
     $('#content').innerHTML = html;
     if (w.renderStatChart) w.renderStatChart($('#chart'), x.daily);
+    /* Блок «Мои визиты»: исключение своих заходов. Перерисовывает отчёт после
+       изменения — цифры пересчитываются сразу и задним числом. */
+    if (w.renderExcludeBox) w.renderExcludeBox($('#mine'), { api: API, token: token, onChange: load });
   }
 
   function tile(label, value, hint) {
