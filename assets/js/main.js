@@ -493,6 +493,16 @@
         company: honeypot ? honeypot.value : ''
       };
 
+      /* Откуда пришёл человек. Метки визита ставит assets/js/stat.js; по ним система
+         запишет в заявку канал (Яндекс.Директ, поиск, Telegram, прямой заход), и в
+         отчёте видно, какая реклама приносит клиентов, а не только заходы. Статистику
+         мог заблокировать браузер — тогда полей просто нет, заявка уходит как раньше. */
+      if (window.LOKO_STAT) {
+        payload.visitor_id = window.LOKO_STAT.visitorId;
+        payload.session_id = window.LOKO_STAT.sessionId;
+        payload.entry = window.LOKO_STAT.entry;
+      }
+
       sending = true;
       if (submitBtn) { submitBtn.disabled = true; submitBtn.dataset.label = submitBtn.textContent; submitBtn.textContent = 'Отправляем…'; }
 
@@ -500,6 +510,8 @@
         sending = false;
         if (submitBtn) { submitBtn.disabled = false; if (submitBtn.dataset.label) submitBtn.textContent = submitBtn.dataset.label; }
         if (ok) {
+          /* Отмечаем достижение цели: по этому событию считается конверсия канала. */
+          if (window.LOKO_STAT && window.LOKO_STAT.lead) window.LOKO_STAT.lead();
           showToast(name + ', заявка принята! Свяжемся с вами по указанному телефону.');
           form.reset();
           fields.forEach(function (field) { setFieldError(field, ''); });

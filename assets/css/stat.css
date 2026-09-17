@@ -1,0 +1,134 @@
+/* Страница внутренней статистики /stat/. Отдельный файл: это рабочий инструмент
+   директора, а не страница сайта, и общий CSS сайта ему не нужен — грузим только это.
+   Палитра графиков проверена на различимость при дальтонизме: золото (Яндекс) и
+   синий (остальные каналы) разводятся по светлоте, а не только по тону. */
+:root {
+  --navy: #0B1E3F;
+  --ink: #16202F;
+  --ink-2: #55637A;
+  --ink-3: #8A94A6;
+  --line: #E3E7EE;
+  --surface: #FFFFFF;
+  --bg: #F5F7FA;
+  --yandex: #B8860B;
+  --other: #2F6FA8;
+  --good: #2E7D53;
+  --bad: #B3261E;
+  --radius: 10px;
+  --shadow: 0 1px 2px rgba(11, 30, 63, .06), 0 4px 16px rgba(11, 30, 63, .05);
+}
+
+* { box-sizing: border-box; }
+body {
+  margin: 0; background: var(--bg); color: var(--ink);
+  font: 15px/1.5 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+h1, h2, h3 { margin: 0; font-weight: 600; letter-spacing: -.01em; }
+table { border-collapse: collapse; width: 100%; }
+a { color: var(--other); }
+
+.wrap { max-width: 1180px; margin: 0 auto; padding: 0 16px 64px; }
+
+/* Шапка */
+.top { background: var(--navy); color: #fff; padding: 14px 0; margin-bottom: 20px; }
+.top__in { max-width: 1180px; margin: 0 auto; padding: 0 16px; display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+.top__name { font-size: 16px; font-weight: 600; }
+.top__sub { color: #9FB0CC; font-size: 13px; }
+.top__right { margin-left: auto; display: flex; align-items: center; gap: 12px; font-size: 13px; color: #9FB0CC; }
+.top__exit { background: none; border: 1px solid rgba(255,255,255,.25); color: #fff; border-radius: 6px; padding: 5px 10px; cursor: pointer; font: inherit; font-size: 13px; }
+.top__exit:hover { background: rgba(255,255,255,.1); }
+
+/* Вход */
+.login { max-width: 380px; margin: 60px auto; background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow); padding: 28px; }
+.login h1 { font-size: 20px; margin-bottom: 6px; }
+.login p { color: var(--ink-2); font-size: 14px; margin: 0 0 20px; }
+.login label { display: block; font-size: 13px; color: var(--ink-2); margin: 0 0 6px; }
+.login input { width: 100%; padding: 10px 12px; border: 1px solid var(--line); border-radius: 8px; font: inherit; margin-bottom: 14px; }
+.login input:focus { outline: 2px solid var(--other); outline-offset: 1px; border-color: transparent; }
+.login button { width: 100%; padding: 11px; background: var(--navy); color: #fff; border: 0; border-radius: 8px; font: inherit; font-weight: 600; cursor: pointer; }
+.login button:hover { background: #12294f; }
+.login__err { color: var(--bad); font-size: 13px; min-height: 18px; margin: 0 0 8px; }
+
+/* Панель периода */
+.bar { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-bottom: 18px; }
+.bar__btn { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 7px 13px; font: inherit; font-size: 14px; color: var(--ink-2); cursor: pointer; }
+.bar__btn:hover { border-color: var(--ink-3); }
+.bar__btn[aria-pressed="true"] { background: var(--navy); border-color: var(--navy); color: #fff; }
+.bar__dates { margin-left: auto; display: flex; gap: 6px; align-items: center; font-size: 13px; color: var(--ink-2); }
+.bar__dates input { border: 1px solid var(--line); border-radius: 7px; padding: 6px 8px; font: inherit; font-size: 13px; }
+
+/* Главный ответ: Яндекс против остальных */
+.split { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+.split__card { background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow); padding: 20px 22px; border-left: 4px solid var(--line); }
+.split__card--yandex { border-left-color: var(--yandex); }
+.split__card--other { border-left-color: var(--other); }
+.split__label { font-size: 13px; color: var(--ink-2); margin-bottom: 4px; }
+.split__value { font-size: 40px; font-weight: 650; line-height: 1.05; letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
+.split__unit { font-size: 15px; font-weight: 400; color: var(--ink-2); margin-left: 6px; }
+.split__meta { margin-top: 8px; font-size: 13px; color: var(--ink-2); }
+.split__meta b { color: var(--ink); font-weight: 600; }
+
+/* Плитки сводки */
+.tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(168px, 1fr)); gap: 12px; margin-bottom: 22px; }
+.tile { background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow); padding: 14px 16px; }
+.tile__label { font-size: 12px; color: var(--ink-2); margin-bottom: 4px; }
+.tile__value { font-size: 23px; white-space: nowrap; font-weight: 600; font-variant-numeric: tabular-nums; letter-spacing: -.01em; }
+.tile__hint { font-size: 12px; color: var(--ink-3); margin-top: 2px; }
+
+/* Карточки разделов */
+.card { background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow); padding: 18px 20px; margin-bottom: 16px; }
+.card__head { display: flex; align-items: baseline; gap: 10px; margin-bottom: 14px; flex-wrap: wrap; }
+.card h2 { font-size: 16px; }
+.card__note { font-size: 13px; color: var(--ink-3); }
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+/* Таблицы */
+th, td { text-align: right; padding: 9px 10px; border-bottom: 1px solid var(--line); font-variant-numeric: tabular-nums; }
+th { font-size: 12px; font-weight: 500; color: var(--ink-2); border-bottom-color: var(--ink-3); white-space: nowrap; }
+th:first-child, td:first-child { text-align: left; font-variant-numeric: normal; }
+tbody tr:hover { background: #F8FAFC; }
+tbody tr:last-child td { border-bottom: 0; }
+.t-sub { color: var(--ink-3); font-size: 12px; }
+.t-zero { color: var(--ink-3); }
+
+/* Метка канала: точка цветом + название. Цвет никогда не единственный признак —
+   рядом всегда текст. */
+.dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 7px; vertical-align: baseline; }
+.dot--yandex { background: var(--yandex); }
+.dot--other { background: var(--other); }
+
+/* Полоса доли внутри таблицы */
+.barcell { position: relative; min-width: 110px; }
+.barcell__fill { position: absolute; left: 0; top: 50%; transform: translateY(-50%); height: 16px; border-radius: 0 4px 4px 0; opacity: .18; }
+.barcell__fill--yandex { background: var(--yandex); }
+.barcell__fill--other { background: var(--other); }
+.barcell__num { position: relative; }
+
+/* График */
+.chart { position: relative; }
+.chart svg { display: block; width: 100%; height: auto; }
+.chart__legend { display: flex; gap: 18px; font-size: 13px; color: var(--ink-2); margin-bottom: 10px; }
+.chart__legend span { display: inline-flex; align-items: center; }
+.tip { position: absolute; pointer-events: none; background: var(--navy); color: #fff; border-radius: 8px; padding: 8px 10px; font-size: 12.5px; line-height: 1.45; white-space: nowrap; box-shadow: 0 6px 20px rgba(11,30,63,.25); opacity: 0; transition: opacity .12s; z-index: 5; }
+.tip b { font-variant-numeric: tabular-nums; }
+.tip__row { display: flex; align-items: center; gap: 6px; }
+
+/* Подсказка про метки */
+.hintbox { background: #FFFBEF; border: 1px solid #F0E3BC; border-radius: var(--radius); padding: 16px 18px; margin-bottom: 16px; }
+.hintbox h2 { font-size: 15px; margin-bottom: 8px; }
+.hintbox p { margin: 0 0 10px; font-size: 14px; color: var(--ink-2); }
+.hintbox code { background: #fff; border: 1px solid #EADFC0; border-radius: 5px; padding: 2px 6px; font-size: 13px; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+.hintbox ul { margin: 0; padding-left: 18px; font-size: 14px; color: var(--ink-2); }
+.hintbox li { margin-bottom: 5px; }
+
+.empty { color: var(--ink-3); font-size: 14px; padding: 18px 0; text-align: center; }
+.loading { color: var(--ink-3); font-size: 14px; padding: 40px 0; text-align: center; }
+
+@media (max-width: 860px) {
+  .split, .grid2 { grid-template-columns: 1fr; }
+  .split__value { font-size: 32px; }
+  .bar__dates { margin-left: 0; width: 100%; }
+  .card { padding: 14px; }
+  th, td { padding: 8px 6px; font-size: 13px; }
+}

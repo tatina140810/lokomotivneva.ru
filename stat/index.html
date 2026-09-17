@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Статистика сайта — ООО «Локомотив»</title>
+  <!-- Рабочий экран, а не страница сайта: в поиске ему делать нечего. -->
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#0B1E3F">
+  <link rel="icon" href="/assets/img/logo-160.jpg">
+  <link rel="stylesheet" href="/assets/css/stat.css?v=20260917a">
+</head>
+<body>
+  <header class="top" id="top" hidden>
+    <div class="top__in">
+      <div>
+        <div class="top__name">Статистика сайта</div>
+        <div class="top__sub">lokomotivneva.ru — собственный учёт посещений</div>
+      </div>
+      <div class="top__right">
+        <span id="who"></span>
+        <button type="button" class="top__exit" id="exit">Выйти</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Вход по учётной записи сотрудника LokomotivPos: отдельных паролей для сайта
+       не заводим, чтобы не плодить секреты. Доступ — у директора. -->
+  <section class="login" id="login">
+    <h1>Статистика сайта</h1>
+    <p>Вход по вашей учётной записи в системе.</p>
+    <form id="login-form">
+      <p class="login__err" id="login-err"></p>
+      <label for="login-user">Логин или телефон</label>
+      <input id="login-user" name="user" autocomplete="username" required>
+      <label for="login-pass">Пароль</label>
+      <input id="login-pass" name="password" type="password" autocomplete="current-password" required>
+      <button type="submit" id="login-btn">Войти</button>
+    </form>
+  </section>
+
+  <main class="wrap" id="app" hidden>
+    <div class="bar" id="period">
+      <button type="button" class="bar__btn" data-days="0">Сегодня</button>
+      <button type="button" class="bar__btn" data-days="7">7 дней</button>
+      <button type="button" class="bar__btn" data-days="30" aria-pressed="true">30 дней</button>
+      <button type="button" class="bar__btn" data-days="90">90 дней</button>
+      <div class="bar__dates">
+        <label for="d-from">с</label>
+        <input type="date" id="d-from">
+        <label for="d-to">по</label>
+        <input type="date" id="d-to">
+        <button type="button" class="bar__btn" id="d-apply">Показать</button>
+      </div>
+    </div>
+
+    <div id="content"><p class="loading">Загружаем данные…</p></div>
+  </main>
+
+  <script src="/assets/js/stat-chart.js?v=20260917a" defer></script>
+  <script src="/assets/js/stat-dash.js?v=20260917a" defer></script>
+</body>
+</html>
