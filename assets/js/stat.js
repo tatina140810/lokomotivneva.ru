@@ -133,16 +133,27 @@
   /* Просмотр страницы. */
   push('pageview', { title: (d.title || '').slice(0, 300) });
 
-  /* Время на странице. Считаем только когда вкладка на виду: фоновая вкладка,
+  /* Время на странице. Считаем только пока вкладка на виду: фоновая вкладка,
      открытая на весь день, иначе дала бы часы «чтения» и испортила среднее.
-     Отправляем нарастающим итогом — потерянное событие ухода (закрыли вкладку,
-     пропал интернет) тогда не обнуляет время, отчёт берёт последнее известное. */
+     Время меряем по часам, а не тиками таймера: при шаге в несколько секунд визит
+     короче шага записывался бы нулём, и среднее занижалось. Отправляем нарастающим
+     итогом — потерянное событие ухода (закрыли вкладку, пропал интернет) тогда не
+     обнуляет время, отчёт берёт последнее известное. */
+  var visibleSince = d.visibilityState === 'hidden' ? 0 : Date.now();
+  function activeMs() {
+    return dwell + (visibleSince ? Date.now() - visibleSince : 0);
+  }
+  function pauseClock() {
+    if (visibleSince) { dwell += Date.now() - visibleSince; visibleSince = 0; }
+  }
+  function resumeClock() {
+    if (!visibleSince) visibleSince = Date.now();
+  }
   setInterval(function () {
     if (d.visibilityState === 'hidden') return;
-    dwell += TICK_MS;
-    if (dwell >= nextPing) {
+    if (activeMs() >= nextPing) {
       nextPing += PING_MS;
-      push('ping', { dwell_ms: dwell });
+      push('ping', { dwell_ms: activeMs() });
     }
   }, TICK_MS);
 
@@ -198,6 +209,7 @@
   function leave() {
     if (sent.left) return;
     sent.left = 1;
+    pauseClock();
     push('leave', { dwell_ms: dwell, scroll_pct: maxScroll });
     ls('loko_seen', String(Date.now()));
     flush();
@@ -205,7 +217,13 @@
   w.addEventListener('pagehide', leave);
   w.addEventListener('beforeunload', leave);
   d.addEventListener('visibilitychange', function () {
-    if (d.visibilityState === 'hidden') { push('ping', { dwell_ms: dwell, scroll_pct: maxScroll }); flush(); }
+    if (d.visibilityState === 'hidden') {
+      pauseClock();
+      push('ping', { dwell_ms: dwell, scroll_pct: maxScroll });
+      flush();
+    } else {
+      resumeClock();
+    }
   });
 
   setInterval(function () { flush(); }, FLUSH_MS);
