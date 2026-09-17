@@ -683,6 +683,19 @@ a.contacts__value:hover { color: var(--gold-700); }
 .field__input:focus { border-color: var(--gold-500); background: rgba(255, 255, 255, .08); outline: none; }
 .field__input--area { resize: vertical; min-height: 110px; }
 
+/* Пункты раскрытого списка.
+   Windows рисует выпадающий список средствами системы: фон берёт свой (белый), а цвет
+   текста наследует от самого select — а он у нас светлый, под тёмное поле. В итоге на
+   Windows пункты были белыми по белому и не читались: виден только подсвеченный
+   (Тати прислала скриншот 2026-09-17). Задаём цвета пунктов явно — на macOS, где
+   список рисуется иначе, это ничего не меняет. Правило намеренно общее, для ВСЕХ
+   выпадающих списков сайта, чтобы следующий такой же не завёл баг заново. */
+select option,
+select optgroup {
+  color: #16202F;
+  background-color: #FFFFFF;
+}
+
 /* Состояние ошибки проставляет скрипт валидации */
 .field__input.is-invalid { border-color: #E5715F; background: rgba(229, 113, 95, .08); }
 .field__error { margin: 0; font-size: .82rem; color: #FFAA9C; }
