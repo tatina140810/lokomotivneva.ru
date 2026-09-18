@@ -55,7 +55,7 @@
      тогда показываем все валюты. Значения ниже запасные: основные приходят из API. */
   var DIRECTIONS = {
     china:  ['CNY', 'USD'],
-    turkey: ['EUR'],
+    turkey: ['USD'],
     uae:    ['AED', 'USD'],
     europe: ['EUR'],
     other:  []
