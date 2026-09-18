@@ -40,7 +40,10 @@
   /* Раскладка */
   --container: 100%;   /* контейнер на всю ширину экрана (отступы держит --gutter) */
   --gutter: clamp(1rem, .5rem + 2vw, 2.5rem);
-  --header-h: 84px;
+  /* Шапка ниже прежней (Тати 2026-09-18): кнопки в ней больше нет, остались
+     логотип, меню и телефон — 84px под них было с запасом, и первый экран терял
+     высоту впустую. */
+  --header-h: 66px;
   --radius: 14px;
   --radius-lg: 22px;
 
@@ -203,7 +206,7 @@ h6 .text-gold, h6 .text-gold-dark { color: inherit; }
 /* Логотип-печать помещаем в белый медальон — как на фирменных макетах */
 .brand__seal {
   flex: none;
-  width: 54px; height: 54px;
+  width: 46px; height: 46px;
   border-radius: 50%;
   background: var(--white);
   border: 2px solid var(--gold-500);

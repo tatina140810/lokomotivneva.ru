@@ -47,7 +47,10 @@
 .page-hero--v2 h1 { font-size: clamp(2.36rem, 1.44rem + 2.65vw, 3.9rem); margin-bottom: 1.1rem; line-height: 1.12; }
 /* Первый экран дышит: заголовок, карточка расчёта и кнопки разведены. Пока над
    заголовком стояли надзаголовок и абзац, воздуха хватало; без них всё слиплось. */
-.page-hero--v2 .page-hero__inner > h1 { margin-bottom: clamp(2.2rem, 1.4rem + 2vw, 3.2rem); }
+/* Ширина по тексту, а не по колонке: пустой правый край заголовка иначе тянется
+   под графику и пересекается с бейджем — визуально ничего не задевает, но стоит
+   заголовку стать длиннее, и он налезет на бейдж (Тати 2026-09-18). */
+.page-hero--v2 .page-hero__inner > h1 { margin-bottom: clamp(2.2rem, 1.4rem + 2vw, 3.2rem); width: fit-content; max-width: 100%; }
 /* Карточка расчёта отодвинута от заголовка, а кнопки — от карточки: отступ снизу
    примерно с высоту самой кнопки «Оставить заявку» (Тати 2026-09-18). */
 .page-hero--v2 .express { margin-top: 0; margin-bottom: clamp(2.4rem, 1.6rem + 2vw, 3.4rem); max-width: 70%; }
@@ -425,20 +428,26 @@
 .hero-seal__video {
   width: 100%;
   height: 100%;
-  /* Вписываем кадр целиком: при cover блок шире кадра по пропорции и срезал
-     печать по бокам (Тати, 17.09.2026). */
-  object-fit: contain;
-  object-position: right center;
-  opacity: .5;
+  /* Ролик с монетами и картой — вертикальный, блок под него шире и ниже. При
+     contain кадр вписывался целиком и висел маленьким пятном справа; cover даёт
+     плотную картинку во всю высоту, а срезанные края всё равно съедает маска
+     (новое видео, Тати 2026-09-18). */
+  object-fit: cover;
+  object-position: center;
+  /* Ярче прежней печати: ролик тёмный, текст от него слева, и приглушать его до
+     половины незачем — иначе монеты и маршрут не читаются. */
+  opacity: .82;
   /* Кадр растворяется со ВСЕХ четырёх сторон: иначе на правой границе видна
      полоса — фон ролика чуть светлее фона страницы (Тати, 17.09.2026).
      Слева гасим сильнее: там под кадром идёт текст. */
+  /* Растушёвка шире прежней: cover подводит кадр вплотную к краям блока, и при
+     узкой маске справа и снизу видна ровная линия обреза. */
   -webkit-mask-image:
-    linear-gradient(to right, transparent 0, rgba(0,0,0,.35) 12%, #000 34%, #000 82%, transparent 100%),
-    linear-gradient(to bottom, transparent 0, #000 14%, #000 84%, transparent 100%);
+    linear-gradient(to right, transparent 0, rgba(0,0,0,.28) 10%, #000 38%, #000 74%, transparent 100%),
+    linear-gradient(to bottom, transparent 0, #000 18%, #000 78%, transparent 100%);
           mask-image:
-    linear-gradient(to right, transparent 0, rgba(0,0,0,.35) 12%, #000 34%, #000 82%, transparent 100%),
-    linear-gradient(to bottom, transparent 0, #000 14%, #000 84%, transparent 100%);
+    linear-gradient(to right, transparent 0, rgba(0,0,0,.28) 10%, #000 38%, #000 74%, transparent 100%),
+    linear-gradient(to bottom, transparent 0, #000 18%, #000 78%, transparent 100%);
   -webkit-mask-composite: source-in;
           mask-composite: intersect;
 }
@@ -457,4 +466,17 @@
 }
 
 /* Ниже 1001px печать и раньше не показывалась: узкий экран занимает текст. */
+/* Вторая половина заголовка — тише первой: она уточняет предложение, а не спорит
+   с ним за внимание (Тати 2026-09-18). Отдельной строкой, мельче и золотом. */
+.hero-h1__soft {
+  display: block;
+  margin-top: .35em;
+  font-size: .62em;
+  line-height: 1.15;
+}
+/* Цвет вынесен отдельным правилом с той же «весомостью», что и общее
+   .page-hero h1 .text-gold { color: inherit } в additions.css, — иначе заголовок
+   остаётся белым: то правило специфичнее одиночного класса. */
+.page-hero--v2 h1 .hero-h1__soft { color: var(--gold-400); }
+
 @media (max-width: 1000px) { .hero-seal { display: none; } }
