@@ -12,7 +12,11 @@
   display: inline-flex;
   align-items: center;
   gap: .55rem;
-  padding: .8rem 1.15rem;
+  /* Только значок, без подписи (Тати 2026-09-18): кнопка висит поверх содержимого,
+     и круглая метка меньше спорит с ним за внимание. Подпись остаётся в aria-label —
+     для экранных читалок и всплывающей подсказки кнопка по-прежнему называется. */
+  padding: .95rem;
+  justify-content: center;
   border: 0;
   border-radius: 980px;
   background: var(--gold-fill);
@@ -26,9 +30,10 @@
 }
 .helper-fab:hover { transform: translateY(-3px); box-shadow: 0 18px 42px rgba(212, 175, 55, .5); }
 .helper-fab:focus-visible { outline: 2px solid var(--navy-800); outline-offset: 3px; }
-.helper-fab__icon { width: 1.25em; height: 1.25em; flex: none; }
+.helper-fab__icon { width: 1.45em; height: 1.45em; flex: none; }
+.helper-fab__label { display: none; }
 .helper-open .helper-fab { display: none; }
-@media (max-width: 560px) { .helper-fab__label { display: none; } .helper-fab { padding: .85rem; } }
+@media (max-width: 560px) { .helper-fab { padding: .85rem; } }
 
 /* Панель диалога. */
 .helper {

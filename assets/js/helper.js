@@ -29,7 +29,8 @@
   var fab = d.createElement('button');
   fab.type = 'button';
   fab.className = 'helper-fab';
-  fab.setAttribute('aria-label', 'Открыть помощника');
+  fab.setAttribute('aria-label', 'Задать вопрос помощнику');
+  fab.title = 'Задать вопрос';
   fab.innerHTML = '<span class="helper-fab__icon">' + icon('headset') + '</span><span class="helper-fab__label">Задать вопрос</span>';
 
   var panel = d.createElement('section');
