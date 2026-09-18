@@ -290,7 +290,8 @@
      отсутствие строки читалось бы как «данных нет», а не как «оттуда не приходили». */
   var SHORT = {
     yandex_ads: 'Реклама (Директ)', yandex_search: 'Поиск Яндекса', yandex_maps: 'Карты и Бизнес',
-    google_ads: 'Реклама Google', google_search: 'Поиск Google', search_other: 'Другие поисковики',
+    google_ads: 'Реклама Google', google_search: 'Поиск Google',
+    telegram_ads: 'Реклама в Telegram', search_other: 'Другие поисковики',
     social: 'Соцсети', messenger: 'Мессенджеры', email: 'Рассылки',
     referral: 'Ссылки с сайтов', direct: 'Прямые заходы', other: 'Прочее',
   };

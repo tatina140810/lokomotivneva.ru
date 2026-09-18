@@ -57,14 +57,44 @@
   var visitorId = ls('loko_vid');
   if (!visitorId || visitorId.length !== 36) visitorId = ls('loko_vid', uuid());
 
+  /* Метки текущего перехода: рекламные (их ставит сама рекламная система) и наши
+     utm. Считываем до решения о визите — приход по объявлению начинает новый визит. */
+  var marks = {};
+  try {
+    var params = new URLSearchParams(d.location.search);
+    ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term',
+      'yclid', 'gclid', 'ysclid', 'fbclid'].forEach(function (k) {
+      var v = params.get(k);
+      if (v) marks[k] = String(v).slice(0, 200);
+    });
+  } catch (e) { /* адрес без параметров */ }
+  var markKey = Object.keys(marks).sort().map(function (k) { return k + '=' + marks[k]; }).join('&');
+
+  /* Внешний переход: пришли не с нашего же сайта. */
+  var refHost = '';
+  try {
+    refHost = d.referrer ? new URL(d.referrer).hostname.replace(/^www\./, '') : '';
+  } catch (e) { refHost = ''; }
+  var externalRef = refHost && refHost.indexOf('lokomotivneva.ru') < 0;
+
   /* Визит. Рвём по паузе в 30 минут — так же, как считают визиты все аналитики,
-     иначе одна открытая вкладка на неделю выглядела бы одним бесконечным визитом. */
+     иначе одна открытая вкладка на неделю выглядела бы одним бесконечным визитом.
+     И, главное, НОВЫЙ ИСТОЧНИК начинает новый визит: человек зашёл на сайт сам, а
+     через десять минут нажал наше объявление — это приход по рекламе, и засчитать
+     его прямым заходом значит не увидеть работу рекламы (Тати 2026-09-18).
+     Повторное открытие той же ссылки (обновление страницы) новый визит НЕ начинает:
+     сравниваем набор меток с прошлым, иначе одна перезагрузка плодила бы визиты. */
   var now = Date.now();
   var lastSeen = Number(ls('loko_seen') || 0);
   var sessionId = ls('loko_sid');
-  var freshSession = !sessionId || sessionId.length !== 36 || !lastSeen || (now - lastSeen) > SESSION_GAP_MS;
+  var expired = !sessionId || sessionId.length !== 36 || !lastSeen || (now - lastSeen) > SESSION_GAP_MS;
+  var newMarks = markKey && markKey !== ls('loko_mark');
+  var newRef = externalRef && refHost !== ls('loko_ref');
+  var freshSession = expired || newMarks || newRef;
   if (freshSession) sessionId = ls('loko_sid', uuid());
   ls('loko_seen', String(now));
+  ls('loko_mark', markKey || '');
+  ls('loko_ref', externalRef ? refHost : '');
 
   /* Откуда пришёл ВИЗИТ. Запоминаем один раз в начале визита: на второй странице
      источником уже значился бы наш собственный сайт, и канал бы потерялся.
@@ -76,14 +106,7 @@
   } catch (e) { entry = null; }
   if (freshSession || !entry) {
     var q = {};
-    try {
-      var sp = new URLSearchParams(d.location.search);
-      ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term',
-        'yclid', 'gclid', 'ysclid', 'fbclid'].forEach(function (k) {
-        var v = sp.get(k);
-        if (v) q[k] = String(v).slice(0, 200);
-      });
-    } catch (e) { /* адрес без параметров */ }
+    Object.keys(marks).forEach(function (k) { q[k] = marks[k]; });
     q.referrer = d.referrer ? String(d.referrer).slice(0, 500) : '';
     entry = q;
     ls('loko_entry', JSON.stringify(entry));
