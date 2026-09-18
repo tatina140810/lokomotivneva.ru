@@ -154,17 +154,21 @@
     var t = x.totals, ya = x.yandexVsRest.yandex, ot = x.yandexVsRest.rest;
     var html = '';
 
-    // 1. Главный ответ — крупно и первым делом.
+    // 1. Главный ответ — крупно и первым делом, сразу с разбивкой внутри.
+    // Без неё «из Яндекса 2» не отвечает на главный вопрос: это платная реклама или
+    // бесплатный поиск. Ради этого различия всё и затевалось.
     html += '<div class="split">'
       + '<div class="split__card split__card--yandex">'
       + '<div class="split__label">Пришли из Яндекса</div>'
       + '<div class="split__value">' + num(ya.visits) + '<span class="split__unit">' + (ya.share) + '% визитов</span></div>'
-      + '<div class="split__meta">Заявок: <b>' + num(ya.leads) + '</b> · реклама, поиск и карты</div>'
+      + breakdown(x.channels, true)
+      + '<div class="split__meta">Заявок из Яндекса: <b>' + num(ya.leads) + '</b></div>'
       + '</div>'
       + '<div class="split__card split__card--other">'
       + '<div class="split__label">Пришли из других каналов</div>'
       + '<div class="split__value">' + num(ot.visits) + '<span class="split__unit">' + (ot.share) + '% визитов</span></div>'
-      + '<div class="split__meta">Заявок: <b>' + num(ot.leads) + '</b> · Google, мессенджеры, ссылки, прямые заходы</div>'
+      + breakdown(x.channels, false)
+      + '<div class="split__meta">Заявок из других каналов: <b>' + num(ot.leads) + '</b></div>'
       + '</div></div>';
 
     // 2. Сводка.
@@ -276,6 +280,36 @@
     /* Блок «Мои визиты»: исключение своих заходов. Перерисовывает отчёт после
        изменения — цифры пересчитываются сразу и задним числом. */
     if (w.renderExcludeBox) w.renderExcludeBox($('#mine'), { api: API, token: token, onChange: load });
+  }
+
+  /* Разбивка внутри карточки. У Яндекса показываем все три канала всегда, даже с
+     нулями: «реклама 0, поиск 5» и «реклама 5, поиск 0» — это разные новости, и
+     отсутствие строки читалось бы как «данных нет», а не как «оттуда не приходили». */
+  var SHORT = {
+    yandex_ads: 'Реклама (Директ)', yandex_search: 'Поиск Яндекса', yandex_maps: 'Карты и Бизнес',
+    google_ads: 'Реклама Google', google_search: 'Поиск Google', search_other: 'Другие поисковики',
+    social: 'Соцсети', messenger: 'Мессенджеры', email: 'Рассылки',
+    referral: 'Ссылки с сайтов', direct: 'Прямые заходы', other: 'Прочее',
+  };
+  var YANDEX_KEYS = ['yandex_ads', 'yandex_search', 'yandex_maps'];
+
+  function breakdown(channels, isYandex) {
+    var by = {};
+    channels.forEach(function (c) { by[c.channel] = c; });
+    var keys = isYandex ? YANDEX_KEYS
+      : channels.filter(function (c) { return !c.isYandex && c.visits > 0; })
+                .sort(function (a, b) { return b.visits - a.visits; })
+                .map(function (c) { return c.channel; });
+    if (!keys.length) return '<div class="split__rows"><div class="split__row t-zero">Переходов не было</div></div>';
+    return '<div class="split__rows">' + keys.map(function (k) {
+      var c = by[k];
+      var visits = c ? c.visits : 0;
+      var leads = c ? c.leads : 0;
+      return '<div class="split__row' + (visits ? '' : ' t-zero') + '">'
+        + '<span>' + (SHORT[k] || k) + '</span>'
+        + '<b>' + num(visits) + (leads ? ' <span class="split__lead">· заявок ' + num(leads) + '</span>' : '') + '</b>'
+        + '</div>';
+    }).join('') + '</div>';
   }
 
   function tile(label, value, hint) {

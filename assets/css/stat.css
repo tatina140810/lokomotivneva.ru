@@ -66,7 +66,13 @@ a { color: var(--other); }
 .split__label { font-size: 13px; color: var(--ink-2); margin-bottom: 4px; }
 .split__value { font-size: 40px; font-weight: 650; line-height: 1.05; letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
 .split__unit { font-size: 15px; font-weight: 400; color: var(--ink-2); margin-left: 6px; }
-.split__meta { margin-top: 8px; font-size: 13px; color: var(--ink-2); }
+/* Разбивка внутри карточки: что именно стоит за крупной цифрой. */
+.split__rows { margin-top: 12px; border-top: 1px solid var(--line); padding-top: 8px; }
+.split__row { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; font-size: 13.5px; padding: 3px 0; color: var(--ink-2); }
+.split__row b { color: var(--ink); font-weight: 600; font-variant-numeric: tabular-nums; }
+.split__row.t-zero, .split__row.t-zero b { color: var(--ink-3); font-weight: 400; }
+.split__lead { font-weight: 400; color: var(--ink-2); font-size: 12.5px; }
+.split__meta { margin-top: 10px; font-size: 13px; color: var(--ink-2); }
 .split__meta b { color: var(--ink); font-weight: 600; }
 
 /* Плитки сводки */
