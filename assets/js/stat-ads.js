@@ -40,6 +40,32 @@
     var head = { Authorization: 'Bearer ' + opts.token, 'Content-Type': 'application/json' };
     var chans = (opts.summary.channels || []).filter(function (c) { return NAMES[c.channel]; });
 
+    /* План и освоение на сегодня. Бюджет вносится на весь срок кампании, а видеть
+       нужно, сколько из него уже съедено к сегодняшнему дню и сколько осталось
+       (Тати 2026-09-18). Освоение считается равномерно по дням: как именно тратит
+       площадка, мы не знаем, и честнее показать ровную прикидку, чем выдумать кривую. */
+    function plan() {
+      var rows = (opts.summary.budgetPlan || []);
+      if (!rows.length) return '';
+      var body = rows.map(function (p) {
+        var pct = p.total ? Math.round((p.spentToDate / p.total) * 100) : 0;
+        return '<tr><td>' + esc(p.label)
+          + '<div class="t-sub">' + dmy(p.periodStart) + ' — ' + dmy(p.periodEnd)
+          + ' · день ' + p.daysPassed + ' из ' + p.daysTotal + '</div></td>'
+          + '<td>' + money(p.total) + '</td>'
+          + '<td>' + money(p.spentToDate) + '<div class="t-sub">' + pct + '% срока</div></td>'
+          + '<td><b>' + money(p.remaining) + '</b></td>'
+          + '<td>' + money(p.perDay) + '</td></tr>';
+      }).join('');
+      return '<h3 class="adsh3">Бюджеты: сколько освоено на сегодня</h3>'
+        + '<table><thead><tr><th>Статья</th><th>Бюджет кампании</th>'
+        + '<th>Освоено на сегодня</th><th>Остаток</th><th>В день</th></tr></thead>'
+        + '<tbody>' + body + '</tbody></table>'
+        + '<p class="t-sub" style="margin:8px 0 0">Освоение считается равномерно по дням '
+        + 'срока кампании. Фактический расход площадки может идти неровно — для Директа '
+        + 'сверяйтесь с кабинетом.</p>';
+    }
+
     /* Три статьи бюджета: помеченный трафик — к своей рекламе, весь остальной — к
        экранам (решение Тати 2026-09-18). Для экранов это ОЦЕНКА: туда же попадают
        возвраты, сарафан, визитки и поиск по названию компании. Оговорка стоит рядом
@@ -127,6 +153,8 @@
         + '(колонка «Расход» в кабинете), а не недельный бюджет и не сумму на балансе — '
         + 'иначе цена заявки будет завышена в разы. Клики из кабинета указывать необязательно: '
         + 'они нужны, чтобы видеть, какая доля кликов дошла до сайта.</p>'
+        + plan()
+        + '<h3 class="adsh3">За выбранный период</h3>'
         + budgets()
         + '<h3 class="adsh3">По каналам подробно</h3>'
         + table() + form() + list(spendRows) + '</div>';
