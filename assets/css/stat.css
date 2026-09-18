@@ -159,3 +159,8 @@ tbody tr:last-child td { border-bottom: 0; }
 /* Итоговая строка по деньгам в разделе рекламы. */
 .adstotal { background: #F5F7FA; border-radius: 8px; padding: 12px 14px; margin: 0 0 16px; font-size: 14px; line-height: 1.5; }
 .adstotal b { font-variant-numeric: tabular-nums; }
+
+/* Сводная таблица затрат: итоговая строка должна читаться как итог. */
+.budget .totalrow td { border-top: 2px solid var(--ink-3); border-bottom: 0; font-weight: 600; padding-top: 12px; }
+.budget .totalrow td:first-child { font-weight: 600; }
+.adsform input#ad-title { width: 160px; }
