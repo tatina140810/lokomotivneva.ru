@@ -1,0 +1,140 @@
+/* Раздел «Реклама» на странице статистики (Тати 2026-09-18): во сколько обходится
+   переход и, главное, заявка.
+
+   Расход вносится руками: eLama не отдаёт статистику наружу, у Telegram Ads открытого
+   API для рекламодателей нет. Зато переходы и заявки — наши собственные данные, и цена
+   заявки считается честно, по ним. */
+(function (w, d) {
+  'use strict';
+  var CHANNELS = [
+    ['yandex_ads', 'Яндекс.Директ'],
+    ['telegram_ads', 'Реклама в Telegram'],
+    ['google_ads', 'Google Ads'],
+    ['social', 'Соцсети'],
+    ['other', 'Другая реклама'],
+  ];
+  var NAMES = {};
+  CHANNELS.forEach(function (c) { NAMES[c[0]] = c[1]; });
+
+  var nf = new Intl.NumberFormat('ru-RU');
+  function money(v) {
+    if (v == null) return '—';
+    var n = Number(v);
+    return nf.format(Math.round(n)) + ' ₽';
+  }
+  function esc(v) {
+    return String(v == null ? '' : v).replace(/[&<>"]/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c];
+    });
+  }
+  function dmy(iso) {
+    if (!iso) return '';
+    var s = String(iso).slice(0, 10).split('-');
+    return s[2] + '.' + s[1] + '.' + s[0];
+  }
+
+  /* host — куда рисуем; opts = { api, token, summary, onChange } */
+  w.renderAdsBox = function (host, opts) {
+    var api = opts.api;
+    var head = { Authorization: 'Bearer ' + opts.token, 'Content-Type': 'application/json' };
+    var chans = (opts.summary.channels || []).filter(function (c) { return NAMES[c.channel]; });
+
+    function table() {
+      var spent = chans.some(function (c) { return c.spend > 0; });
+      var rows = chans.map(function (c) {
+        return '<tr><td>' + esc(NAMES[c.channel] || c.channel) + '</td>'
+          + '<td>' + money(c.spend) + '</td>'
+          + '<td>' + nf.format(c.visits) + '</td>'
+          + '<td>' + nf.format(c.leads) + '</td>'
+          + '<td>' + money(c.costPerVisit) + '</td>'
+          + '<td><b>' + money(c.costPerLead) + '</b></td></tr>';
+      }).join('');
+      if (!rows) {
+        return '<p class="empty">Переходов с рекламы за период не было. '
+          + 'Проверьте, что в объявлениях стоит метка — без неё реклама попадает в «прямые заходы».</p>';
+      }
+      return '<table><thead><tr><th>Канал</th><th>Потрачено</th><th>Переходов</th>'
+        + '<th>Заявок</th><th>Цена перехода</th><th>Цена заявки</th></tr></thead>'
+        + '<tbody>' + rows + '</tbody></table>'
+        + (spent ? '' : '<p class="t-sub" style="margin:10px 0 0">Расход пока не внесён — '
+          + 'добавьте сумму из рекламного кабинета, и цена заявки посчитается сама.</p>');
+    }
+
+    function form() {
+      var today = new Date().toISOString().slice(0, 10);
+      return '<div class="adsform">'
+        + '<div class="adsform__row">'
+        + '<label>Канал<select id="ad-ch">' + CHANNELS.map(function (c) {
+          return '<option value="' + c[0] + '">' + c[1] + '</option>';
+        }).join('') + '</select></label>'
+        + '<label>Период с<input type="date" id="ad-from" value="' + today + '"></label>'
+        + '<label>по<input type="date" id="ad-to" value="' + today + '"></label>'
+        + '<label>Потрачено, ₽<input type="text" id="ad-sum" inputmode="decimal" placeholder="12500"></label>'
+        + '<label>Пометка<input type="text" id="ad-note" placeholder="кампания"></label>'
+        + '<button type="button" class="bar__btn" id="ad-add">Внести</button>'
+        + '</div><p class="adsform__err" id="ad-err"></p></div>';
+    }
+
+    function list(rows) {
+      if (!rows.length) return '';
+      return '<table style="margin-top:14px"><thead><tr><th>Внесено</th><th>Период</th>'
+        + '<th>Сумма</th><th></th></tr></thead><tbody>'
+        + rows.map(function (r) {
+          return '<tr><td>' + esc(NAMES[r.channel] || r.channel)
+            + (r.note ? '<div class="t-sub">' + esc(r.note) + '</div>' : '') + '</td>'
+            + '<td>' + dmy(r.period_start) + ' — ' + dmy(r.period_end) + '</td>'
+            + '<td>' + money(r.amount) + '</td>'
+            + '<td><button type="button" class="bar__btn" data-del="' + r.id + '">Убрать</button></td></tr>';
+        }).join('') + '</tbody></table>';
+    }
+
+    function draw(spendRows) {
+      host.innerHTML = '<div class="card"><div class="card__head"><h2>Реклама: во сколько обходится</h2>'
+        + '<span class="card__note">расход вносится из рекламного кабинета вручную — '
+        + 'ни eLama, ни Telegram Ads не отдают его автоматически</span></div>'
+        + table() + form() + list(spendRows) + '</div>';
+
+      d.getElementById('ad-add').addEventListener('click', function () {
+        var btn = d.getElementById('ad-add');
+        var err = d.getElementById('ad-err');
+        var sum = d.getElementById('ad-sum').value.replace(',', '.').trim();
+        var from = d.getElementById('ad-from').value;
+        var to = d.getElementById('ad-to').value;
+        err.textContent = '';
+        if (!/^\d{1,12}(\.\d{1,2})?$/.test(sum)) { err.textContent = 'Введите сумму, например 12500 или 12500.50'; return; }
+        if (!from || !to) { err.textContent = 'Укажите период'; return; }
+        if (to < from) { err.textContent = 'Дата «по» раньше даты «с»'; return; }
+        btn.disabled = true; btn.textContent = 'Сохраняем…';
+        w.fetch(api + '/site-analytics/spend', {
+          method: 'POST', headers: head,
+          body: JSON.stringify({
+            channel: d.getElementById('ad-ch').value,
+            period_start: from, period_end: to, amount: sum,
+            note: d.getElementById('ad-note').value,
+          }),
+        }).then(function (r) {
+          btn.disabled = false; btn.textContent = 'Внести';
+          if (!r.ok) { err.textContent = 'Не удалось сохранить, проверьте поля'; return; }
+          if (opts.onChange) opts.onChange();
+        }).catch(function () {
+          btn.disabled = false; btn.textContent = 'Внести';
+          err.textContent = 'Нет связи с системой';
+        });
+      });
+
+      [].forEach.call(host.querySelectorAll('[data-del]'), function (b) {
+        b.addEventListener('click', function () {
+          b.disabled = true; b.textContent = 'Убираем…';
+          w.fetch(api + '/site-analytics/spend/' + b.getAttribute('data-del'), {
+            method: 'DELETE', headers: head,
+          }).then(function () { if (opts.onChange) opts.onChange(); });
+        });
+      });
+    }
+
+    w.fetch(api + '/site-analytics/spend', { headers: head })
+      .then(function (r) { return r.ok ? r.json() : { spend: [] }; })
+      .then(function (res) { draw(res.spend || []); })
+      .catch(function () { draw([]); });
+  };
+})(window, document);
