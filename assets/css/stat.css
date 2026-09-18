@@ -148,6 +148,7 @@ tbody tr:last-child td { border-bottom: 0; }
 .adsform label { display: flex; flex-direction: column; gap: 4px; font-size: 12px; color: var(--ink-2); }
 .adsform input, .adsform select { border: 1px solid var(--line); border-radius: 8px; padding: 7px 9px; font: inherit; font-size: 14px; background: #fff; color: var(--ink); }
 .adsform input:focus, .adsform select:focus { outline: 2px solid var(--other); outline-offset: 1px; border-color: transparent; }
-.adsform input#ad-sum { width: 120px; }
+.adsform input#ad-sum { width: 110px; }
+.adsform input#ad-clicks { width: 80px; }
 .adsform input#ad-note { width: 180px; }
 .adsform__err { color: var(--bad); font-size: 13px; margin: 8px 0 0; min-height: 16px; }

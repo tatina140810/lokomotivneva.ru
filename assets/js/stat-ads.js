@@ -42,9 +42,16 @@
     function table() {
       var spent = chans.some(function (c) { return c.spend > 0; });
       var rows = chans.map(function (c) {
+        /* Доля кликов, дошедших до сайта. Меньше 100% — это норма: часть людей
+           закрывает страницу до загрузки, часть с блокировщиками, один человек
+           может кликнуть дважды. Резкое падение — повод проверить метку и страницу. */
+        var reach = c.clicks
+          ? '<div class="t-sub">' + nf.format(c.clicks) + ' в кабинете · дошло '
+            + (c.reachRate != null ? c.reachRate + '%' : '—') + '</div>'
+          : '';
         return '<tr><td>' + esc(NAMES[c.channel] || c.channel) + '</td>'
           + '<td>' + money(c.spend) + '</td>'
-          + '<td>' + nf.format(c.visits) + '</td>'
+          + '<td>' + nf.format(c.visits) + reach + '</td>'
           + '<td>' + nf.format(c.leads) + '</td>'
           + '<td>' + money(c.costPerVisit) + '</td>'
           + '<td><b>' + money(c.costPerLead) + '</b></td></tr>';
@@ -69,7 +76,8 @@
         }).join('') + '</select></label>'
         + '<label>Период с<input type="date" id="ad-from" value="' + today + '"></label>'
         + '<label>по<input type="date" id="ad-to" value="' + today + '"></label>'
-        + '<label>Потрачено, ₽<input type="text" id="ad-sum" inputmode="decimal" placeholder="12500"></label>'
+        + '<label>Потрачено, ₽<input type="text" id="ad-sum" inputmode="decimal" placeholder="54.35"></label>'
+        + '<label>Кликов<input type="text" id="ad-clicks" inputmode="numeric" placeholder="10"></label>'
         + '<label>Пометка<input type="text" id="ad-note" placeholder="кампания"></label>'
         + '<button type="button" class="bar__btn" id="ad-add">Внести</button>'
         + '</div><p class="adsform__err" id="ad-err"></p></div>';
@@ -83,7 +91,7 @@
           return '<tr><td>' + esc(NAMES[r.channel] || r.channel)
             + (r.note ? '<div class="t-sub">' + esc(r.note) + '</div>' : '') + '</td>'
             + '<td>' + dmy(r.period_start) + ' — ' + dmy(r.period_end) + '</td>'
-            + '<td>' + money(r.amount) + '</td>'
+            + '<td>' + money(r.amount) + (r.clicks ? '<div class="t-sub">' + nf.format(r.clicks) + ' кликов</div>' : '') + '</td>'
             + '<td><button type="button" class="bar__btn" data-del="' + r.id + '">Убрать</button></td></tr>';
         }).join('') + '</tbody></table>';
     }
@@ -92,6 +100,10 @@
       host.innerHTML = '<div class="card"><div class="card__head"><h2>Реклама: во сколько обходится</h2>'
         + '<span class="card__note">расход вносится из рекламного кабинета вручную — '
         + 'ни eLama, ни Telegram Ads не отдают его автоматически</span></div>'
+        + '<p class="t-sub" style="margin:-4px 0 12px">Вносите <b>фактический расход</b> '
+        + '(колонка «Расход» в кабинете), а не недельный бюджет и не сумму на балансе — '
+        + 'иначе цена заявки будет завышена в разы. Клики из кабинета указывать необязательно: '
+        + 'они нужны, чтобы видеть, какая доля кликов дошла до сайта.</p>'
         + table() + form() + list(spendRows) + '</div>';
 
       d.getElementById('ad-add').addEventListener('click', function () {
@@ -110,6 +122,7 @@
           body: JSON.stringify({
             channel: d.getElementById('ad-ch').value,
             period_start: from, period_end: to, amount: sum,
+            clicks: d.getElementById('ad-clicks').value.trim(),
             note: d.getElementById('ad-note').value,
           }),
         }).then(function (r) {
