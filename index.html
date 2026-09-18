@@ -15,7 +15,7 @@
   <link rel="icon" href="/assets/img/logo-160.jpg">
   <link rel="stylesheet" href="/assets/css/styles.css?v=20260917m">
   <link rel="stylesheet" href="/assets/css/additions.css?v=20260917m">
-  <link rel="stylesheet" href="/assets/css/v2.css?v=20260918air5">
+  <link rel="stylesheet" href="/assets/css/v2.css?v=20260918calc">
   <link rel="stylesheet" href="/assets/css/helper.css?v=20260917m">
   <script type="application/ld+json">
   {
@@ -46,27 +46,6 @@
 </head>
 <body>
   <a class="skip-link" href="#main">Перейти к основному содержанию</a>
-
-  <!-- Промо-полоса над шапкой. Паттерн узкой строки во всю ширину в проекте
-       уже описан стилями (.topbar), но в разметке не использовался — берём
-       его роль, отдельным блоком, не трогая hero.
-       Текст, сноска и дата окончания живут в site-config.js → promo; после
-       неё site.js перестаёт показывать полосу сам. Разметка здесь, а не в JS,
-       чтобы предложение было видно сразу и без JS. -->
-  <aside class="promo" id="promo" aria-label="Специальное предложение">
-    <div class="container promo__inner">
-      <p class="promo__text">
-        <b class="promo__accent" data-loko-promo="text">Комиссия от 0,3%</b>
-        <span data-loko-promo="tail">— до 30 ноября</span>
-      </p>
-      <p class="promo__note" data-loko-promo="note">*условия уточняйте у менеджера</p>
-      <button class="promo__close" type="button" id="promo-close" aria-label="Скрыть предложение">
-        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-          <path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-        </svg>
-      </button>
-    </div>
-  </aside>
 
   <header class="header" id="header">
     <div class="container header__inner">
@@ -488,7 +467,7 @@
     <span class="toast__text"></span>
   </div>
 
-  <script src="/assets/js/site-config.js?v=20260918dir" defer></script>
+  <script src="/assets/js/site-config.js?v=20260918calc" defer></script>
   <script src="/assets/js/site.js?v=20260917m" defer></script>
   <script src="/assets/js/main.js?v=20260918ok" defer></script>
   <script src="/assets/js/search.js?v=20260917m" defer></script>
