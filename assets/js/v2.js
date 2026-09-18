@@ -178,6 +178,21 @@
     recalc();
   }
 
+  /* Пояснение к расчёту раскрывается по звёздочке у «Итого к оплате». Оно скрыто
+     в разметке атрибутом hidden, поэтому без JS текста не видно — а это
+     предупреждение, что комиссия банка в сумму не входит. Значит, при загрузке
+     снимаем hidden и прячем сами: без JS сноска остаётся на виду. */
+  var noteToggle = d.querySelector('[data-express-note-toggle]');
+  var noteBox = d.getElementById('express-note');
+  if (noteToggle && noteBox) {
+    noteBox.setAttribute('hidden', '');    // прячет скрипт, не разметка
+    noteToggle.addEventListener('click', function () {
+      var open = noteBox.hasAttribute('hidden');
+      if (open) noteBox.removeAttribute('hidden'); else noteBox.setAttribute('hidden', '');
+      noteToggle.setAttribute('aria-expanded', String(open));
+    });
+  }
+
   /* --------------- Обновление котировок из системы ------------------------
      Тянем при загрузке и раз в 5 минут, пока вкладка открыта: столько же живёт
      кеш котировок на сервере, чаще смысла нет.                              */
