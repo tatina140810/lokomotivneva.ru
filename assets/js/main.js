@@ -512,7 +512,7 @@
         if (ok) {
           /* Отмечаем достижение цели: по этому событию считается конверсия канала. */
           if (window.LOKO_STAT && window.LOKO_STAT.lead) window.LOKO_STAT.lead();
-          showToast(name + ', заявка принята! Свяжемся с вами по указанному телефону.');
+          showToast(name + ', заявка принята! Ответим в течение рабочего дня — свяжемся по указанному телефону.');
           form.reset();
           fields.forEach(function (field) { setFieldError(field, ''); });
         } else {

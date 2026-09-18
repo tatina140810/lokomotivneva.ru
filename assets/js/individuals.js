@@ -156,7 +156,7 @@
       if (btn) { btn.disabled = false; if (btn.dataset.label) btn.textContent = btn.dataset.label; }
       if (res.ok) {
         form.reset();
-        say(okBox, name + ', заявка принята. Свяжемся с вами в рабочее время.');
+        say(okBox, name + ', заявка принята. Ответим в течение рабочего дня — свяжемся по указанному телефону.');
       } else {
         say(errBox, errorMessage(res.error));
       }
