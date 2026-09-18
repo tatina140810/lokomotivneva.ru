@@ -9,6 +9,7 @@
   var CHANNELS = [
     ['yandex_ads', 'Яндекс.Директ'],
     ['telegram_ads', 'Реклама в Telegram'],
+    ['offline_led', 'Экраны в Москва-Сити'],
     ['google_ads', 'Google Ads'],
     ['social', 'Соцсети'],
     ['other', 'Другая реклама'],
@@ -38,6 +39,28 @@
     var api = opts.api;
     var head = { Authorization: 'Bearer ' + opts.token, 'Content-Type': 'application/json' };
     var chans = (opts.summary.channels || []).filter(function (c) { return NAMES[c.channel]; });
+
+    /* Три статьи бюджета: помеченный трафик — к своей рекламе, весь остальной — к
+       экранам (решение Тати 2026-09-18). Для экранов это ОЦЕНКА: туда же попадают
+       возвраты, сарафан, визитки и поиск по названию компании. Оговорка стоит рядом
+       с цифрой, а не в примечании внизу, чтобы её нельзя было не заметить. */
+    function budgets() {
+      var groups = opts.summary.budgetGroups || [];
+      if (!groups.length) return '';
+      var rows = groups.map(function (g) {
+        return '<tr><td>' + esc(g.label)
+          + (g.measured ? '' : '<div class="t-sub">оценка: сюда попадает весь непомеченный трафик</div>')
+          + '</td>'
+          + '<td>' + money(g.spend) + '</td>'
+          + '<td>' + nf.format(g.visits) + '</td>'
+          + '<td>' + nf.format(g.newVisitors) + '</td>'
+          + '<td>' + nf.format(g.leads) + '</td>'
+          + '<td><b>' + money(g.costPerLead) + '</b></td></tr>';
+      }).join('');
+      return '<table><thead><tr><th>Статья бюджета</th><th>Потрачено</th><th>Переходов</th>'
+        + '<th>Из них впервые</th><th>Заявок</th><th>Цена заявки</th></tr></thead>'
+        + '<tbody>' + rows + '</tbody></table>';
+    }
 
     function table() {
       var spent = chans.some(function (c) { return c.spend > 0; });
@@ -104,6 +127,8 @@
         + '(колонка «Расход» в кабинете), а не недельный бюджет и не сумму на балансе — '
         + 'иначе цена заявки будет завышена в разы. Клики из кабинета указывать необязательно: '
         + 'они нужны, чтобы видеть, какая доля кликов дошла до сайта.</p>'
+        + budgets()
+        + '<h3 class="adsh3">По каналам подробно</h3>'
         + table() + form() + list(spendRows) + '</div>';
 
       d.getElementById('ad-add').addEventListener('click', function () {

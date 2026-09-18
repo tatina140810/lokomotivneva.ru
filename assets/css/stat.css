@@ -152,3 +152,6 @@ tbody tr:last-child td { border-bottom: 0; }
 .adsform input#ad-clicks { width: 80px; }
 .adsform input#ad-note { width: 180px; }
 .adsform__err { color: var(--bad); font-size: 13px; margin: 8px 0 0; min-height: 16px; }
+
+/* Подзаголовок внутри карточки рекламы. */
+.adsh3 { font-size: 14px; font-weight: 600; margin: 22px 0 10px; color: var(--ink-2); }
