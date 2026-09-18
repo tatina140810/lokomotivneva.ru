@@ -35,6 +35,18 @@
     { upTo: Infinity, pct: 1.3 }
   ];
   var AGENT_FEE_PCT = 0.3;
+
+  /* Валюты по направлениям — как в карте звонка оператора
+     (backend/src/lib/paymentDirections.js). Пустой список = согласуем с менеджером,
+     тогда показываем все валюты. Значения запасные: основные приходят из API.
+     В Турцию платим только долларами (Тати 2026-09-18). */
+  var DIRECTIONS = {
+    china:  ['CNY', 'USD'],
+    turkey: ['USD'],
+    uae:    ['AED', 'USD'],
+    europe: ['EUR'],
+    other:  []
+  };
   var TICKER_MARKUP = 1.5;   // в бегущей строке показываем средний тир
 
   var nf = function (v, dg) {
