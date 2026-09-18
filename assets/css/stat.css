@@ -155,3 +155,7 @@ tbody tr:last-child td { border-bottom: 0; }
 
 /* Подзаголовок внутри карточки рекламы. */
 .adsh3 { font-size: 14px; font-weight: 600; margin: 22px 0 10px; color: var(--ink-2); }
+
+/* Итоговая строка по деньгам в разделе рекламы. */
+.adstotal { background: #F5F7FA; border-radius: 8px; padding: 12px 14px; margin: 0 0 16px; font-size: 14px; line-height: 1.5; }
+.adstotal b { font-variant-numeric: tabular-nums; }

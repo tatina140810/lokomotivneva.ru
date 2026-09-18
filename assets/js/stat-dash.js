@@ -189,6 +189,10 @@
       + tile('Среднее время', dur(t.avgVisitMs), String(t.avgDepth).replace('.', ',') + ' страницы за визит')
       + tile('Ушли сразу', t.bounceRate + '%', 'одна страница, меньше 15 сек')
       + tile('Заявок с сайта', num(t.leads), leadHint(t))
+      + tile('Звонков', num(t.calls), 'входящие через Телфин')
+      + tile('Обращений всего', num(t.contacts),
+          x.money && x.money.costPerContact ? 'цена обращения ' + num(x.money.costPerContact) + ' ₽'
+            : 'заявки и звонки вместе')
       + '</div>';
 
     // 3. Динамика.

@@ -58,7 +58,16 @@
           + (p.remainingMeasured ? '<div class="t-sub">по замеру</div>' : '<div class="t-sub">расчётный</div>') + '</td>'
           + '<td>' + money(p.perDay) + '</td></tr>';
       }).join('');
-      return '<h3 class="adsh3">Бюджеты: сколько освоено на сегодня</h3>'
+      var m = opts.summary.money || {};
+      var totalBlock = m.spend
+        ? '<p class="adstotal">За выбранный период потрачено <b>' + money(m.spend) + '</b>, '
+          + 'получено обращений (заявки и звонки) <b>' + nf.format(m.contacts) + '</b>'
+          + (m.costPerContact ? ' — <b>' + money(m.costPerContact) + '</b> за обращение' : '')
+          + '.<br><span class="t-sub">Звонки по каналам не разносятся: номер метку не несёт, '
+          + 'и приписать звонок конкретной рекламе можно только со слов клиента.</span></p>'
+        : '';
+      return totalBlock
+        + '<h3 class="adsh3">Бюджеты: сколько освоено на сегодня</h3>'
         + '<table><thead><tr><th>Статья</th><th>Бюджет кампании</th>'
         + '<th>Освоено на сегодня</th><th>Остаток</th><th>В день</th></tr></thead>'
         + '<tbody>' + body + '</tbody></table>'
