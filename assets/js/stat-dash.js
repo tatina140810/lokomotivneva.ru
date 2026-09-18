@@ -178,7 +178,7 @@
       + tile('Из них впервые', num(t.newVisitors), 'раньше не заходили')
       + tile('Среднее время', dur(t.avgVisitMs), String(t.avgDepth).replace('.', ',') + ' страницы за визит')
       + tile('Ушли сразу', t.bounceRate + '%', 'одна страница, меньше 15 сек')
-      + tile('Заявок с сайта', num(t.leads), 'конверсия ' + pct(t.leadRate))
+      + tile('Заявок с сайта', num(t.leads), leadHint(t))
       + '</div>';
 
     // 3. Динамика.
@@ -314,6 +314,17 @@
         + '<b>' + num(visits) + (leads ? ' <span class="split__lead">· заявок ' + num(leads) + '</span>' : '') + '</b>'
         + '</div>';
     }).join('') + '</div>';
+  }
+
+  /* Подпись к заявкам. Заявки без известного источника (пришли до того, как заработал
+     счётчик, или у человека не сработал сбор) в конверсию не входят: делить их на
+     свежие визиты — значит показать процент, которого нет. */
+  function leadHint(t) {
+    var unknown = t.leadsUnknown || 0;
+    if (!unknown) return 'конверсия ' + pct(t.leadRate);
+    var tracked = t.leadsTracked || 0;
+    if (!tracked) return num(unknown) + ' без источника — пришли до включения статистики';
+    return 'конверсия ' + pct(t.leadRate) + ' · ещё ' + num(unknown) + ' без источника';
   }
 
   function tile(label, value, hint) {
