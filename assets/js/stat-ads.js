@@ -54,7 +54,8 @@
           + ' · день ' + p.daysPassed + ' из ' + p.daysTotal + '</div></td>'
           + '<td>' + money(p.total) + '</td>'
           + '<td>' + money(p.spentToDate) + '<div class="t-sub">' + pct + '% срока</div></td>'
-          + '<td><b>' + money(p.remaining) + '</b></td>'
+          + '<td><b>' + money(p.remaining) + '</b>'
+          + (p.remainingMeasured ? '<div class="t-sub">по замеру</div>' : '<div class="t-sub">расчётный</div>') + '</td>'
           + '<td>' + money(p.perDay) + '</td></tr>';
       }).join('');
       return '<h3 class="adsh3">Бюджеты: сколько освоено на сегодня</h3>'
@@ -116,16 +117,27 @@
           + 'добавьте сумму из рекламного кабинета, и цена заявки посчитается сама.</p>');
     }
 
+    /* Вносить можно то, что реально видно в кабинете: остаток на счёте, пополнение
+       или расход за период. Из остатков расход считается сам (положили минус
+       осталось) — так Тати и смотрит цифры (2026-09-18). */
     function form() {
       var today = new Date().toISOString().slice(0, 10);
       return '<div class="adsform">'
         + '<div class="adsform__row">'
+        + '<label>Что вносим<select id="ad-kind">'
+        + '<option value="balance">Остаток на счёте</option>'
+        + '<option value="topup">Пополнение счёта</option>'
+        + '<option value="spend">Расход за период</option>'
+        + '</select></label>'
         + '<label>Канал<select id="ad-ch">' + CHANNELS.map(function (c) {
           return '<option value="' + c[0] + '">' + c[1] + '</option>';
         }).join('') + '</select></label>'
-        + '<label>Период с<input type="date" id="ad-from" value="' + today + '"></label>'
-        + '<label>по<input type="date" id="ad-to" value="' + today + '"></label>'
-        + '<label>Потрачено, ₽<input type="text" id="ad-sum" inputmode="decimal" placeholder="54.35"></label>'
+        + '<label><span id="ad-from-lbl">На дату</span><input type="date" id="ad-from" value="' + today + '"></label>'
+        + '<label id="ad-to-wrap" hidden>по<input type="date" id="ad-to" value="' + today + '"></label>'
+        + '<label>Сумма<input type="text" id="ad-sum" inputmode="decimal" placeholder="11815"></label>'
+        + '<label>Валюта<select id="ad-cur">'
+        + '<option value="RUB">₽</option><option value="EUR">€</option><option value="USD">$</option>'
+        + '</select></label>'
         + '<label>Кликов<input type="text" id="ad-clicks" inputmode="numeric" placeholder="10"></label>'
         + '<label>Пометка<input type="text" id="ad-note" placeholder="кампания"></label>'
         + '<button type="button" class="bar__btn" id="ad-add">Внести</button>'
@@ -137,10 +149,15 @@
       return '<table style="margin-top:14px"><thead><tr><th>Внесено</th><th>Период</th>'
         + '<th>Сумма</th><th></th></tr></thead><tbody>'
         + rows.map(function (r) {
+          var kindName = { balance: 'остаток', topup: 'пополнение', spend: 'расход' }[r.kind || 'spend'];
+          var sign = { RUB: ' ₽', EUR: ' €', USD: ' $' }[r.currency || 'RUB'] || '';
+          var shown = nf.format(Math.round(Number(r.amount))) + sign
+            + (r.currency && r.currency !== 'RUB'
+              ? '<div class="t-sub">' + money(r.amount_rub) + ' по курсу</div>' : '');
           return '<tr><td>' + esc(NAMES[r.channel] || r.channel)
-            + (r.note ? '<div class="t-sub">' + esc(r.note) + '</div>' : '') + '</td>'
-            + '<td>' + dmy(r.period_start) + ' — ' + dmy(r.period_end) + '</td>'
-            + '<td>' + money(r.amount) + (r.clicks ? '<div class="t-sub">' + nf.format(r.clicks) + ' кликов</div>' : '') + '</td>'
+            + '<div class="t-sub">' + kindName + (r.note ? ' · ' + esc(r.note) : '') + '</div></td>'
+            + '<td>' + (r.kind === 'spend' ? dmy(r.period_start) + ' — ' + dmy(r.period_end) : dmy(r.period_start)) + '</td>'
+            + '<td>' + shown + (r.clicks ? '<div class="t-sub">' + nf.format(r.clicks) + ' кликов</div>' : '') + '</td>'
             + '<td><button type="button" class="bar__btn" data-del="' + r.id + '">Убрать</button></td></tr>';
         }).join('') + '</tbody></table>';
     }
@@ -159,21 +176,35 @@
         + '<h3 class="adsh3">По каналам подробно</h3>'
         + table() + form() + list(spendRows) + '</div>';
 
+      /* Остаток и пополнение — это одна дата, расход — период. Лишнее поле только
+         путало бы. */
+      var kindSel = d.getElementById('ad-kind');
+      function syncKind() {
+        var isRange = kindSel.value === 'spend';
+        d.getElementById('ad-to-wrap').hidden = !isRange;
+        d.getElementById('ad-from-lbl').textContent = isRange ? 'Период с' : 'На дату';
+      }
+      kindSel.addEventListener('change', syncKind);
+      syncKind();
+
       d.getElementById('ad-add').addEventListener('click', function () {
         var btn = d.getElementById('ad-add');
         var err = d.getElementById('ad-err');
         var sum = d.getElementById('ad-sum').value.replace(',', '.').trim();
+        var kind = kindSel.value;
         var from = d.getElementById('ad-from').value;
-        var to = d.getElementById('ad-to').value;
+        var to = kind === 'spend' ? d.getElementById('ad-to').value : from;
         err.textContent = '';
-        if (!/^\d{1,12}(\.\d{1,2})?$/.test(sum)) { err.textContent = 'Введите сумму, например 12500 или 12500.50'; return; }
-        if (!from || !to) { err.textContent = 'Укажите период'; return; }
+        if (!/^\d{1,12}(\.\d{1,2})?$/.test(sum)) { err.textContent = 'Введите сумму, например 11815 или 493.50'; return; }
+        if (!from || !to) { err.textContent = kind === 'spend' ? 'Укажите период' : 'Укажите дату'; return; }
         if (to < from) { err.textContent = 'Дата «по» раньше даты «с»'; return; }
         btn.disabled = true; btn.textContent = 'Сохраняем…';
         w.fetch(api + '/site-analytics/spend', {
           method: 'POST', headers: head,
           body: JSON.stringify({
             channel: d.getElementById('ad-ch').value,
+            kind: kind,
+            currency: d.getElementById('ad-cur').value,
             period_start: from, period_end: to, amount: sum,
             clicks: d.getElementById('ad-clicks').value.trim(),
             note: d.getElementById('ad-note').value,
