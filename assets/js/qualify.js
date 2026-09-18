@@ -127,7 +127,7 @@
     catSel.innerHTML = '<option value="">Не указывать</option>' +
       (q.categories || []).map(function (c) { return '<option>' + c + '</option>'; }).join('');
     if (currency) {
-      currency.innerHTML = (q.currencies || ['₽', '$', '¥', '€', '₺', 'AED'])
+      currency.innerHTML = (q.currencies || ['₽', '$', '¥', '€', 'AED'])
         .map(function (c) { return '<option>' + c + '</option>'; }).join('');
     }
 
