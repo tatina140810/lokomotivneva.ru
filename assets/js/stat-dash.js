@@ -233,8 +233,11 @@
 
     // 7. Действия, возвраты, устройства.
     html += '<div class="grid2">';
-    html += '<div class="card"><div class="card__head"><h2>Что делают</h2>'
-      + '<span class="card__note">звонки, мессенджеры, документы, заявки</span></div>'
+    // Подпись уточнена (Тати 2026-09-18): «Telegram» здесь легко принять за переход
+    // ИЗ Telegram, хотя это наоборот — посетитель нажал нашу кнопку и ушёл в мессенджер.
+    html += '<div class="card"><div class="card__head"><h2>Что делают на сайте</h2>'
+      + '<span class="card__note">нажатия на наши кнопки и ссылки — это действия посетителей, '
+      + 'а не источники перехода</span></div>'
       + list(x.actions, function (a) {
         return '<tr><td>' + esc(a.target) + '</td><td>' + num(a.count) + '</td><td>' + num(a.visits) + '</td></tr>';
       }, '<th>Действие</th><th>Раз</th><th>В скольких визитах</th>', 'Целевых действий пока не было.') + '</div>';

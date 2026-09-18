@@ -189,12 +189,12 @@
     if (!el) return null;
     if (el.getAttribute && el.getAttribute('data-stat')) return el.getAttribute('data-stat').slice(0, 200);
     var href = (el.getAttribute && el.getAttribute('href')) || '';
-    if (/^tel:/i.test(href)) return 'Телефон';
-    if (/^mailto:/i.test(href)) return 'Почта';
-    if (/t\.me|telegram/i.test(href)) return 'Telegram';
-    if (/wa\.me|whatsapp/i.test(href)) return 'WhatsApp';
-    if (/\.pdf($|\?)/i.test(href)) return 'Документ PDF';
-    if (/app\.lokomotivneva\.ru/i.test(href)) return 'Личный кабинет';
+    if (/^tel:/i.test(href)) return 'Нажали телефон';
+    if (/^mailto:/i.test(href)) return 'Нажали почту';
+    if (/t\.me|telegram/i.test(href)) return 'Ушли в Telegram';
+    if (/wa\.me|whatsapp/i.test(href)) return 'Ушли в WhatsApp';
+    if (/\.pdf($|\?)/i.test(href)) return 'Скачали документ';
+    if (/app\.lokomotivneva\.ru/i.test(href)) return 'Перешли в кабинет';
     return null;
   }
 
