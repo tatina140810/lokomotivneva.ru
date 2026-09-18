@@ -41,6 +41,11 @@
 /* Крупнее прежнего (Тати 2026-09-18): на первом экране остались только заголовок и
    калькулятор, и заголовок должен читаться как главное обещание. */
 .page-hero--v2 h1 { font-size: clamp(2.05rem, 1.25rem + 2.3vw, 3.4rem); margin-bottom: 1.1rem; line-height: 1.12; }
+/* Первый экран дышит: заголовок, карточка расчёта и кнопки разведены. Пока над
+   заголовком стояли надзаголовок и абзац, воздуха хватало; без них всё слиплось. */
+.page-hero--v2 .page-hero__inner > h1 { margin-bottom: clamp(1.6rem, 1rem + 1.6vw, 2.4rem); }
+.page-hero--v2 .express { margin-top: 0; }
+.page-hero--v2 .page-hero__actions { margin-top: clamp(1.4rem, 1rem + 1.2vw, 2rem); }
 .page-hero--v2 .page-hero__lead { font-size: clamp(.92rem, .88rem + .2vw, 1.02rem); max-width: 40rem; }
 .page-hero--v2 .hero-facts { margin-top: 1.1rem; }
 
@@ -358,21 +363,29 @@
    курсов должны оставаться видны, поэтому уменьшаем шрифты и внутренние
    отступы, а не прячем содержимое. */
 @media (max-height: 1000px) {
-  .page-hero--v2 h1 { font-size: clamp(1.75rem, 1.05rem + 1.9vw, 2.5rem); margin-bottom: .75rem; }
+  .page-hero--v2 h1 { font-size: clamp(1.9rem, 1.15rem + 2.1vw, 3rem); margin-bottom: .75rem; }
   .page-hero--v2 .page-hero__lead { font-size: .95rem; line-height: 1.4; max-width: 34rem; }
-  .express { margin-top: .85rem; padding: .7rem .85rem .8rem; }
+  .express { margin-top: .85rem; padding: 1.1rem 1.25rem 1.2rem; }
   .express__title { margin-bottom: .5rem; }
   .express__calc { margin-top: .6rem; gap: .18rem; }
   .express__calc > div { font-size: .8rem; }
   .express__field input, .express__field select { padding: .45rem .55rem; font-size: .85rem; }
-  .page-hero--v2 .page-hero__actions { margin-top: .9rem; }
+  .page-hero--v2 .page-hero__inner > h1 { margin-bottom: 1.7rem; }
+  .page-hero--v2 .page-hero__actions { margin-top: 1.6rem; }
   .page-hero--v2 .page-hero__actions .btn { padding-block: .7rem; }
   .page-hero--v2 .page-hero__note { margin-top: .5rem; }
   .rates { padding: .5rem 0; }
 }
 @media (max-height: 820px) {
+  .page-hero--v2 .page-hero__inner > h1 { margin-bottom: 1.2rem; }
+  .page-hero--v2 .page-hero__actions { margin-top: 1.2rem; }
+  .express { padding: .85rem 1rem .9rem; }
   .page-hero--v2 .page-hero__lead { display: none; }
-  .express__note { display: none; }
+  /* Сноску НЕ прячем даже на низких экранах: она предупреждает, что комиссия
+     банка в «Итого» не входит. Без неё человек примет сумму за окончательную и
+     узнает правду только при оформлении. Место под неё освободилось после того,
+     как с первого экрана ушли надзаголовок и абзац (Тати 2026-09-18). */
+  .express__note { font-size: .66rem; margin-top: .45rem; }
 }
 
 
