@@ -151,7 +151,7 @@
 
   /* -------------------------------- Вывод --------------------------------- */
   function render(x) {
-    var t = x.totals, ya = x.yandexVsRest.yandex, ot = x.yandexVsRest.rest;
+    var t = x.totals;
     var html = '';
 
     // Сколько именно наблюдений стоит за цифрами. Без этой строки «18 визитов за 30
@@ -167,19 +167,7 @@
     // 1. Главный ответ — крупно и первым делом, сразу с разбивкой внутри.
     // Без неё «из Яндекса 2» не отвечает на главный вопрос: это платная реклама или
     // бесплатный поиск. Ради этого различия всё и затевалось.
-    html += '<div class="split">'
-      + '<div class="split__card split__card--yandex">'
-      + '<div class="split__label">Пришли из Яндекса</div>'
-      + '<div class="split__value">' + num(ya.visits) + '<span class="split__unit">' + (ya.share) + '% визитов</span></div>'
-      + breakdown(x.channels, true)
-      + '<div class="split__meta">Заявок из Яндекса: <b>' + num(ya.leads) + '</b></div>'
-      + '</div>'
-      + '<div class="split__card split__card--other">'
-      + '<div class="split__label">Пришли из других каналов</div>'
-      + '<div class="split__value">' + num(ot.visits) + '<span class="split__unit">' + (ot.share) + '% визитов</span></div>'
-      + breakdown(x.channels, false)
-      + '<div class="split__meta">Заявок из других каналов: <b>' + num(ot.leads) + '</b></div>'
-      + '</div></div>';
+    html += '<div class="split">' + groupCards(x) + '</div>';
 
     // 2. Сводка.
     html += '<div class="tiles">'
@@ -314,14 +302,60 @@
     referral: 'Ссылки с сайтов', direct: 'Прямые заходы', other: 'Прочее',
   };
   var YANDEX_KEYS = ['yandex_ads', 'yandex_search', 'yandex_maps'];
+  var TELEGRAM_KEYS = ['telegram_ads'];
+  var DIRECT_KEYS = ['direct'];
 
-  function breakdown(channels, isYandex) {
+  /* Каналы, у которых своя карточка: Тати смотрит на них по отдельности
+     (Яндекс, Telegram, прямые заходы), всё остальное собирается в четвёртую. */
+  var OWN_CARD_KEYS = YANDEX_KEYS.concat(TELEGRAM_KEYS, DIRECT_KEYS);
+
+  /* Четыре карточки вместо прежних двух: «Яндекс» и «остальные» не отвечали на
+     вопрос, сколько дала реклама в Telegram и сколько людей пришло само.
+     Доля считается от всех визитов периода, поэтому карточки складываются в 100%. */
+  function groupCards(x) {
+    var channels = x.channels || [];
     var by = {};
     channels.forEach(function (c) { by[c.channel] = c; });
-    var keys = isYandex ? YANDEX_KEYS
-      : channels.filter(function (c) { return !c.isYandex && c.visits > 0; })
-                .sort(function (a, b) { return b.visits - a.visits; })
-                .map(function (c) { return c.channel; });
+
+    var restKeys = channels
+      .filter(function (c) { return OWN_CARD_KEYS.indexOf(c.channel) === -1 && c.visits > 0; })
+      .sort(function (a, b) { return b.visits - a.visits; })
+      .map(function (c) { return c.channel; });
+
+    var totalVisits = Number(x.totals && x.totals.visits) || channels.reduce(function (m, c) { return m + (c.visits || 0); }, 0);
+
+    /* rows: показывать ли разбивку. У Telegram и прямых заходов канал ровно один —
+       строка повторяла бы крупную цифру слово в слово, поэтому там только пояснение.
+       У «Других» разбивка нужна всегда: из названия не видно, что именно внутри. */
+    var groups = [
+      { cls: 'yandex', label: 'Пришли из Яндекса', keys: YANDEX_KEYS, leadLabel: 'Заявок из Яндекса', rows: true },
+      { cls: 'telegram', label: 'Пришли из Telegram', keys: TELEGRAM_KEYS, leadLabel: 'Заявок из Telegram',
+        note: 'переходы по рекламной метке; из личных переписок — в «Мессенджерах»' },
+      { cls: 'direct', label: 'Прямые заходы', keys: DIRECT_KEYS, leadLabel: 'Заявок с прямых заходов',
+        note: 'адрес набрали вручную, закладка, QR-код или ссылка без источника' },
+      { cls: 'other', label: 'Другие каналы', keys: restKeys, leadLabel: 'Заявок из других каналов', rows: true },
+    ];
+
+    return groups.map(function (g) {
+      var visits = 0, leads = 0;
+      g.keys.forEach(function (k) {
+        var c = by[k];
+        if (!c) return;
+        visits += c.visits || 0;
+        leads += c.leads || 0;
+      });
+      var share = totalVisits > 0 ? Math.round((visits / totalVisits) * 100) : 0;
+      return '<div class="split__card split__card--' + g.cls + '">'
+        + '<div class="split__label">' + g.label + '</div>'
+        + '<div class="split__value">' + num(visits) + '<span class="split__unit">' + share + '% визитов</span></div>'
+        + (g.rows ? breakdown(by, g.keys) : '')
+        + (g.note ? '<div class="split__note">' + g.note + '</div>' : '')
+        + '<div class="split__meta">' + g.leadLabel + ': <b>' + num(leads) + '</b></div>'
+        + '</div>';
+    }).join('');
+  }
+
+  function breakdown(by, keys) {
     if (!keys.length) return '<div class="split__rows"><div class="split__row t-zero">Переходов не было</div></div>';
     return '<div class="split__rows">' + keys.map(function (k) {
       var c = by[k];

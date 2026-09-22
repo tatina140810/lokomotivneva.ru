@@ -12,6 +12,8 @@
   --bg: #F5F7FA;
   --yandex: #B8860B;
   --other: #2F6FA8;
+  --telegram: #2A8FD0;
+  --direct: #6B7A90;
   --good: #2E7D53;
   --bad: #B3261E;
   --radius: 10px;
@@ -59,10 +61,12 @@ a { color: var(--other); }
 .bar__dates input { border: 1px solid var(--line); border-radius: 7px; padding: 6px 8px; font: inherit; font-size: 13px; }
 
 /* Главный ответ: Яндекс против остальных */
-.split { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+.split { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 14px; margin-bottom: 14px; }
 .split__card { background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow); padding: 20px 22px; border-left: 4px solid var(--line); }
 .split__card--yandex { border-left-color: var(--yandex); }
 .split__card--other { border-left-color: var(--other); }
+.split__card--telegram { border-left-color: var(--telegram); }
+.split__card--direct { border-left-color: var(--direct); }
 .split__label { font-size: 13px; color: var(--ink-2); margin-bottom: 4px; }
 .split__value { font-size: 40px; font-weight: 650; line-height: 1.05; letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
 .split__unit { font-size: 15px; font-weight: 400; color: var(--ink-2); margin-left: 6px; }
@@ -72,6 +76,8 @@ a { color: var(--other); }
 .split__row b { color: var(--ink); font-weight: 600; font-variant-numeric: tabular-nums; }
 .split__row.t-zero, .split__row.t-zero b { color: var(--ink-3); font-weight: 400; }
 .split__lead { font-weight: 400; color: var(--ink-2); font-size: 12.5px; }
+/* Пояснение под разбивкой: что именно попадает в эту карточку. */
+.split__note { margin-top: 8px; font-size: 12px; color: var(--ink-3); line-height: 1.35; }
 .split__meta { margin-top: 10px; font-size: 13px; color: var(--ink-2); }
 .split__meta b { color: var(--ink); font-weight: 600; }
 
@@ -132,7 +138,7 @@ tbody tr:last-child td { border-bottom: 0; }
 .loading { color: var(--ink-3); font-size: 14px; padding: 40px 0; text-align: center; }
 
 @media (max-width: 860px) {
-  .split, .grid2 { grid-template-columns: 1fr; }
+  .grid2 { grid-template-columns: 1fr; }
   .split__value { font-size: 32px; }
   .bar__dates { margin-left: 0; width: 100%; }
   .card { padding: 14px; }
