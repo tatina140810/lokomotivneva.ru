@@ -10,6 +10,24 @@
   <link rel="icon" href="/assets/img/logo-160.jpg">
   <link rel="stylesheet" href="/assets/css/styles.css?v=20260918hdr">
   <link rel="stylesheet" href="/assets/css/additions.css?v=20260917m">
+  <!-- VK Пиксель (Top.Mail.Ru, счётчик 3795618) — добавлен 2026-09-19.
+       Нужен VK Рекламе, чтобы считать переходы по объявлениям и их результат; стоит
+       в head как можно раньше, чтобы просмотр засчитался, даже если человек сразу
+       закрыл вкладку. Наш собственный счётчик (assets/js/stat.js) он не заменяет:
+       тот считает канал визита и связывает его с заявкой, эти данные остаются у нас. -->
+  <script type="text/javascript">
+  var _tmr = window._tmr || (window._tmr = []);
+  _tmr.push({id: "3795618", type: "pageView", start: (new Date()).getTime()});
+  (function (d, w, id) {
+    if (d.getElementById(id)) return;
+    var ts = d.createElement("script"); ts.type = "text/javascript"; ts.async = true; ts.id = id;
+    ts.src = "https://top-fwz1.mail.ru/js/code.js";
+    var f = function () {var s = d.getElementsByTagName("script")[0]; s.parentNode.insertBefore(ts, s);};
+    if (w.opera == "[object Opera]") { d.addEventListener("DOMContentLoaded", f, false); } else { f(); }
+  })(document, window, "tmr-code");
+  </script>
+  <noscript><div><img src="https://top-fwz1.mail.ru/counter?id=3795618;js=na" style="position:absolute;left:-9999px;" alt="Top.Mail.Ru" /></div></noscript>
+  <!-- /VK Пиксель -->
   <!-- Yandex.Metrika counter -->
   <script type="text/javascript">
       (function(m,e,t,r,i,k,a){
@@ -51,7 +69,6 @@
       <li><a class="nav__link" href="/payments/">Платежи</a></li>
       <li><a class="nav__link" href="/logistics/">Логистика</a></li>
       <li><a class="nav__link" href="/trust/">Проверьте нас</a></li>
-      <li><a class="nav__link" href="/individuals/">Для физлиц</a></li>
       <li><a class="nav__link" href="/contacts/">Контакты</a></li>
     </ul><div class="nav__mobile-actions"><a class="btn btn--gold btn--block" href="#lead-form">Оставить заявку</a></div></nav>
     <div class="header__actions">
@@ -309,11 +326,11 @@
     <span class="toast__text"></span>
   </div>
 
-  <script src="/assets/js/site-config.js?v=20260918dir" defer></script>
+  <script src="/assets/js/site-config.js?v=20260919mail" defer></script>
   <script src="/assets/js/site.js?v=20260917m" defer></script>
-  <script src="/assets/js/main.js?v=20260918ok" defer></script>
+  <script src="/assets/js/main.js?v=20260919mail" defer></script>
   <script src="/assets/js/search.js?v=20260917m" defer></script>
-  <script src="/assets/js/helper-kb.js?v=20260917m" defer></script>
+  <script src="/assets/js/helper-kb.js?v=20260922nofiz" defer></script>
   <script src="/assets/js/helper.js?v=20260918fab" defer></script>
   <script src="/assets/js/stat.js?v=20260918d" defer></script>
 </body>

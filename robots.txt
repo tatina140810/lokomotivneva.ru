@@ -1,5 +1,4 @@
 User-agent: *
-Disallow: /individuals/
 Disallow: /admin/
 Disallow: /privacy/
 # Внутренний экран статистики — не для индексации.

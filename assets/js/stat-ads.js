@@ -12,6 +12,7 @@
     ['', 'Без сайта (буклеты, визитки, офлайн)'],
     ['yandex_ads', 'Яндекс.Директ'],
     ['telegram_ads', 'Реклама в Telegram'],
+    ['vk_ads', 'Реклама ВКонтакте'],
     ['offline_led', 'Экраны / наружная'],
     ['google_ads', 'Google Ads'],
     ['social', 'Соцсети'],
@@ -33,6 +34,20 @@
     if (!iso) return '';
     var p = String(iso).slice(0, 10).split('-');
     return p[2] + '.' + p[1] + '.' + p[0];
+  }
+
+  /* Коэффициент эффективности: 100% — переход стоит ровно столько же, сколько в
+     среднем по всей рекламе; больше — дешевле среднего, меньше — дороже. Очень
+     большие значения показываем разами: «6234 %» читается хуже, чем «в 62 раза
+     дешевле среднего». Цветом помечаем только явные отклонения, чтобы таблица не
+     превращалась в светофор. */
+  function eff(v) {
+    if (v == null) return '—';
+    var text = v >= 1000 ? '×' + nf.format(Math.round(v / 100)) : nf.format(v) + ' %';
+    var color = v >= 120 ? 'var(--good)' : (v <= 80 ? 'var(--bad)' : '');
+    var hint = v >= 100 ? 'переход дешевле среднего' : 'переход дороже среднего';
+    return '<span' + (color ? ' style="color:' + color + '"' : '') + ' title="' + hint + '">'
+      + text + '</span>';
   }
 
   w.renderAdsBox = function (host, opts) {
@@ -61,7 +76,7 @@
     function rowsHtml() {
       var rows = sum.budgetTable || [];
       if (!rows.length) {
-        return '<tr><td colspan="8" class="empty">Затраты пока не внесены. '
+        return '<tr><td colspan="10" class="empty">Затраты пока не внесены. '
           + 'Добавьте первую статью — например, остаток на счёте Директа.</td></tr>';
       }
       return rows.map(function (r) {
@@ -78,6 +93,8 @@
           + '<div class="t-sub">' + (r.remainingMeasured ? 'по замеру' : 'расчётный') + '</div></td>'
           + '<td>' + money(r.spentInPeriod) + '</td>'
           + '<td>' + (r.visits == null ? '—' : nf.format(r.visits)) + '</td>'
+          + '<td>' + money(r.costPerVisit) + '</td>'
+          + '<td>' + eff(r.efficiency) + '</td>'
           + '<td>' + (r.leads == null ? '—' : nf.format(r.leads)) + '</td>'
           + '<td>' + money(r.costPerLead) + '</td></tr>';
       }).join('');
@@ -92,15 +109,59 @@
         + '<td>' + money(t.remaining) + '</td>'
         + '<td>' + money(t.spentInPeriod) + '</td>'
         + '<td>' + nf.format(sum.totals ? sum.totals.visits : 0) + '</td>'
+        + '<td>' + money(t.costPerVisit) + '</td>'
+        // Итог и есть база сравнения: по нему считается коэффициент каждой статьи.
+        + '<td>100 %<div class="t-sub">среднее</div></td>'
         + '<td>' + nf.format(sum.totals ? sum.totals.contacts : 0) + '</td>'
         + '<td>' + money(m.costPerContact) + '</td></tr>';
+    }
+
+    /* Скликивание: сколько оплаченных кликов пришло с одного браузера (Тати 2026-09-20).
+       Каждый клик по объявлению несёт свою метку, поэтому несколько разных меток у
+       одного посетителя — это несколько оплаченных кликов из одного места. */
+    function abuse() {
+      var a = sum.adClicks;
+      if (!a || !a.total) return '';
+      var lines = (a.top || []).map(function (r) {
+        var when = dmy(r.firstAt) === dmy(r.lastAt)
+          ? dmy(r.firstAt)
+          : dmy(r.firstAt) + ' — ' + dmy(r.lastAt);
+        return '<tr><td>' + esc([r.device, r.os, r.browser].filter(Boolean).join(' · ')) + '</td>'
+          + '<td>' + esc(r.channelLabel || '') + '</td>'
+          + '<td><b>' + nf.format(r.clicks) + '</b></td>'
+          + '<td>' + when + '</td></tr>';
+      }).join('');
+
+      var warn = a.suspiciousShare >= 20;
+      return '<h3 class="adsh3">Клики по рекламе — откуда приходят</h3>'
+        + '<p class="adstotal">Оплаченных кликов долетело: <b>' + nf.format(a.total) + '</b> '
+        + 'с <b>' + nf.format(a.visitors) + '</b> браузеров. '
+        + (a.suspiciousVisitors
+          ? '<span style="color:' + (warn ? 'var(--bad)' : 'var(--ink-2)') + '">'
+            + 'По <b>' + nf.format(a.suspiciousVisitors) + '</b> из них пришло '
+            + '<b>' + nf.format(a.suspiciousClicks) + '</b> кликов — это '
+            + '<b>' + a.suspiciousShare + '%</b> всех оплаченных переходов.</span>'
+          : 'Повторных кликов с одного браузера нет.')
+        + '<br><span class="t-sub">Считаем по меткам объявлений: возврат по закладке новой '
+        + 'метки не создаёт и сюда не попадает. Три и больше кликов с одного браузера — повод '
+        + 'посмотреть отчёт по недействительным кликам в рекламном кабинете.</span></p>'
+        + (lines
+          ? '<table class="budget"><thead><tr><th>Браузер</th><th>Канал</th>'
+            + '<th>Кликов</th><th>Когда</th></tr></thead><tbody>' + lines + '</tbody></table>'
+          : '');
     }
 
     function table() {
       return '<table class="budget"><thead><tr>'
         + '<th>Статья расходов</th><th>Бюджет</th><th>Потрачено всего</th><th>Остаток</th>'
-        + '<th>За период отчёта</th><th>Переходов</th><th>Обращений</th><th>Цена обращения</th>'
+        + '<th>За период отчёта</th><th>Переходов</th><th>Цена перехода</th>'
+        + '<th>Эффективность</th><th>Обращений</th><th>Цена обращения</th>'
         + '</tr></thead><tbody>' + rowsHtml() + totalRow() + '</tbody></table>'
+        + '<p class="t-sub" style="margin:10px 0 0">«Цена перехода» — расход за период '
+        + 'отчёта, делённый на переходы этой статьи. «Эффективность» сравнивает её со '
+        + 'средней ценой перехода по всей рекламе: 100 % — ровно среднее, больше — '
+        + 'переходы дешевле среднего, меньше — дороже; «×5» значит впятеро дешевле '
+        + 'среднего. У статей без сайта переходов нет, поэтому и коэффициента нет.</p>'
         + '<p class="t-sub" style="margin:10px 0 0">В строках «Обращений» — заявки с сайта по '
         + 'этой рекламе; в итоге — все обращения вместе со звонками (звонки по статьям не '
         + 'разносятся: номер метку не несёт). Прочерк у переходов означает, что у статьи '
@@ -135,28 +196,55 @@
         + '</div><p class="adsform__err" id="ad-err"></p></div>';
     }
 
+    /* Журнал внесённого. Раньше это был один список «Что внесено», где вперемешку
+       лежали три разные по смыслу вещи, и остаток на счёте читался как «столько денег
+       мы внесли» (Тати 2026-09-20). Теперь они разведены по группам, и у каждой сказано,
+       как она влияет на расчёт:
+         · замер остатка — показание кабинета, САМ ПО СЕБЕ не расход;
+         · пополнение — сколько денег положили на счёт;
+         · расход за период — заявленная трата, раскладывается по дням.
+       Расход между двумя замерами система считает сама: прошлый остаток + пополнения
+       − новый остаток. */
+    var KIND_GROUPS = [
+      ['balance', 'Замеры остатка на счёте',
+        'Сколько денег было на счёте в этот день. Это показание кабинета, а не трата: расход считается между двумя замерами.'],
+      ['topup', 'Пополнения счёта',
+        'Сколько денег положили на рекламный счёт.'],
+      ['spend', 'Заявленные расходы за период',
+        'Готовая сумма расхода из кабинета: в отчёте за часть периода берётся доля по дням.'],
+    ];
+
     function list(rows) {
       if (!rows.length) return '';
-      return '<h3 class="adsh3">Что внесено</h3><table><tbody>'
-        + rows.map(function (r) {
-          var kindName = { balance: 'остаток', topup: 'пополнение', spend: 'расход' }[r.kind || 'spend'];
-          var sign = SIGNS[r.currency || 'RUB'] || ' ₽';
-          var shown = nf.format(Math.round(Number(r.amount))) + sign
-            + (r.currency && r.currency !== 'RUB'
-              ? '<div class="t-sub">' + money(r.amount_rub) + ' по курсу</div>' : '');
-          return '<tr><td>' + esc(r.title || '—')
-            + '<div class="t-sub">' + kindName + (r.note ? ' · ' + esc(r.note) : '') + '</div></td>'
-            + '<td>' + (r.kind === 'spend' ? dmy(r.period_start) + ' — ' + dmy(r.period_end) : dmy(r.period_start)) + '</td>'
-            + '<td>' + shown + '</td>'
-            + '<td><button type="button" class="bar__btn" data-del="' + r.id + '">Убрать</button></td></tr>';
-        }).join('') + '</tbody></table>';
+      var html = '<h3 class="adsh3">Внесённые данные</h3>';
+      KIND_GROUPS.forEach(function (g) {
+        var kind = g[0];
+        var part = rows.filter(function (r) { return (r.kind || 'spend') === kind; });
+        if (!part.length) return;
+        html += '<p class="t-sub" style="margin:14px 0 4px"><b style="color:var(--ink-2)">' + g[1]
+          + '</b> — ' + g[2] + '</p><table><tbody>'
+          + part.map(function (r) {
+            var sign = SIGNS[r.currency || 'RUB'] || ' ₽';
+            var shown = nf.format(Math.round(Number(r.amount))) + sign
+              + (r.currency && r.currency !== 'RUB'
+                ? '<div class="t-sub">' + money(r.amount_rub) + ' по курсу</div>' : '');
+            return '<tr><td>' + esc(r.title || '—')
+              + (r.note ? '<div class="t-sub">' + esc(r.note) + '</div>' : '') + '</td>'
+              + '<td>' + (kind === 'spend'
+                ? dmy(r.period_start) + ' — ' + dmy(r.period_end)
+                : 'на ' + dmy(r.period_start)) + '</td>'
+              + '<td>' + shown + '</td>'
+              + '<td><button type="button" class="bar__btn" data-del="' + r.id + '">Убрать</button></td></tr>';
+          }).join('') + '</tbody></table>';
+      });
+      return html;
     }
 
     function draw(spendRows) {
       host.innerHTML = '<div class="card"><div class="card__head"><h2>Затраты на рекламу</h2>'
         + '<span class="card__note">все статьи в одной таблице; суммы вносятся вручную — '
         + 'ни eLama, ни Telegram Ads не отдают их автоматически</span></div>'
-        + origin() + table() + form() + list(spendRows) + '</div>';
+        + origin() + table() + abuse() + form() + list(spendRows) + '</div>';
 
       var kindSel = d.getElementById('ad-kind');
       function syncKind() {
@@ -166,6 +254,33 @@
       }
       kindSel.addEventListener('change', syncKind);
       syncKind();
+
+      /* Канал подставляем по названию статьи (Тати 2026-09-20): в форме легко оставить
+         «Без сайта», и тогда запись не свяжется с каналом — переходы и цена перехода
+         по ней не посчитаются, а ошибку видно только потом, в таблице. Сначала смотрим
+         на уже внесённые статьи с тем же названием, затем на ключевые слова.
+         Выбор оператора не перетираем: подставляем, только пока стоит «Без сайта». */
+      var titleInput = d.getElementById('ad-title');
+      var chSel = d.getElementById('ad-ch');
+      var BY_WORD = [
+        [/директ|direct|яндекс/i, 'yandex_ads'],
+        [/telegram|телеграм/i, 'telegram_ads'],
+        [/вконтакте|vk\b|вк\b/i, 'vk_ads'],
+        [/google|гугл/i, 'google_ads'],
+        [/экран|led|наружн|сити/i, 'offline_led'],
+      ];
+      titleInput.addEventListener('input', function () {
+        if (chSel.value) return;               // оператор уже выбрал — не мешаем
+        var t = titleInput.value.trim().toLowerCase();
+        if (!t) return;
+        var known = (sum.budgetTable || []).find(function (r) {
+          return String(r.title || '').trim().toLowerCase() === t && r.channel;
+        });
+        if (known) { chSel.value = known.channel; return; }
+        for (var i = 0; i < BY_WORD.length; i++) {
+          if (BY_WORD[i][0].test(t)) { chSel.value = BY_WORD[i][1]; return; }
+        }
+      });
 
       d.getElementById('ad-add').addEventListener('click', function () {
         var btn = d.getElementById('ad-add');

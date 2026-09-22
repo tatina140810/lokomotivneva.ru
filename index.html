@@ -22,7 +22,7 @@
     "@context": "https://schema.org", "@type": "FinancialService",
     "name": "ООО «Локомотив»",
     "description": "Платёжный агент по внешнеэкономической деятельности с собственной логистикой и таможенным оформлением.",
-    "telephone": "+74951080100", "email": "lokomotiv.neva@mail.ru",
+    "telephone": "+74951080100", "email": "lokomotivneva@yandex.ru",
     "logo": "/assets/img/logo-512.jpg",
     "taxID": "9703250829",
     "vatID": "9703250829",
@@ -30,6 +30,24 @@
     "areaServed": ["Китай", "Гонконг", "ОАЭ", "Турция", "Европейский союз", "Великобритания"]
   }
   </script>
+  <!-- VK Пиксель (Top.Mail.Ru, счётчик 3795618) — добавлен 2026-09-19.
+       Нужен VK Рекламе, чтобы считать переходы по объявлениям и их результат; стоит
+       в head как можно раньше, чтобы просмотр засчитался, даже если человек сразу
+       закрыл вкладку. Наш собственный счётчик (assets/js/stat.js) он не заменяет:
+       тот считает канал визита и связывает его с заявкой, эти данные остаются у нас. -->
+  <script type="text/javascript">
+  var _tmr = window._tmr || (window._tmr = []);
+  _tmr.push({id: "3795618", type: "pageView", start: (new Date()).getTime()});
+  (function (d, w, id) {
+    if (d.getElementById(id)) return;
+    var ts = d.createElement("script"); ts.type = "text/javascript"; ts.async = true; ts.id = id;
+    ts.src = "https://top-fwz1.mail.ru/js/code.js";
+    var f = function () {var s = d.getElementsByTagName("script")[0]; s.parentNode.insertBefore(ts, s);};
+    if (w.opera == "[object Opera]") { d.addEventListener("DOMContentLoaded", f, false); } else { f(); }
+  })(document, window, "tmr-code");
+  </script>
+  <noscript><div><img src="https://top-fwz1.mail.ru/counter?id=3795618;js=na" style="position:absolute;left:-9999px;" alt="Top.Mail.Ru" /></div></noscript>
+  <!-- /VK Пиксель -->
   <!-- Yandex.Metrika counter -->
   <script type="text/javascript">
       (function(m,e,t,r,i,k,a){
@@ -58,7 +76,6 @@
           <li><a class="nav__link" href="/payments/">Платежи</a></li>
           <li><a class="nav__link" href="/logistics/">Логистика</a></li>
           <li><a class="nav__link" href="/trust/">Проверьте нас</a></li>
-          <li><a class="nav__link" href="/individuals/">Для физлиц</a></li>
           <li><a class="nav__link" href="/contacts/">Контакты</a></li>
         </ul>
         <div class="nav__mobile-actions"><a class="btn btn--gold btn--block" href="#zayavka">Рассчитать платёж</a></div>
@@ -405,7 +422,7 @@
               <li><span class="contacts__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-phone"></use></svg></span><span><span class="contacts__label">Телефон</span><a class="contacts__value" href="tel:+74951080100">+7 (495) 10-80-100</a></span></li>
               <li data-messenger-row="telegram" hidden><span class="contacts__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-telegram"></use></svg></span><span><span class="contacts__label">Telegram</span><a class="contacts__value" data-messenger="telegram" href="tel:+74951080100" rel="nofollow"><span data-messenger-label>Написать в Telegram</span></a></span></li>
               <li data-messenger-row="whatsapp" hidden><span class="contacts__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-whatsapp"></use></svg></span><span><span class="contacts__label">WhatsApp</span><a class="contacts__value" data-messenger="whatsapp" href="tel:+74951080100" rel="nofollow"><span data-messenger-label>Написать в WhatsApp</span></a></span></li>
-              <li><span class="contacts__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-mail"></use></svg></span><span><span class="contacts__label">Почта</span><a class="contacts__value" href="mailto:lokomotiv.neva@mail.ru">lokomotiv.neva@mail.ru</a></span></li>
+              <li><span class="contacts__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-mail"></use></svg></span><span><span class="contacts__label">Почта</span><a class="contacts__value" href="mailto:lokomotivneva@yandex.ru">lokomotivneva@yandex.ru</a></span></li>
             </ul>
             <div class="requisites-card">
               <h3 class="requisites-card__title">Реквизиты</h3>
@@ -467,12 +484,12 @@
     <span class="toast__text"></span>
   </div>
 
-  <script src="/assets/js/site-config.js?v=20260918calc" defer></script>
+  <script src="/assets/js/site-config.js?v=20260919mail" defer></script>
   <script src="/assets/js/site.js?v=20260917m" defer></script>
-  <script src="/assets/js/main.js?v=20260918ok" defer></script>
+  <script src="/assets/js/main.js?v=20260919mail" defer></script>
   <script src="/assets/js/search.js?v=20260917m" defer></script>
   <script src="/assets/js/v2.js?v=20260918star" defer></script>
-  <script src="/assets/js/helper-kb.js?v=20260917m" defer></script>
+  <script src="/assets/js/helper-kb.js?v=20260922nofiz" defer></script>
   <script src="/assets/js/helper.js?v=20260918fab" defer></script>
   <script src="/assets/js/stat.js?v=20260918d" defer></script>
 </body>
