@@ -970,3 +970,58 @@ body.is-search-open { overflow: hidden; }
    «География» (.worldmap--geo) — самостоятельный блок с маршрутами,
    её оставляем. */
 .worldmap--hero { display: none; }
+
+/* =============================================================================
+   Уведомление об использовании cookie (assets/js/cookie.js).
+   Показывается один раз, до выбора; ниже помощника по z-index не уходит, но и
+   не перекрывает его кнопку — помощник сидит справа, баннер прижат влево и на
+   узких экранах поднимается над ним.
+   ========================================================================== */
+.cookie {
+  position: fixed;
+  left: var(--gutter);
+  bottom: var(--gutter);
+  z-index: 60;
+  width: min(30rem, calc(100vw - var(--gutter) * 2));
+  padding: 1.1rem 1.25rem 1.25rem;
+  border-radius: var(--radius);
+  background: var(--white);
+  box-shadow: var(--shadow-card);
+  border: 1px solid rgba(11, 30, 63, .1);
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity .26s var(--ease), transform .26s var(--ease);
+}
+.cookie--in { opacity: 1; transform: translateY(0); }
+.cookie--out { opacity: 0; transform: translateY(12px); }
+
+.cookie__text {
+  margin: 0 0 .9rem;
+  font-size: .85rem;
+  line-height: 1.5;
+  color: var(--text-muted-dark);
+}
+.cookie__text a { color: var(--text-dark); text-decoration: underline; }
+.cookie__text a:hover { color: var(--gold-700); }
+
+.cookie__actions { display: flex; flex-wrap: wrap; gap: .6rem; }
+.cookie__btn { padding: .6rem 1.15rem; font-size: .85rem; }
+/* Отказ на белой подложке. Базовый .btn--ghost рассчитан на тёмный фон —
+   светло-золотой текст на белом почти не читается, и кнопка выглядела бы
+   спрятанной. Отказ должен быть виден так же ясно, как согласие. */
+.cookie .btn--ghost {
+  border-color: rgba(11, 30, 63, .22);
+  color: var(--text-dark);
+  background: transparent;
+}
+.cookie .btn--ghost:hover { border-color: var(--navy-500); background: rgba(11, 30, 63, .05); }
+
+/* На телефоне баннер во всю ширину и выше круглой кнопки помощника. */
+@media (max-width: 560px) {
+  .cookie { left: .75rem; right: .75rem; bottom: 5.5rem; width: auto; }
+  .cookie__btn { flex: 1 1 auto; text-align: center; justify-content: center; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cookie { transition: none; }
+}

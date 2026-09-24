@@ -466,6 +466,13 @@
     var submitBtn = form.querySelector('button[type="submit"]');
     var sending = false;
 
+    /* Редакция политики обработки персональных данных, действующая на сайте.
+       Уходит в заявку вместе с отметкой о согласии, чтобы было видно, какой
+       именно документ принимал человек. Меняя дату в /privacy/, менять и здесь
+       — и в helper.js, там та же константа. */
+    var POLICY_VERSION = '2026-09-24';
+    var consentField = $('#consent');
+
     form.addEventListener('submit', function (e) {
       e.preventDefault();
       if (sending) return;
@@ -490,7 +497,17 @@
         message: ($('#message') ? $('#message').value.trim() : ''),
         page: window.location.pathname,
         source: 'lokomotivneva.ru',
-        company: honeypot ? honeypot.value : ''
+        company: honeypot ? honeypot.value : '',
+        /* Отметка о согласии. Галочку в форме мы уже проверили выше, но проверка
+           в браузере ничего не доказывает: по 152-ФЗ оператор должен уметь
+           показать, КТО, КОГДА и с КАКОЙ редакцией политики согласился. Поэтому
+           факт согласия уходит вместе с заявкой и хранится рядом с контактами.
+           Панель заявок эти поля пока может игнорировать — лишние ключи в теле
+           запроса ей не мешают. */
+        consent: true,
+        consent_at: new Date().toISOString(),
+        consent_policy: POLICY_VERSION,
+        consent_text: consentField ? consentField.parentNode.textContent.trim() : ''
       };
 
       /* Откуда пришёл человек. Метки визита ставит assets/js/stat.js; по ним система

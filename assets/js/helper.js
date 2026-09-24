@@ -46,6 +46,16 @@
     '</header>' +
     '<div class="helper__log" id="helper-log" role="log" aria-live="polite"></div>' +
     '<div class="helper__chips" id="helper-chips"></div>' +
+    /* Согласие на обработку персональных данных. Показывается только когда
+       помощник просит телефон (leadMode) — в обычной беседе про сроки и
+       документы никаких персональных данных не собирается, и чекбокс там
+       был бы шумом. Галочка снята по умолчанию и проверяется перед отправкой:
+       ст. 9 152-ФЗ требует, чтобы согласие было конкретным и однозначным. */
+    '<label class="helper__consent" id="helper-consent" hidden>' +
+      '<input type="checkbox" id="helper-consent-box">' +
+      '<span>Согласен на обработку персональных данных — ' +
+      '<a href="/privacy/" target="_blank" rel="noopener">политика</a></span>' +
+    '</label>' +
     '<form class="helper__form" id="helper-form">' +
       '<input class="helper__input" id="helper-input" type="text" autocomplete="off" placeholder="Спросите о платеже, сроках, документах…">' +
       '<button class="helper__send" type="submit" aria-label="Отправить">' + icon('arrow-right') + '</button>' +
@@ -69,6 +79,18 @@
   var chips = panel.querySelector('#helper-chips');
   var form = panel.querySelector('#helper-form');
   var input = panel.querySelector('#helper-input');
+  var consentBox = panel.querySelector('#helper-consent');
+  var consentFlag = panel.querySelector('#helper-consent-box');
+
+  /* Редакция политики, с которой человек соглашается. Уходит вместе с заявкой,
+     чтобы потом было видно, какой именно документ он принимал. Меняя политику,
+     менять и здесь — и в main.js, там та же константа. */
+  var POLICY_VERSION = '2026-09-24';
+
+  function showConsent(on) {
+    consentBox.hidden = !on;
+    if (on) consentFlag.checked = false;
+  }
 
   /* ------------------------- вывод сообщений ------------------------------ */
   function bubble(kind, htmlText, links) {
@@ -181,6 +203,7 @@
       home.textContent = '\u2190 Все вопросы';
       home.addEventListener('click', function () {
         leadMode = false;
+        showConsent(false);
         input.placeholder = 'Спросите о платеже, сроках, документах\u2026';
         botSay('<p>Чем ещё помочь? Выберите вопрос или спросите своими словами.</p>', null, greetChips);
       });
@@ -237,6 +260,7 @@
     botSay('<p>Оставьте свой номер телефона — менеджер свяжется с вами в ближайшее время.</p>' +
            '<p>Или свяжитесь сразу:</p>', links, function () {
       input.placeholder = 'Ваш номер телефона';
+      showConsent(true);
       input.focus();
       showChips([], false);      // остаётся только «← Все вопросы»
     });
@@ -254,7 +278,15 @@
       message: 'Помощник на сайте: клиент оставил контакт — ' + text,
       page: location.pathname,
       source: 'site-helper',
-      company: ''
+      company: '',
+      /* Отметка о согласии уходит вместе с заявкой: по 152-ФЗ оператор должен
+         уметь доказать, что согласие было получено, а проверка галочки в
+         браузере ничего не доказывает. Поля сохраняет панель заявок; пока она
+         их не читает, они просто лежат в теле запроса и ничему не мешают. */
+      consent: true,
+      consent_at: new Date().toISOString(),
+      consent_policy: POLICY_VERSION,
+      consent_text: 'Согласен на обработку персональных данных (помощник на сайте)'
     };
     fetch(LEADS_URL, {
       method: 'POST',
@@ -270,11 +302,21 @@
       botSay('<p>Не удалось отправить заявку автоматически. Напишите нам напрямую — ответим быстро.</p>', links, greetChips);
     });
     leadMode = false;
+    showConsent(false);
     input.placeholder = 'Спросите о платеже, сроках, документах…';
   }
 
   /* --------------------------- диалог ------------------------------------- */
   function handle(text) {
+    if (leadMode && !consentFlag.checked) {
+      /* Номер не показываем в переписке и никуда не отправляем, пока галочки
+         нет: иначе персональные данные уже обработаны без согласия. */
+      botSay('<p>Чтобы передать номер менеджеру, нужно согласие на обработку персональных данных — отметьте галочку под перепиской.</p>');
+      input.value = text;
+      consentFlag.focus();
+      return;
+    }
+
     bubble('user', esc(text));
     if (leadMode) { sendLead(text); return; }
 

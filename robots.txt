@@ -1,12 +1,11 @@
 User-agent: *
 Disallow: /admin/
-Disallow: /privacy/
 # Внутренний экран статистики — не для индексации.
 Disallow: /stat/
 
 # Склейка адресов с рекламными метками с основной страницей.
 # Директиву понимает Яндекс; Google её игнорирует (безвредно) и ориентируется
-# на canonical — тегов canonical на страницах пока нет, это отдельная задача.
+# на canonical — они проставлены на всех страницах.
 Clean-param: utm_source&utm_medium&utm_campaign&utm_term&utm_content&yclid&gclid&_openstat
 
 Sitemap: https://lokomotivneva.ru/sitemap.xml
