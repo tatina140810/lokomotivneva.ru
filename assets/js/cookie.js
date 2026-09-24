@@ -19,6 +19,8 @@
      счётчиков). На текущей странице счётчик уже отработал один хит — его мы
      не отменяем, но стираем оставленные им cookie, чтобы посетитель не
      оставался помеченным.
+   • Полоса стоит внизу во всю ширину, а не карточкой в углу: карточка
+     перекрывала главные кнопки первого экрана.
    • Пока выбор не сделан, аналитика работает. Это осознанное решение: в РФ
      предварительная блокировка (как в GDPR) не требуется, а статистика по
      рекламе на сайте — рабочий инструмент. Если юрист попросит строгий
@@ -85,8 +87,7 @@
         w.localStorage.removeItem('loko_sid');
       } catch (e) { /* приватный режим */ }
     }
-    box.classList.add('cookie--out');
-    setTimeout(function () { box.remove(); }, 260);
+    hide();
   }
 
   box.addEventListener('click', function (e) {
@@ -96,8 +97,22 @@
 
   function show() {
     d.body.appendChild(box);
+    /* Полоса стоит внизу и накрыла бы круглую кнопку помощника — пока она на
+       экране, помощник поднимается над ней. Высоту отдаём в CSS переменной:
+       от переноса строк полоса бывает выше, и зашивать число нельзя. */
+    d.documentElement.classList.add('cookie-open');
+    d.documentElement.style.setProperty('--cookie-h', box.offsetHeight + 'px');
     /* Кадр на вставку в DOM, иначе переход не проигрывается. */
     requestAnimationFrame(function () { box.classList.add('cookie--in'); });
+  }
+
+  function hide() {
+    box.classList.add('cookie--out');
+    d.documentElement.classList.remove('cookie-open');
+    setTimeout(function () {
+      box.remove();
+      d.documentElement.style.removeProperty('--cookie-h');
+    }, 260);
   }
 
   if (d.readyState === 'loading') d.addEventListener('DOMContentLoaded', show);

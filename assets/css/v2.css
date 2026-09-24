@@ -263,16 +263,15 @@
 }
 .express__out b { color: var(--gold-400); font-variant-numeric: tabular-nums; }
 .express__note { margin: .55rem 0 0; font-size: .7rem; color: var(--text-muted-light); }
-/* Звёздочка у итога: раскрывает пояснение. Это кнопка, а не значок, — по ней
-   кликают, и она должна быть доступна с клавиатуры. */
+/* Звёздочка у итога — просто знак сноски: она больше ничего не раскрывает,
+   текст сноски стоит под таблицей и виден сразу. */
 .express__star {
-  appearance: none; background: none; border: 0; padding: 0 0 0 .25rem;
-  color: var(--gold-400); font: inherit; font-size: 1.05em; line-height: 1;
-  cursor: pointer; vertical-align: super;
+  padding-left: .25rem;
+  color: var(--gold-400); font-size: 1.05em; line-height: 1;
+  vertical-align: super;
 }
-.express__star:hover { color: var(--gold-500); }
-.express__star:focus-visible { outline: 2px solid var(--gold-500); outline-offset: 2px; border-radius: 3px; }
-.express__star[aria-expanded="true"] { color: var(--gold-500); }
+/* Юридическая оговорка под расчётом: тише сноски, но читаемая. */
+.express__legal { margin: .3rem 0 0; font-size: .66rem; line-height: 1.4; color: var(--text-muted-light); opacity: .85; }
 /* Какими валютами платим в выбранное направление. В отличие от общей сноски
    не прячется на низких экранах: это не оговорка, а условие расчёта. */
 .express__ccynote { margin: .45rem 0 0; font-size: .72rem; color: var(--text-muted-light); }
@@ -408,6 +407,7 @@
      узнает правду только при оформлении. Место под неё освободилось после того,
      как с первого экрана ушли надзаголовок и абзац (Тати 2026-09-18). */
   .express__note { font-size: .66rem; margin-top: .45rem; }
+  .express__legal { font-size: .62rem; margin-top: .25rem; }
 }
 
 

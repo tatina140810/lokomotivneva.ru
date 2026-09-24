@@ -973,39 +973,48 @@ body.is-search-open { overflow: hidden; }
 
 /* =============================================================================
    Уведомление об использовании cookie (assets/js/cookie.js).
-   Показывается один раз, до выбора; ниже помощника по z-index не уходит, но и
-   не перекрывает его кнопку — помощник сидит справа, баннер прижат влево и на
-   узких экранах поднимается над ним.
+   Показывается один раз, до выбора. Полосой во всю ширину, а не карточкой в
+   углу: карточка слева внизу перекрывала карточку расчёта и оба главных CTA
+   первого экрана («Оставить заявку», «Личный кабинет») — проверено на живом
+   сайте при 1512×759. Полоса съедает только нижнюю кромку, кнопки остаются
+   видимыми и кликабельными. Круглую кнопку помощника она бы накрыла, поэтому
+   пока полоса на экране, помощник поднимается (класс на <html>).
    ========================================================================== */
 .cookie {
   position: fixed;
-  left: var(--gutter);
-  bottom: var(--gutter);
-  z-index: 60;
-  width: min(30rem, calc(100vw - var(--gutter) * 2));
-  padding: 1.1rem 1.25rem 1.25rem;
-  border-radius: var(--radius);
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 999;
+  padding: .85rem var(--gutter) calc(.85rem + env(safe-area-inset-bottom, 0px));
   background: var(--white);
-  box-shadow: var(--shadow-card);
-  border: 1px solid rgba(11, 30, 63, .1);
+  border-top: 1px solid rgba(11, 30, 63, .1);
+  box-shadow: 0 -10px 30px rgba(7, 22, 48, .12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.25rem 2rem;
+  flex-wrap: wrap;
   opacity: 0;
-  transform: translateY(12px);
+  transform: translateY(100%);
   transition: opacity .26s var(--ease), transform .26s var(--ease);
 }
 .cookie--in { opacity: 1; transform: translateY(0); }
-.cookie--out { opacity: 0; transform: translateY(12px); }
+.cookie--out { opacity: 0; transform: translateY(100%); }
 
 .cookie__text {
-  margin: 0 0 .9rem;
-  font-size: .85rem;
-  line-height: 1.5;
+  margin: 0;
+  flex: 1 1 22rem;
+  max-width: 60rem;
+  font-size: .82rem;
+  line-height: 1.45;
   color: var(--text-muted-dark);
 }
 .cookie__text a { color: var(--text-dark); text-decoration: underline; }
 .cookie__text a:hover { color: var(--gold-700); }
 
-.cookie__actions { display: flex; flex-wrap: wrap; gap: .6rem; }
-.cookie__btn { padding: .6rem 1.15rem; font-size: .85rem; }
+.cookie__actions { display: flex; flex-wrap: wrap; gap: .6rem; flex: none; }
+.cookie__btn { padding: .55rem 1.15rem; font-size: .85rem; }
 /* Отказ на белой подложке. Базовый .btn--ghost рассчитан на тёмный фон —
    светло-золотой текст на белом почти не читается, и кнопка выглядела бы
    спрятанной. Отказ должен быть виден так же ясно, как согласие. */
@@ -1016,9 +1025,14 @@ body.is-search-open { overflow: hidden; }
 }
 .cookie .btn--ghost:hover { border-color: var(--navy-500); background: rgba(11, 30, 63, .05); }
 
-/* На телефоне баннер во всю ширину и выше круглой кнопки помощника. */
-@media (max-width: 560px) {
-  .cookie { left: .75rem; right: .75rem; bottom: 5.5rem; width: auto; }
+/* Пока полоса видна, помощник встаёт над ней. Высоту полосы кладём в
+   переменную: она меняется от переноса строк, и задавать её числом нельзя. */
+.cookie-open .helper-fab {
+  bottom: calc(var(--cookie-h, 4.5rem) + clamp(.9rem, 2vw, 1.6rem) + env(safe-area-inset-bottom, 0px));
+}
+
+@media (max-width: 720px) {
+  .cookie { flex-direction: column; align-items: stretch; gap: .8rem; text-align: left; }
   .cookie__btn { flex: 1 1 auto; text-align: center; justify-content: center; }
 }
 

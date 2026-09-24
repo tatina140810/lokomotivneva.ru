@@ -178,20 +178,10 @@
     recalc();
   }
 
-  /* Пояснение к расчёту раскрывается по звёздочке у «Итого к оплате». Оно скрыто
-     в разметке атрибутом hidden, поэтому без JS текста не видно — а это
-     предупреждение, что комиссия банка в сумму не входит. Значит, при загрузке
-     снимаем hidden и прячем сами: без JS сноска остаётся на виду. */
-  var noteToggle = d.querySelector('[data-express-note-toggle]');
-  var noteBox = d.getElementById('express-note');
-  if (noteToggle && noteBox) {
-    noteBox.setAttribute('hidden', '');    // прячет скрипт, не разметка
-    noteToggle.addEventListener('click', function () {
-      var open = noteBox.hasAttribute('hidden');
-      if (open) noteBox.removeAttribute('hidden'); else noteBox.setAttribute('hidden', '');
-      noteToggle.setAttribute('aria-expanded', String(open));
-    });
-  }
+  /* Раскрытие сноски по звёздочке убрано (Тати 2026-09-24): предупреждение о
+     комиссии банка и оговорка про оферту должны быть видны сразу, без клика.
+     Звёздочка осталась значком при «Итого к оплате», сноска — обычный текст
+     под таблицей расчёта. */
 
   /* --------------- Обновление котировок из системы ------------------------
      Тянем при загрузке и раз в 5 минут, пока вкладка открыта: столько же живёт
