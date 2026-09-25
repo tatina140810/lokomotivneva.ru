@@ -478,5 +478,9 @@
    .page-hero h1 .text-gold { color: inherit } в additions.css, — иначе заголовок
    остаётся белым: то правило специфичнее одиночного класса. */
 .page-hero--v2 h1 .hero-h1__soft { color: var(--gold-400); }
+/* Звёздочка после «0,3%» в заголовке и её сноска сразу под ним.
+   У сноски калькулятора — «**», чтобы две оговорки не путались. */
+.hero-h1__star { font-size: .45em; line-height: 0; vertical-align: super; margin-left: .05em; }
+.page-hero--v2 h1 + .hero-footnote { margin: -.6rem 0 1.1rem; font-size: .75rem; line-height: 1.4; color: var(--text-muted-light); }
 
 @media (max-width: 1000px) { .hero-seal { display: none; } }
