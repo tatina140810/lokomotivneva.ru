@@ -1,4 +1,7 @@
-/* График динамики визитов для /stat/: две линии — «из Яндекса» и «из других каналов».
+/* График динамики визитов для /stat/: четыре линии — те же группы, что карточки над ним:
+   Яндекс, Telegram (реклама), прямые заходы и другие каналы (Тати 2026-09-28; раньше
+   было две — Яндекс и «всё остальное»). Если сервер старый и отдаёт только yandex/other,
+   рисуем две линии, как раньше.
    Рисуем инлайн-SVG без библиотек: страница внутренняя, тянуть ради одного графика
    стороннюю зависимость незачем.
 
@@ -9,7 +12,18 @@
      по линии нельзя снять точное значение за день. */
 (function (w, d) {
   'use strict';
-  var C = { yandex: '#B8860B', other: '#2F6FA8', grid: '#E3E7EE', ink: '#55637A', ink3: '#8A94A6' };
+  var C = { grid: '#E3E7EE', ink: '#55637A', ink3: '#8A94A6' };
+  var SERIES_FULL = [
+    { key: 'yandex', label: 'Из Яндекса', color: '#E0342B' },
+    { key: 'telegram', label: 'Из Telegram', color: '#1E7FD8' },
+    { key: 'direct', label: 'Прямые заходы', color: '#2E9E44', dash: '6 4' },
+    { key: 'rest', label: 'Другие каналы', color: '#8E44AD' },
+  ];
+  var SERIES_OLD = [
+    { key: 'yandex', label: 'Из Яндекса', color: '#B8860B' },
+    { key: 'other', label: 'Из других каналов', color: '#2F6FA8' },
+  ];
+  function dot(color) { return '<i class="dot" style="background:' + color + '"></i>'; }
   var W = 1000, H = 300, PAD = { t: 16, r: 54, b: 28, l: 44 };
 
   function fmtDay(iso) {
@@ -22,19 +36,18 @@
     return e;
   }
 
-  /* rows: [{ day, yandex, other }] */
+  /* rows: [{ day, yandex, telegram, direct, rest }] (или старое { day, yandex, other }) */
   w.renderStatChart = function (host, rows) {
     host.textContent = '';
     if (!rows || rows.length === 0) {
       host.innerHTML = '<p class="empty">За выбранный период данных ещё нет.</p>';
       return;
     }
+    var SERIES = rows[0].telegram != null ? SERIES_FULL : SERIES_OLD;
 
     var legend = d.createElement('div');
     legend.className = 'chart__legend';
-    legend.innerHTML =
-      '<span><i class="dot dot--yandex"></i>Из Яндекса</span>' +
-      '<span><i class="dot dot--other"></i>Из других каналов</span>';
+    legend.innerHTML = SERIES.map(function (s) { return '<span>' + dot(s.color) + s.label + '</span>'; }).join('');
     host.appendChild(legend);
 
     var box = d.createElement('div');
@@ -42,7 +55,7 @@
     host.appendChild(box);
 
     var max = 0;
-    rows.forEach(function (r) { max = Math.max(max, r.yandex, r.other); });
+    rows.forEach(function (r) { SERIES.forEach(function (s) { max = Math.max(max, r[s.key] || 0); }); });
     /* Пустой период не должен рисовать шкалу 0…0 — ось схлопнется в линию. */
     max = Math.max(max, 4);
     var top = Math.ceil(max / 4) * 4;                       // круглый потолок шкалы
@@ -51,7 +64,8 @@
     var x = function (i) { return PAD.l + (rows.length === 1 ? innerW / 2 : (innerW * i) / (rows.length - 1)); };
     var y = function (v) { return PAD.t + innerH - (innerH * v) / top; };
 
-    var svg = el('svg', { viewBox: '0 0 ' + W + ' ' + H, role: 'img', 'aria-label': 'Визиты по дням: из Яндекса и из других каналов' });
+    var svg = el('svg', { viewBox: '0 0 ' + W + ' ' + H, role: 'img',
+      'aria-label': 'Визиты по дням: ' + SERIES.map(function (s) { return s.label.toLowerCase(); }).join(', ') });
 
     // Сетка и подписи шкалы — намеренно бледные: это фон, а не данные.
     for (var s = 0; s <= 4; s++) {
@@ -80,21 +94,21 @@
       svg.appendChild(t);
     });
 
-    function line(key, color) {
-      var pts = rows.map(function (r, i) { return x(i) + ',' + y(r[key]); }).join(' ');
+    function line(s) {
+      var pts = rows.map(function (r, i) { return x(i) + ',' + y(r[s.key] || 0); }).join(' ');
       svg.appendChild(el('polyline', {
-        points: pts, fill: 'none', stroke: color, 'stroke-width': 2,
+        points: pts, fill: 'none', stroke: s.color, 'stroke-width': 2, 'stroke-dasharray': s.dash,
         'stroke-linejoin': 'round', 'stroke-linecap': 'round',
       }));
     }
-    line('other', C.other);
-    line('yandex', C.yandex);
+    // Яндекс рисуем последним — он главный, его линия сверху остальных.
+    SERIES.slice().reverse().forEach(line);
 
     /* Прямые подписи у последних точек: серию видно, не сверяясь с легендой и не
        полагаясь на цвет. Когда линии сходятся, подписи налезают друг на друга —
        разводим их по вертикали, сохраняя порядок значений. */
     var tail = rows[rows.length - 1];
-    var labels = [{ v: tail.yandex, color: C.yandex }, { v: tail.other, color: C.other }]
+    var labels = SERIES.map(function (s) { return { v: tail[s.key] || 0, color: s.color }; })
       .sort(function (a, b) { return y(a.v) - y(b.v); });
     var MIN_DY = 15;
     labels.forEach(function (lab, i) {
@@ -110,9 +124,11 @@
     // Слой наведения: направляющая, точки и подсказка.
     var guide = el('line', { y1: PAD.t, y2: PAD.t + innerH, stroke: C.ink3, 'stroke-width': 1, 'stroke-dasharray': '3 3', opacity: 0 });
     svg.appendChild(guide);
-    var dotY = el('circle', { r: 5, fill: C.yandex, stroke: '#fff', 'stroke-width': 2, opacity: 0 });
-    var dotO = el('circle', { r: 5, fill: C.other, stroke: '#fff', 'stroke-width': 2, opacity: 0 });
-    svg.appendChild(dotO); svg.appendChild(dotY);
+    var dots = SERIES.map(function (s) {
+      var c = el('circle', { r: 5, fill: s.color, stroke: '#fff', 'stroke-width': 2, opacity: 0 });
+      svg.appendChild(c);
+      return c;
+    });
 
     var hit = el('rect', { x: PAD.l, y: PAD.t, width: innerW, height: innerH, fill: 'transparent', style: 'cursor:crosshair' });
     svg.appendChild(hit);
@@ -132,12 +148,11 @@
       });
       var row = rows[i];
       guide.setAttribute('x1', x(i)); guide.setAttribute('x2', x(i)); guide.setAttribute('opacity', 1);
-      dotY.setAttribute('cx', x(i)); dotY.setAttribute('cy', y(row.yandex)); dotY.setAttribute('opacity', 1);
-      dotO.setAttribute('cx', x(i)); dotO.setAttribute('cy', y(row.other)); dotO.setAttribute('opacity', 1);
-      tip.innerHTML =
-        '<div style="margin-bottom:4px">' + fmtDay(row.day) + '</div>' +
-        '<div class="tip__row"><i class="dot dot--yandex"></i>Из Яндекса: <b>' + row.yandex + '</b></div>' +
-        '<div class="tip__row"><i class="dot dot--other"></i>Другие каналы: <b>' + row.other + '</b></div>';
+      SERIES.forEach(function (s, k) {
+        dots[k].setAttribute('cx', x(i)); dots[k].setAttribute('cy', y(row[s.key] || 0)); dots[k].setAttribute('opacity', 1);
+      });
+      tip.innerHTML = '<div style="margin-bottom:4px">' + fmtDay(row.day) + '</div>'
+        + SERIES.map(function (s) { return '<div class="tip__row">' + dot(s.color) + s.label + ': <b>' + (row[s.key] || 0) + '</b></div>'; }).join('');
       tip.style.opacity = 1;
       var leftPct = (x(i) / W) * 100;
       tip.style.left = leftPct + '%';
@@ -147,7 +162,7 @@
     }
     function hide() {
       guide.setAttribute('opacity', 0);
-      dotY.setAttribute('opacity', 0); dotO.setAttribute('opacity', 0);
+      dots.forEach(function (c) { c.setAttribute('opacity', 0); });
       tip.style.opacity = 0;
     }
     hit.addEventListener('mousemove', show);

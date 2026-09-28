@@ -185,7 +185,7 @@
 
     // 3. Динамика.
     html += '<div class="card"><div class="card__head"><h2>Динамика по дням</h2>'
-      + '<span class="card__note">визиты: Яндекс и остальные каналы</span></div>'
+      + '<span class="card__note">визиты по каналам: Яндекс, Telegram, прямые заходы, другие</span></div>'
       + '<div id="chart"></div></div>';
 
     // 4. Каналы — основная таблица.

@@ -10,10 +10,12 @@
   --line: #E3E7EE;
   --surface: #FFFFFF;
   --bg: #F5F7FA;
-  --yandex: #B8860B;
+  /* Каналы — хорошо различимые цвета (Тати 2026-09-28): красный, синий, зелёный, фиолетовый. */
+  --yandex: #E0342B;
   --other: #2F6FA8;
-  --telegram: #2A8FD0;
-  --direct: #6B7A90;
+  --telegram: #1E7FD8;
+  --direct: #2E9E44;
+  --rest: #8E44AD;
   --good: #2E7D53;
   --bad: #B3261E;
   --radius: 10px;
@@ -64,7 +66,7 @@ a { color: var(--other); }
 .split { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 14px; margin-bottom: 14px; }
 .split__card { background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow); padding: 20px 22px; border-left: 4px solid var(--line); }
 .split__card--yandex { border-left-color: var(--yandex); }
-.split__card--other { border-left-color: var(--other); }
+.split__card--other { border-left-color: var(--rest); }
 .split__card--telegram { border-left-color: var(--telegram); }
 .split__card--direct { border-left-color: var(--direct); }
 .split__label { font-size: 13px; color: var(--ink-2); margin-bottom: 4px; }
