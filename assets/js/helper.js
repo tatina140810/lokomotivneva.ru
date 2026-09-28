@@ -294,6 +294,7 @@
       body: JSON.stringify(payload)
     }).then(function (r) {
       if (!r.ok) throw new Error('bad');
+      if (typeof w.vkGoal === 'function') w.vkGoal('lead_form');
       botSay('<p>Передал менеджеру — он свяжется с вами в ближайшее время.</p><p>Пока можете посмотреть другие ответы.</p>', null, greetChips);
     }).catch(function () {
       var links = [];

@@ -9,8 +9,24 @@
      5. Точечная карта мира и анимированные маршруты
      6. Форма заявки: маска телефона, валидация, уведомление
    ========================================================================== */
+
+/* Цели VK Рекламы (пиксель Top.Mail.Ru 3797721). Функция глобальная: её зовут
+   ещё v2.js (калькулятор) и helper.js (помощник) — оба подключены после main.js.
+   Если посетитель отказался от аналитики, _tmr — заглушка из head, и цель
+   никуда не уходит. */
+function vkGoal(goal) {
+  try { (window._tmr = window._tmr || []).push({ type: 'reachGoal', id: 3797721, goal: goal }); } catch (e) {}
+}
+
 (function () {
   'use strict';
+
+  /* Любая ссылка в Telegram — плавающая кнопка, ссылки из site-config, ответы
+     помощника. Делегирование на документе ловит и те, что дорисованы скриптами. */
+  document.addEventListener('click', function (e) {
+    var a = e.target && e.target.closest ? e.target.closest('a[href]') : null;
+    if (a && /^https?:\/\/(www\.)?t\.me\//i.test(a.href)) vkGoal('telegram_click');
+  }, true);
 
   var $  = function (sel, ctx) { return (ctx || document).querySelector(sel); };
   var $$ = function (sel, ctx) { return Array.prototype.slice.call((ctx || document).querySelectorAll(sel)); };
@@ -529,6 +545,7 @@
         if (ok) {
           /* Отмечаем достижение цели: по этому событию считается конверсия канала. */
           if (window.LOKO_STAT && window.LOKO_STAT.lead) window.LOKO_STAT.lead();
+          vkGoal('lead_form');
           showToast(name + ', заявка принята! Ответим в течение рабочего дня — свяжемся по указанному телефону.');
           form.reset();
           fields.forEach(function (field) { setFieldError(field, ''); });
