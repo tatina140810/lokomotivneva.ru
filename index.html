@@ -13,7 +13,7 @@
   <meta property="og:image" content="/assets/img/logo-512.jpg">
   <meta property="og:locale" content="ru_RU">
   <link rel="icon" href="/assets/img/logo-160.jpg">
-  <link rel="stylesheet" href="/assets/css/styles.css?v=20260918hdr">
+  <link rel="stylesheet" href="/assets/css/styles.css?v=20260928toast">
   <link rel="stylesheet" href="/assets/css/additions.css?v=20260924b">
   <link rel="stylesheet" href="/assets/css/v2.css?v=20260924b">
   <link rel="stylesheet" href="/assets/css/helper.css?v=20260924rkn">
@@ -58,24 +58,19 @@
     w._tmr = { push: function () {} };
   })(window, document);
   </script>
-  <!-- VK Пиксель (Top.Mail.Ru, счётчик 3795618) — добавлен 2026-09-19.
-       Нужен VK Рекламе, чтобы считать переходы по объявлениям и их результат; стоит
-       в head как можно раньше, чтобы просмотр засчитался, даже если человек сразу
-       закрыл вкладку. Наш собственный счётчик (assets/js/stat.js) он не заменяет:
-       тот считает канал визита и связывает его с заявкой, эти данные остаются у нас. -->
-  <script type="text/javascript">
-  var _tmr = window._tmr || (window._tmr = []);
-  _tmr.push({id: "3795618", type: "pageView", start: (new Date()).getTime()});
-  (function (d, w, id) {
-    if (d.getElementById(id)) return;
-    var ts = d.createElement("script"); ts.type = "text/javascript"; ts.async = true; ts.id = id;
-    ts.src = "https://top-fwz1.mail.ru/js/code.js";
-    var f = function () {var s = d.getElementsByTagName("script")[0]; s.parentNode.insertBefore(ts, s);};
-    if (w.opera == "[object Opera]") { d.addEventListener("DOMContentLoaded", f, false); } else { f(); }
-  })(document, window, "tmr-code");
-  </script>
-  <noscript><div><img src="https://top-fwz1.mail.ru/counter?id=3795618;js=na" style="position:absolute;left:-9999px;" alt="Top.Mail.Ru" /></div></noscript>
-  <!-- /VK Пиксель -->
+<!-- Top.Mail.Ru counter -->
+<script type="text/javascript">
+var _tmr = window._tmr || (window._tmr = []);
+_tmr.push({id: "3797721", type: "pageView", start: (new Date()).getTime()});
+(function (d, w, id) {
+  if (d.getElementById(id)) return;
+  var ts = d.createElement("script"); ts.type = "text/javascript"; ts.async = true; ts.id = id;
+  ts.src = "https://top-fwz1.mail.ru/js/code.js";
+  var f = function () {var s = d.getElementsByTagName("script")[0]; s.parentNode.insertBefore(ts, s);};
+  if (w.opera == "[object Opera]") { d.addEventListener("DOMContentLoaded", f, false); } else { f(); }
+})(document, window, "tmr-code");
+</script>
+<!-- /Top.Mail.Ru counter -->
   <!-- Yandex.Metrika counter -->
   <script type="text/javascript">
       (function(m,e,t,r,i,k,a){
@@ -91,6 +86,7 @@
   <!-- /Yandex.Metrika counter -->
 </head>
 <body>
+<noscript><div><img src="https://top-fwz1.mail.ru/counter?id=3797721;js=na" style="position:absolute;left:-9999px;" alt="Top.Mail.Ru" /></div></noscript>
   <a class="skip-link" href="#main">Перейти к основному содержанию</a>
 
   <header class="header" id="header">
@@ -128,8 +124,9 @@
       <div class="hero-2col">
       <div class="page-hero__inner">
         <h1 class="reveal" data-reveal-delay="1" id="hero-title" data-hero-title>
-          Платёж в любую точку мира с&nbsp;комиссией 0,3%<span class="hero-h1__soft text-gold">и логистика в одном решении</span>
+          Платёж в любую точку мира с&nbsp;комиссией 0,3%<sup class="hero-h1__star">*</sup><span class="hero-h1__soft text-gold">и логистика в одном решении</span>
         </h1>
+        <p class="hero-footnote reveal" data-reveal-delay="1">* вознаграждение агента от рублёвой суммы платежа, без учёта комиссии банка</p>
 
         <!-- Экспресс-расчёт перенесён в первый экран: раньше калькулятор был
              третьей секцией. Цифры берутся из site-config.js → qualify.routes,
@@ -168,7 +165,7 @@
             <div><dt>Курс</dt><dd><b data-express-rate>85,6234 ₽</b></dd></div>
             <div><dt>Сумма платежа</dt><dd><b data-express-base>—</b></dd></div>
             <div><dt>Вознаграждение агента 0,3%</dt><dd><b data-express-fee>—</b></dd></div>
-            <div class="express__total"><dt>Итого к оплате<span class="express__star" aria-hidden="true">*</span></dt><dd><b data-express-total>—</b></dd></div>
+            <div class="express__total"><dt>Итого к оплате<span class="express__star" aria-hidden="true">**</span></dt><dd><b data-express-total>—</b></dd></div>
             <div><dt>Срок исполнения</dt><dd><b data-express-term>1–3 рабочих дня</b></dd></div>
           </dl>
           <!-- Сноска и оговорка держатся внутри карточки расчёта, сразу под
@@ -176,7 +173,7 @@
                потерялась бы. Видны сразу, без раскрытия по звёздочке —
                предупреждение о комиссии банка человек должен увидеть до
                того, как примет сумму за окончательную. -->
-          <p class="express__note" id="express-note">* без учёта комиссии банка-исполнителя — назовём точную сумму при оформлении заявки. Курс с наценкой фиксируется в счёте в момент платежа.</p>
+          <p class="express__note" id="express-note">** без учёта комиссии банка-исполнителя — назовём точную сумму при оформлении заявки. Курс с наценкой фиксируется в счёте в момент платежа.</p>
           <p class="express__legal">Расчёт носит информационный характер и не является публичной офертой.</p>
         </div>
 
@@ -476,8 +473,7 @@
               <div aria-hidden="true" style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden"><label>Компания<input type="text" name="company" tabindex="-1" autocomplete="off"></label></div>
               <div class="field"><label class="field__label" for="name">Имя <span aria-hidden="true">*</span></label><input class="field__input" type="text" id="name" name="name" autocomplete="name" placeholder="Как к вам обращаться" required minlength="2" aria-describedby="name-error"><p class="field__error" id="name-error" role="alert" hidden></p></div>
               <div class="field"><label class="field__label" for="phone">Телефон <span aria-hidden="true">*</span></label><input class="field__input" type="tel" id="phone" name="phone" autocomplete="tel" placeholder="+7 (___) ___-__-__ или +код страны" required inputmode="tel" aria-describedby="phone-error"><p class="field__error" id="phone-error" role="alert" hidden></p></div>
-              <div class="field"><label class="field__label" for="email">Эл. почта <span aria-hidden="true">*</span></label><input class="field__input" type="email" id="email" name="email" autocomplete="email" placeholder="you@example.com" inputmode="email" required aria-describedby="email-error"><p class="field__error" id="email-error" role="alert" hidden></p></div>
-              <div class="field"><label class="field__label" for="message">Направление и сумма <span aria-hidden="true">*</span></label><textarea class="field__input field__input--area" id="message" name="message" rows="3" placeholder="Напр. Китай, оплата поставщику ~100 000 ¥, есть инвойс" required aria-describedby="message-error"></textarea><p class="field__error" id="message-error" role="alert" hidden></p></div>
+              <div class="field"><label class="field__label" for="message">Направление и сумма</label><textarea class="field__input field__input--area" id="message" name="message" rows="3" placeholder="Напр. Китай, оплата поставщику ~100 000 ¥, есть инвойс" aria-describedby="message-error"></textarea><p class="field__error" id="message-error" role="alert" hidden></p></div>
               <label class="checkbox"><input type="checkbox" id="consent" name="consent" required aria-describedby="consent-error"><span>Я согласен с <a href="/privacy/" target="_blank" rel="noopener">политикой обработки персональных данных</a></span></label>
               <p class="field__error" id="consent-error" role="alert" hidden></p>
               <button class="btn btn--gold btn--block btn--lg" type="submit">Отправить заявку</button>
@@ -520,11 +516,11 @@
 
   <script src="/assets/js/site-config.js?v=20260919mail" defer></script>
   <script src="/assets/js/site.js?v=20260917m" defer></script>
-  <script src="/assets/js/main.js?v=20260925pd" defer></script>
+  <script src="/assets/js/main.js?v=20260928noemail" defer></script>
   <script src="/assets/js/search.js?v=20260917m" defer></script>
-  <script src="/assets/js/v2.js?v=20260924b" defer></script>
+  <script src="/assets/js/v2.js?v=20260928goals" defer></script>
   <script src="/assets/js/helper-kb.js?v=20260922nofiz" defer></script>
-  <script src="/assets/js/helper.js?v=20260925pd" defer></script>
+  <script src="/assets/js/helper.js?v=20260928goals" defer></script>
   <script src="/assets/js/stat.js?v=20260918d" defer></script>
   <script src="/assets/js/cookie.js?v=20260924b" defer></script>
 </body>

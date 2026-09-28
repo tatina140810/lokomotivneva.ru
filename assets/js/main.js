@@ -9,8 +9,34 @@
      5. Точечная карта мира и анимированные маршруты
      6. Форма заявки: маска телефона, валидация, уведомление
    ========================================================================== */
+
+/* Цели VK Рекламы (пиксель Top.Mail.Ru 3797721). Функция глобальная: её зовут
+   ещё v2.js (калькулятор) и helper.js (помощник) — оба подключены после main.js.
+   Если посетитель отказался от аналитики, _tmr — заглушка из head, и цель
+   никуда не уходит. */
+function vkGoal(goal) {
+  try { (window._tmr = window._tmr || []).push({ type: 'reachGoal', id: 3797721, goal: goal }); } catch (e) {}
+}
+
+/* Та же цель в Яндекс.Метрику (счётчик 112180979). Глобальная по той же причине.
+   typeof-проверка — на случай, если Метрику заблокировал браузер: VK-цель и
+   логика формы от этого не страдают. */
+function ymGoal(goal) {
+  try { if (typeof ym === 'function') ym(112180979, 'reachGoal', goal); } catch (e) {}
+}
+
 (function () {
   'use strict';
+
+  /* Любая ссылка в Telegram или на телефон — плавающая кнопка, ссылки из
+     site-config, ответы помощника. Делегирование на документе ловит и те, что
+     дорисованы скриптами. Цель уходит и в VK, и в Метрику. */
+  document.addEventListener('click', function (e) {
+    var a = e.target && e.target.closest ? e.target.closest('a[href]') : null;
+    if (!a) return;
+    if (/^https?:\/\/(www\.)?t\.me\//i.test(a.href)) { vkGoal('telegram_click'); ymGoal('telegram_click'); }
+    else if (/^\s*tel:/i.test(a.getAttribute('href'))) { vkGoal('phone_click'); ymGoal('phone_click'); }
+  }, true);
 
   var $  = function (sel, ctx) { return (ctx || document).querySelector(sel); };
   var $$ = function (sel, ctx) { return Array.prototype.slice.call((ctx || document).querySelectorAll(sel)); };
@@ -394,16 +420,8 @@
       if (digits.length > 15) return 'Номер слишком длинный';
       return '';
     },
-    email: function (v) {
-      var t = v.trim();
-      if (!t) return 'Укажите эл. почту для связи';
-      if (t.length > 254) return 'Адрес слишком длинный';
-      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(t)) return 'Проверьте адрес — напр. you@example.com';
-      return '';
-    },
     message: function (v) {
       var t = v.trim();
-      if (!t) return 'Укажите направление и сумму платежа';
       if (t.length > 1500) return 'Слишком длинное сообщение — не более 1500 символов';
       return '';
     },
@@ -432,9 +450,22 @@
     return setFieldError(field, rule(field.value, field));
   }
 
+  /* Иконки тоста. Ошибка рисуется инлайном, а не из sprite.svg: спрайт подключён
+     без версии, и у посетителя со старым кэшем новой иконки в нём не оказалось бы. */
+  var TOAST_ICON_OK = '<svg viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-check"></use></svg>';
+  var TOAST_ICON_ERROR = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">' +
+    '<circle cx="12" cy="12" r="9"/><path d="M12 7.5v5.5M12 16.5v.01"/></svg>';
+
   var toastTimer;
-  function showToast(text) {
+  /* kind: 'error' — красная рамка и восклицательный знак; по умолчанию — успех с галочкой. */
+  function showToast(text, kind) {
+    var isError = kind === 'error';
     toast.querySelector('.toast__text').textContent = text;
+    toast.querySelector('.toast__icon').innerHTML = isError ? TOAST_ICON_ERROR : TOAST_ICON_OK;
+    toast.classList.toggle('toast--error', isError);
+    /* Ошибку экранный диктор должен прочитать сразу, а не «когда освободится». */
+    toast.setAttribute('role', isError ? 'alert' : 'status');
+    toast.setAttribute('aria-live', isError ? 'assertive' : 'polite');
     toast.hidden = false;
     /* Даём браузеру кадр на снятие hidden, чтобы сработал переход */
     requestAnimationFrame(function () { toast.classList.add('is-visible'); });
@@ -470,7 +501,7 @@
        Уходит в заявку вместе с отметкой о согласии, чтобы было видно, какой
        именно документ принимал человек. Меняя дату в /privacy/, менять и здесь
        — и в helper.js, там та же константа. */
-    var POLICY_VERSION = '2026-09-25';
+    var POLICY_VERSION = '2026-09-24';
     var consentField = $('#consent');
 
     form.addEventListener('submit', function (e) {
@@ -523,18 +554,25 @@
       sending = true;
       if (submitBtn) { submitBtn.disabled = true; submitBtn.dataset.label = submitBtn.textContent; submitBtn.textContent = 'Отправляем…'; }
 
-      function done(ok) {
+      function done(status) {
+        var ok = status >= 200 && status < 300;
         sending = false;
         if (submitBtn) { submitBtn.disabled = false; if (submitBtn.dataset.label) submitBtn.textContent = submitBtn.dataset.label; }
         if (ok) {
           /* Отмечаем достижение цели: по этому событию считается конверсия канала. */
           if (window.LOKO_STAT && window.LOKO_STAT.lead) window.LOKO_STAT.lead();
+          vkGoal('lead_form');
+          ymGoal('lead_form');
           showToast(name + ', заявка принята! Ответим в течение рабочего дня — свяжемся по указанному телефону.');
           form.reset();
           fields.forEach(function (field) { setFieldError(field, ''); });
+        } else if (status === 429) {
+          /* Сработал лимит запросов на сервере — данные в форме оставляем, человеку
+             достаточно подождать и нажать ещё раз. */
+          showToast('Слишком много попыток, попробуйте через минуту или позвоните +7 (495) 10-80-100', 'error');
         } else {
           /* Фолбэк: заявку не удалось отправить — не теряем клиента, зовём позвонить/написать. */
-          showToast('Не удалось отправить заявку. Позвоните нам: +7 (495) 10-80-100 или напишите на lokomotivneva@yandex.ru');
+          showToast('Не удалось отправить заявку. Позвоните нам: +7 (495) 10-80-100 или напишите на lokomotivneva@yandex.ru', 'error');
         }
       }
 
@@ -543,8 +581,8 @@
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
       })
-        .then(function (r) { done(r.ok); })
-        .catch(function () { done(false); });
+        .then(function (r) { done(r.status); })
+        .catch(function () { done(0); });
     });
   }
 

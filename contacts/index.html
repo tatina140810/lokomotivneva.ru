@@ -8,7 +8,7 @@
   <meta name="theme-color" content="#0B1E3F">
   <link rel="canonical" href="https://lokomotivneva.ru/contacts/">
   <link rel="icon" href="/assets/img/logo-160.jpg">
-  <link rel="stylesheet" href="/assets/css/styles.css?v=20260918hdr">
+  <link rel="stylesheet" href="/assets/css/styles.css?v=20260928toast">
   <link rel="stylesheet" href="/assets/css/additions.css?v=20260924b">
   <!-- Отказ от аналитики. Посетитель, выбравший «Только необходимые» в окне о
        cookie, не должен попадать в счётчики — а они стоят инлайном сразу ниже,
@@ -38,24 +38,19 @@
     w._tmr = { push: function () {} };
   })(window, document);
   </script>
-  <!-- VK Пиксель (Top.Mail.Ru, счётчик 3795618) — добавлен 2026-09-19.
-       Нужен VK Рекламе, чтобы считать переходы по объявлениям и их результат; стоит
-       в head как можно раньше, чтобы просмотр засчитался, даже если человек сразу
-       закрыл вкладку. Наш собственный счётчик (assets/js/stat.js) он не заменяет:
-       тот считает канал визита и связывает его с заявкой, эти данные остаются у нас. -->
-  <script type="text/javascript">
-  var _tmr = window._tmr || (window._tmr = []);
-  _tmr.push({id: "3795618", type: "pageView", start: (new Date()).getTime()});
-  (function (d, w, id) {
-    if (d.getElementById(id)) return;
-    var ts = d.createElement("script"); ts.type = "text/javascript"; ts.async = true; ts.id = id;
-    ts.src = "https://top-fwz1.mail.ru/js/code.js";
-    var f = function () {var s = d.getElementsByTagName("script")[0]; s.parentNode.insertBefore(ts, s);};
-    if (w.opera == "[object Opera]") { d.addEventListener("DOMContentLoaded", f, false); } else { f(); }
-  })(document, window, "tmr-code");
-  </script>
-  <noscript><div><img src="https://top-fwz1.mail.ru/counter?id=3795618;js=na" style="position:absolute;left:-9999px;" alt="Top.Mail.Ru" /></div></noscript>
-  <!-- /VK Пиксель -->
+<!-- Top.Mail.Ru counter -->
+<script type="text/javascript">
+var _tmr = window._tmr || (window._tmr = []);
+_tmr.push({id: "3797721", type: "pageView", start: (new Date()).getTime()});
+(function (d, w, id) {
+  if (d.getElementById(id)) return;
+  var ts = d.createElement("script"); ts.type = "text/javascript"; ts.async = true; ts.id = id;
+  ts.src = "https://top-fwz1.mail.ru/js/code.js";
+  var f = function () {var s = d.getElementsByTagName("script")[0]; s.parentNode.insertBefore(ts, s);};
+  if (w.opera == "[object Opera]") { d.addEventListener("DOMContentLoaded", f, false); } else { f(); }
+})(document, window, "tmr-code");
+</script>
+<!-- /Top.Mail.Ru counter -->
   <!-- Yandex.Metrika counter -->
   <script type="text/javascript">
       (function(m,e,t,r,i,k,a){
@@ -72,6 +67,7 @@
   <link rel="stylesheet" href="/assets/css/helper.css?v=20260924rkn">
 </head>
 <body>
+<noscript><div><img src="https://top-fwz1.mail.ru/counter?id=3797721;js=na" style="position:absolute;left:-9999px;" alt="Top.Mail.Ru" /></div></noscript>
   <a class="skip-link" href="#main">Перейти к основному содержанию</a>
   <header class="header" id="header"><div class="container header__inner">
     <a class="brand" href="/" aria-label="ООО «Локомотив» — на главную">
@@ -122,8 +118,7 @@
               <div aria-hidden="true" style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden"><label>Компания<input type="text" name="company" tabindex="-1" autocomplete="off"></label></div>
               <div class="field"><label class="field__label" for="name">Имя <span aria-hidden="true">*</span></label><input class="field__input" type="text" id="name" name="name" autocomplete="name" placeholder="Как к вам обращаться" required minlength="2" aria-describedby="name-error"><p class="field__error" id="name-error" role="alert" hidden></p></div>
               <div class="field"><label class="field__label" for="phone">Телефон <span aria-hidden="true">*</span></label><input class="field__input" type="tel" id="phone" name="phone" autocomplete="tel" placeholder="+7 (___) ___-__-__ или +код страны" required inputmode="tel" aria-describedby="phone-error"><p class="field__error" id="phone-error" role="alert" hidden></p></div>
-              <div class="field"><label class="field__label" for="email">Эл. почта <span aria-hidden="true">*</span></label><input class="field__input" type="email" id="email" name="email" autocomplete="email" placeholder="you@example.com" inputmode="email" required aria-describedby="email-error"><p class="field__error" id="email-error" role="alert" hidden></p></div>
-              <div class="field"><label class="field__label" for="message">Направление и сумма <span aria-hidden="true">*</span></label><textarea class="field__input field__input--area" id="message" name="message" rows="4" placeholder="Напр. Китай, оплата поставщику ~100 000 ¥, есть инвойс" required aria-describedby="message-error"></textarea><p class="field__error" id="message-error" role="alert" hidden></p></div>
+              <div class="field"><label class="field__label" for="message">Направление и сумма</label><textarea class="field__input field__input--area" id="message" name="message" rows="4" placeholder="Напр. Китай, оплата поставщику ~100 000 ¥, есть инвойс" aria-describedby="message-error"></textarea><p class="field__error" id="message-error" role="alert" hidden></p></div>
               <label class="checkbox"><input type="checkbox" id="consent" name="consent" required aria-describedby="consent-error"><span>Я согласен с <a href="/privacy/" target="_blank" rel="noopener">политикой обработки персональных данных</a></span></label>
               <p class="field__error" id="consent-error" role="alert" hidden></p>
               <button class="btn btn--gold btn--block btn--lg" type="submit">Отправить заявку</button>
@@ -158,10 +153,10 @@
 
   <script src="/assets/js/site-config.js?v=20260919mail" defer></script>
   <script src="/assets/js/site.js?v=20260917m" defer></script>
-  <script src="/assets/js/main.js?v=20260925pd" defer></script>
+  <script src="/assets/js/main.js?v=20260928noemail" defer></script>
   <script src="/assets/js/search.js?v=20260917m" defer></script>
   <script src="/assets/js/helper-kb.js?v=20260922nofiz" defer></script>
-  <script src="/assets/js/helper.js?v=20260925pd" defer></script>
+  <script src="/assets/js/helper.js?v=20260928goals" defer></script>
   <script src="/assets/js/stat.js?v=20260918d" defer></script>
   <script src="/assets/js/cookie.js?v=20260924b" defer></script>
 </body>

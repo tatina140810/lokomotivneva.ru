@@ -85,7 +85,7 @@
   /* Редакция политики, с которой человек соглашается. Уходит вместе с заявкой,
      чтобы потом было видно, какой именно документ он принимал. Меняя политику,
      менять и здесь — и в main.js, там та же константа. */
-  var POLICY_VERSION = '2026-09-25';
+  var POLICY_VERSION = '2026-09-24';
 
   function showConsent(on) {
     consentBox.hidden = !on;
@@ -294,6 +294,8 @@
       body: JSON.stringify(payload)
     }).then(function (r) {
       if (!r.ok) throw new Error('bad');
+      if (typeof w.vkGoal === 'function') w.vkGoal('lead_form');
+      if (typeof w.ymGoal === 'function') w.ymGoal('lead_form');
       botSay('<p>Передал менеджеру — он свяжется с вами в ближайшее время.</p><p>Пока можете посмотреть другие ответы.</p>', null, greetChips);
     }).catch(function () {
       var links = [];

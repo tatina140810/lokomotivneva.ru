@@ -167,11 +167,26 @@
       var el = express.querySelector('[data-express-term]');
       if (el) el.textContent = route.term;
     };
-    express.addEventListener('input', function () { recalc(); });
+    /* Цель VK «calc_submit». Кнопки у калькулятора нет — он считает на лету,
+       поэтому цель ставим один раз за просмотр, когда посетитель сам получил
+       итог и остановился на 1,5 с: иначе засчитали бы первую набранную цифру. */
+    var calcGoalSent = false, calcGoalTimer = null;
+    var calcGoal = function () {
+      if (calcGoalSent) return;
+      clearTimeout(calcGoalTimer);
+      calcGoalTimer = setTimeout(function () {
+        var total = express.querySelector('[data-express-total]');
+        if (!total || total.textContent.trim() === '—') return;
+        calcGoalSent = true;
+        if (typeof w.vkGoal === 'function') w.vkGoal('calc_submit');
+        if (typeof w.ymGoal === 'function') w.ymGoal('calc_submit');
+      }, 1500);
+    };
+    express.addEventListener('input', function () { recalc(); calcGoal(); });
     express.addEventListener('change', function (e) {
       var t = e.target;
       if (t && t.hasAttribute && t.hasAttribute('data-express-route')) syncCurrencies();
-      setTerm(); recalc();
+      setTerm(); recalc(); calcGoal();
     });
     setTerm();
     syncCurrencies();

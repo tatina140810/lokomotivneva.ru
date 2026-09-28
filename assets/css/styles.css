@@ -710,7 +710,7 @@ select optgroup {
 }
 .form__note { margin: 0; font-size: .78rem; color: rgba(159, 178, 208, .8); text-align: center; }
 
-/* Всплывающее уведомление об успешной отправке */
+/* Всплывающее уведомление о результате отправки заявки */
 .toast {
   position: fixed; z-index: 300;
   left: 50%; bottom: 2rem; transform: translate(-50%, 140%);
@@ -729,6 +729,9 @@ select optgroup {
 .toast__icon { display: grid; place-items: center; width: 28px; height: 28px; flex: none; color: var(--gold-500); }
 .toast__icon svg { width: 20px; height: 20px; }
 .toast__text { font-size: .95rem; }
+/* Ошибка отправки — красная рамка и иконка, чтобы её нельзя было принять за успех. */
+.toast--error { border-color: #E5484D; }
+.toast--error .toast__icon { color: #FF6B70; }
 
 /* ------------------------------ 12. Футер -------------------------------- */
 .footer {
