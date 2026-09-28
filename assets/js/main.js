@@ -458,9 +458,22 @@ function ymGoal(goal) {
     return setFieldError(field, rule(field.value, field));
   }
 
+  /* Иконки тоста. Ошибка рисуется инлайном, а не из sprite.svg: спрайт подключён
+     без версии, и у посетителя со старым кэшем новой иконки в нём не оказалось бы. */
+  var TOAST_ICON_OK = '<svg viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-check"></use></svg>';
+  var TOAST_ICON_ERROR = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">' +
+    '<circle cx="12" cy="12" r="9"/><path d="M12 7.5v5.5M12 16.5v.01"/></svg>';
+
   var toastTimer;
-  function showToast(text) {
+  /* kind: 'error' — красная рамка и восклицательный знак; по умолчанию — успех с галочкой. */
+  function showToast(text, kind) {
+    var isError = kind === 'error';
     toast.querySelector('.toast__text').textContent = text;
+    toast.querySelector('.toast__icon').innerHTML = isError ? TOAST_ICON_ERROR : TOAST_ICON_OK;
+    toast.classList.toggle('toast--error', isError);
+    /* Ошибку экранный диктор должен прочитать сразу, а не «когда освободится». */
+    toast.setAttribute('role', isError ? 'alert' : 'status');
+    toast.setAttribute('aria-live', isError ? 'assertive' : 'polite');
     toast.hidden = false;
     /* Даём браузеру кадр на снятие hidden, чтобы сработал переход */
     requestAnimationFrame(function () { toast.classList.add('is-visible'); });
@@ -549,7 +562,8 @@ function ymGoal(goal) {
       sending = true;
       if (submitBtn) { submitBtn.disabled = true; submitBtn.dataset.label = submitBtn.textContent; submitBtn.textContent = 'Отправляем…'; }
 
-      function done(ok) {
+      function done(status) {
+        var ok = status >= 200 && status < 300;
         sending = false;
         if (submitBtn) { submitBtn.disabled = false; if (submitBtn.dataset.label) submitBtn.textContent = submitBtn.dataset.label; }
         if (ok) {
@@ -560,9 +574,13 @@ function ymGoal(goal) {
           showToast(name + ', заявка принята! Ответим в течение рабочего дня — свяжемся по указанному телефону.');
           form.reset();
           fields.forEach(function (field) { setFieldError(field, ''); });
+        } else if (status === 429) {
+          /* Сработал лимит запросов на сервере — данные в форме оставляем, человеку
+             достаточно подождать и нажать ещё раз. */
+          showToast('Слишком много попыток, попробуйте через минуту или позвоните +7 (495) 10-80-100', 'error');
         } else {
           /* Фолбэк: заявку не удалось отправить — не теряем клиента, зовём позвонить/написать. */
-          showToast('Не удалось отправить заявку. Позвоните нам: +7 (495) 10-80-100 или напишите на lokomotivneva@yandex.ru');
+          showToast('Не удалось отправить заявку. Позвоните нам: +7 (495) 10-80-100 или напишите на lokomotivneva@yandex.ru', 'error');
         }
       }
 
@@ -571,8 +589,8 @@ function ymGoal(goal) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
       })
-        .then(function (r) { done(r.ok); })
-        .catch(function () { done(false); });
+        .then(function (r) { done(r.status); })
+        .catch(function () { done(0); });
     });
   }
 
