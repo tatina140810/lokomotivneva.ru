@@ -18,14 +18,24 @@ function vkGoal(goal) {
   try { (window._tmr = window._tmr || []).push({ type: 'reachGoal', id: 3797721, goal: goal }); } catch (e) {}
 }
 
+/* Та же цель в Яндекс.Метрику (счётчик 112180979). Глобальная по той же причине.
+   typeof-проверка — на случай, если Метрику заблокировал браузер: VK-цель и
+   логика формы от этого не страдают. */
+function ymGoal(goal) {
+  try { if (typeof ym === 'function') ym(112180979, 'reachGoal', goal); } catch (e) {}
+}
+
 (function () {
   'use strict';
 
-  /* Любая ссылка в Telegram — плавающая кнопка, ссылки из site-config, ответы
-     помощника. Делегирование на документе ловит и те, что дорисованы скриптами. */
+  /* Любая ссылка в Telegram или на телефон — плавающая кнопка, ссылки из
+     site-config, ответы помощника. Делегирование на документе ловит и те, что
+     дорисованы скриптами. Цель уходит и в VK, и в Метрику. */
   document.addEventListener('click', function (e) {
     var a = e.target && e.target.closest ? e.target.closest('a[href]') : null;
-    if (a && /^https?:\/\/(www\.)?t\.me\//i.test(a.href)) vkGoal('telegram_click');
+    if (!a) return;
+    if (/^https?:\/\/(www\.)?t\.me\//i.test(a.href)) { vkGoal('telegram_click'); ymGoal('telegram_click'); }
+    else if (/^\s*tel:/i.test(a.getAttribute('href'))) { vkGoal('phone_click'); ymGoal('phone_click'); }
   }, true);
 
   var $  = function (sel, ctx) { return (ctx || document).querySelector(sel); };
@@ -546,6 +556,7 @@ function vkGoal(goal) {
           /* Отмечаем достижение цели: по этому событию считается конверсия канала. */
           if (window.LOKO_STAT && window.LOKO_STAT.lead) window.LOKO_STAT.lead();
           vkGoal('lead_form');
+          ymGoal('lead_form');
           showToast(name + ', заявка принята! Ответим в течение рабочего дня — свяжемся по указанному телефону.');
           form.reset();
           fields.forEach(function (field) { setFieldError(field, ''); });

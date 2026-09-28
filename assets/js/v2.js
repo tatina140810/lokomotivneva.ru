@@ -179,6 +179,7 @@
         if (!total || total.textContent.trim() === '—') return;
         calcGoalSent = true;
         if (typeof w.vkGoal === 'function') w.vkGoal('calc_submit');
+        if (typeof w.ymGoal === 'function') w.ymGoal('calc_submit');
       }, 1500);
     };
     express.addEventListener('input', function () { recalc(); calcGoal(); });
