@@ -492,6 +492,23 @@
 
 /* Локомотив: голова поезда правее центра кадра — сдвигаем обрез, чтобы при cover
    не срезались фары; картинка светлее ролика, приглушать почти не нужно. */
-.hero-seal__img { display: block; object-position: 62% center; opacity: .95; }
+/* Картинка с табло (Тати 2026-09-29): на ней текст «Комиссия / Срок» у правого
+   края — общая маска видео растворяла бы его. Показываем кадр целиком (contain),
+   гасим только левый край (под ним текст) и верх/низ, правый край не трогаем. */
+.hero-seal__img {
+  display: block;
+  object-fit: contain;
+  object-position: right center;
+  opacity: 1;
+  -webkit-mask-image:
+    linear-gradient(to right, transparent 0, rgba(0,0,0,.35) 12%, #000 34%, #000 97%, transparent 100%),
+    linear-gradient(to bottom, transparent 0, #000 22%, #000 78%, transparent 100%);
+          mask-image:
+    linear-gradient(to right, transparent 0, rgba(0,0,0,.35) 12%, #000 34%, #000 97%, transparent 100%),
+    linear-gradient(to bottom, transparent 0, #000 22%, #000 78%, transparent 100%);
+}
 
 @media (max-width: 1000px) { .hero-seal { display: none; } }
+/* Картинка с табло шире ролика по смыслу: между 1001 и 1199px она заезжает
+   под калькулятор — там её не показываем. */
+@media (max-width: 1199px) { .hero-seal:has(.hero-seal__img) { display: none; } }
