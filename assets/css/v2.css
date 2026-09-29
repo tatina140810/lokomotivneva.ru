@@ -815,3 +815,6 @@
   #directions .pain__text { max-width: none; }
   .pain__line { display: block; white-space: nowrap; }
 }
+/* «Пять станций» на светлом фоне (Тати 2026-09-29): светлое золото подписей
+   «Станция N» на белом не читалось — берём тёмное. */
+.section--light .steps--stations .step::before { color: var(--gold-700); }
