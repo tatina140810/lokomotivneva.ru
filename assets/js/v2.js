@@ -154,11 +154,19 @@
   if (express) {
     var routeSel = express.querySelector('[data-express-route]');
     var cfg = (w.LOKO && w.LOKO.qualify) || null;
-    if (cfg && routeSel && !routeSel.options.length) {
-      cfg.routes.forEach(function (r) {
-        var o = d.createElement('option');
-        o.value = r.id; o.textContent = r.label;
-        routeSel.appendChild(o);
+    /* Выпадающий список направлений заменён кнопками (Тати 2026-09-29): кнопки
+       в разметке, выбранное направление пишем в скрытое поле data-express-route —
+       остальной расчёт читает его, как раньше читал select. */
+    var routeBtns = express.querySelector('[data-express-routes]');
+    if (routeBtns && routeSel) {
+      routeBtns.addEventListener('click', function (e) {
+        var btn = e.target.closest ? e.target.closest('[data-route]') : null;
+        if (!btn || btn.getAttribute('aria-pressed') === 'true') return;
+        routeSel.value = btn.getAttribute('data-route');
+        [].forEach.call(routeBtns.querySelectorAll('[data-route]'), function (b) {
+          b.setAttribute('aria-pressed', b === btn ? 'true' : 'false');
+        });
+        syncCurrencies(); setTerm(); recalc(); calcGoal();
       });
     }
     var setTerm = function () {

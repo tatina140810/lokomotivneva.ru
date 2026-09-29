@@ -788,3 +788,52 @@
    заходило под заголовок на 1280–1440px; 1.15 держит табло правее текста,
    а под текстом остаётся только растушёванный хвост поезда. */
 .hero-seal__img { transform: scale(1.15); transform-origin: 100% 50%; }
+
+
+/* ------------- 17. Четвёртый экран: «Дайте гудок к отправке» --------------
+   Калькулятор в отдельной секции: слева заголовок и текст, справа карточка
+   расчёта. Направление — ряд кнопок-«станций» вместо выпадающего списка. */
+.calc-v2 {
+  display: grid;
+  grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr);
+  gap: clamp(2rem, 5vw, 5rem);
+  align-items: center;
+}
+.calc-v2__intro .section__title { margin: 0 0 1rem; }
+.calc-v2__lead { margin: 0 0 1.8rem; max-width: 32rem; font-size: clamp(1rem, .95rem + .3vw, 1.15rem); line-height: 1.6; color: var(--text-muted-light); }
+.calc-v2__intro .cta-row { margin: 0; }
+.express--section { margin: 0; padding: clamp(1.2rem, 1rem + 1vw, 1.8rem); }
+.express--section .express__title { margin-bottom: .6rem; }
+.express__routes {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: .5rem;
+  margin-bottom: 1.1rem;
+}
+.express__route {
+  padding: .75rem .4rem;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, .2);
+  background: rgba(7, 22, 48, .45);
+  color: var(--text-light);
+  font: inherit;
+  font-size: .78rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background .2s, border-color .2s, color .2s;
+}
+.express__route:hover { border-color: var(--gold-400); }
+.express__route:focus-visible { outline: 2px solid var(--gold-500); outline-offset: 2px; }
+.express__route[aria-pressed="true"] { background: var(--gold-500); border-color: var(--gold-500); color: var(--navy-900); }
+.express__row--two { grid-template-columns: 1.5fr 1fr; }
+
+@media (max-width: 960px) {
+  .calc-v2 { grid-template-columns: 1fr; }
+}
+@media (max-width: 560px) {
+  .express__routes { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .express__route { letter-spacing: .04em; font-size: .74rem; }
+  .express__row--two { grid-template-columns: 1fr 1fr; }
+}
