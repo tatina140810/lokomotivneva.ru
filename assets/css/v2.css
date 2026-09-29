@@ -681,97 +681,6 @@
 }
 
 
-/* ------------- 15. Третий экран: «Переводим стрелки на рост» --------------
-   Схема маршрута по мотивам карты пригородного сообщения (Тати 2026-09-29):
-   у каждой станции свой цвет ветки, станции — белые кружки с цветной обводкой,
-   линия идёт сквозь все три. Белый фон отделяет блок от светлых соседей. */
-.section--route { background: var(--white); }
-.route__head {
-  display: grid;
-  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
-  gap: 1.2rem 3rem;
-  align-items: end;
-  margin-bottom: clamp(2.4rem, 4vw, 3.6rem);
-}
-.route__head .section__title { margin: 0; }
-.route__lead { margin: 0; font-size: clamp(1rem, .95rem + .25vw, 1.12rem); line-height: 1.6; color: var(--text-muted-dark); }
-.route {
-  --dot: 3.6rem;
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-}
-.route__stop {
-  --line: var(--navy-600);
-  position: relative;
-  padding: 0 1.4rem;
-  text-align: center;
-}
-.route__stop--green { --line: #2E9E5B; }
-.route__stop--gold  { --line: var(--gold-500); }
-.route__stop--navy  { --line: var(--navy-600); }
-/* Отрезок ветки через всю колонку; у крайних станций — хвост за край с круглым концом. */
-.route__stop::before {
-  content: "";
-  position: absolute;
-  top: calc(var(--dot) / 2 - 4px);
-  left: 0;
-  right: 0;
-  height: 8px;
-  background: var(--line);
-}
-.route__stop:first-child::before { border-radius: 8px 0 0 8px; }
-.route__stop:last-child::before { border-radius: 0 8px 8px 0; }
-.route__dot {
-  position: relative;
-  z-index: 1;
-  display: inline-grid;
-  place-items: center;
-  width: var(--dot);
-  height: var(--dot);
-  border-radius: 50%;
-  background: var(--white);
-  border: 6px solid var(--line);
-  box-shadow: 0 0 0 5px var(--white);
-  color: var(--line);
-}
-.route__dot .icon { width: 1.35rem; height: 1.35rem; }
-.route__tag {
-  margin: 1.1rem 0 .3rem;
-  font-size: .68rem;
-  font-weight: 700;
-  letter-spacing: .16em;
-  text-transform: uppercase;
-  color: var(--line);
-}
-.route__stop--gold .route__tag { color: var(--gold-700); }
-.route__stop h3 { margin: 0 0 .45rem; font-size: clamp(1.15rem, 1rem + .5vw, 1.4rem); color: var(--text-dark); }
-.route__stop h3 + p { margin: 0 auto; max-width: 20rem; font-size: .98rem; line-height: 1.55; color: var(--text-muted-dark); }
-
-@media (max-width: 860px) {
-  .route__head { grid-template-columns: 1fr; align-items: start; }
-  /* Вертикальная ветка: станции друг под другом, линия слева. */
-  .route { grid-template-columns: 1fr; gap: 0; }
-  .route__stop { padding: 0 0 2rem calc(var(--dot) + 1.1rem); text-align: left; min-height: calc(var(--dot) + 1rem); }
-  .route__stop:last-child { padding-bottom: 0; }
-  .route__stop::before {
-    top: 0;
-    bottom: 0;
-    left: calc(var(--dot) / 2 - 4px);
-    right: auto;
-    width: 8px;
-    height: auto;
-  }
-  .route__stop:first-child::before { top: calc(var(--dot) / 2); border-radius: 0; }
-  .route__stop:last-child::before { bottom: auto; height: calc(var(--dot) / 2); border-radius: 0; }
-  .route__dot { position: absolute; left: 0; top: 0; }
-  .route__tag { margin-top: .35rem; }
-  .route__stop h3 + p { margin: 0; }
-}
-
-
 /* ---------- 16. Первый экран без калькулятора (Тати 2026-09-29) ------------
    Калькулятор ушёл — текст держит экран сам: подзаголовок и строка с комиссией
    крупнее, между блоками больше воздуха, кнопки отделены от сноски. */
@@ -860,3 +769,39 @@
 .page-hero--v2 .hero-accent { font-size: clamp(1.05rem, .95rem + .5vw, 1.4rem); }
 .page-hero--v2 .hero-accent + .hero-footnote { font-size: .85rem; }
 @media (max-width: 700px) { .hero-br { display: none; } }
+
+
+/* -------- 19. Чистка повторов на главной (Тати 2026-09-29) ------------------
+   «Маршрут платежа»: номер этапа подписан «Станция N» вместо «01».
+   «Безопасность сделки», пункт III — ссылки на документы (бывший блок
+   «Документы открыты»). */
+.steps--stations .step::before {
+  content: "Станция " counter(step);
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+}
+.safeguard__links { list-style: none; margin: .6rem 0 0; padding: 0; display: grid; gap: .35rem; }
+.safeguard__links a {
+  font-size: .92rem;
+  font-weight: 600;
+  color: var(--gold-400);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.safeguard__links a:hover { color: var(--gold-300); }
+/* Билеты на 360px: «CNY · USD» и «1–3 дня» рвались на строки. Значения —
+   без переноса, корешок и хвост уже, промежутки меньше. */
+.ticket__meta dt, .ticket__meta dd { white-space: nowrap; }
+@media (max-width: 420px) {
+  .ticket { grid-template-columns: 2.6rem minmax(0, 1fr) 1.9rem; }
+  .ticket__no { font-size: 1.15rem; }
+  .ticket__bar { width: 1.1rem; }
+  .ticket__body { padding: 1rem .9rem 1.05rem; }
+  .ticket__route { font-size: 1.25rem; }
+  .ticket__meta { gap: .3rem .85rem; }
+  .ticket__meta dt { font-size: .58rem; letter-spacing: .1em; }
+  .ticket__meta dd { font-size: .86rem; }
+  .ticket__tail span { font-size: .6rem; letter-spacing: .24em; }
+}

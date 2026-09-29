@@ -15,7 +15,7 @@
   <link rel="icon" href="/assets/img/logo-160.jpg">
   <link rel="stylesheet" href="/assets/css/styles.css?v=20260928toast">
   <link rel="stylesheet" href="/assets/css/additions.css?v=20260924b">
-  <link rel="stylesheet" href="/assets/css/v2.css?v=20260929edge">
+  <link rel="stylesheet" href="/assets/css/v2.css?v=20260929dedup">
   <link rel="stylesheet" href="/assets/css/helper.css?v=20260924rkn">
   <script type="application/ld+json">
   {
@@ -194,7 +194,7 @@ _tmr.push({id: "3797721", type: "pageView", start: (new Date()).getTime()});
         <header class="section__head">
           <p class="section__eyebrow reveal">Знакомо?</p>
           <h2 class="section__title section__title--center reveal" id="pain-title" data-reveal-delay="1">Ваш импорт снова <span class="text-gold-dark">сошёл с&nbsp;рельсов?</span></h2>
-          <p class="pain__text reveal" data-reveal-delay="2">Знакомая боль: вы отправили деньги, а они исчезли в финансовой чёрной дыре. Партнёры требуют оплату, контейнеры простаивают в порту, а вы судорожно ищете новые пути обхода. Хватит ездить в тамбуре с завязанными глазами и надеяться на удачу.</p>
+          <p class="pain__text reveal" data-reveal-delay="2">Платёж завис в&nbsp;банке-корреспонденте, поставщик ждёт оплату, контейнер простаивает в&nbsp;порту. Каждый день задержки — это хранение, штрафы и&nbsp;сорванные сроки поставки.</p>
         </header>
         <ul class="tickets">
           <li class="ticket reveal" data-reveal-delay="1">
@@ -268,7 +268,8 @@ _tmr.push({id: "3797721", type: "pageView", start: (new Date()).getTime()});
           <div class="calc-v2__intro">
             <p class="section__eyebrow reveal">Расчёт платежа</p>
             <h2 class="section__title reveal" id="calc-title" data-reveal-delay="1">Дайте гудок <span class="text-gold">к&nbsp;отправке</span></h2>
-            <p class="calc-v2__lead reveal" data-reveal-delay="2">Выберите станцию назначения (Европа, Азия, Восток). Рассчитайте точную сумму и&nbsp;сроки прямо сейчас.</p>
+            <!-- TODO: согласовать показ курса и комиссии с юристом (38-ФЗ) -->
+            <p class="calc-v2__lead reveal" data-reveal-delay="2">Предварительный расчёт по&nbsp;текущему курсу. Точная сумма и&nbsp;срок — в&nbsp;счёте после заявки.</p>
             <div class="cta-row reveal" data-reveal-delay="3"><a class="btn btn--gold btn--lg" href="#zayavka">Оставить заявку</a></div>
           </div>
 
@@ -316,97 +317,14 @@ _tmr.push({id: "3797721", type: "pageView", start: (new Date()).getTime()});
       </div>
     </section>
 
-    <!-- РЕШЕНИЕ «Переводим стрелки на рост» (третий экран, Тати 2026-09-29).
-         Три пункта — станции на цветной линии, как на схеме пригородного
-         сообщения: заголовок слева, вводный текст справа. На телефоне линия
-         становится вертикальной. -->
-    <section class="section section--route" id="route" aria-labelledby="route-title">
-      <div class="container">
-        <div class="route__head">
-          <div>
-            <p class="section__eyebrow reveal">Маршрут</p>
-            <h2 class="section__title reveal" id="route-title" data-reveal-delay="1">Переводим стрелки <span class="text-gold-dark">на&nbsp;рост</span></h2>
-          </div>
-          <p class="route__lead reveal" data-reveal-delay="2">ООО «Локомотив» — это безостановочный маршрут для вашего ВЭД. Мы&nbsp;забрали на&nbsp;себя всю бюрократию, чтобы ваши деньги и&nbsp;груз двигались как швейцарские поезда.</p>
-        </div>
-        <ol class="route">
-          <li class="route__stop route__stop--green reveal" data-reveal-delay="1">
-            <span class="route__dot" aria-hidden="true"><svg class="icon" viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-clock"></use></svg></span>
-            <p class="route__tag">Станция 1</p>
-            <h3>Зелёный свет</h3>
-            <p>Средства на&nbsp;счёте поставщика за&nbsp;1–3 рабочих дня</p>
-          </li>
-          <li class="route__stop route__stop--gold reveal" data-reveal-delay="2">
-            <span class="route__dot" aria-hidden="true"><svg class="icon" viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-train"></use></svg></span>
-            <p class="route__tag">Станция 2</p>
-            <h3>Двойная тяга</h3>
-            <p>Платим за&nbsp;рубеж и&nbsp;привозим товар — всё в&nbsp;рамках одного окна</p>
-          </li>
-          <li class="route__stop route__stop--navy reveal" data-reveal-delay="3">
-            <span class="route__dot" aria-hidden="true"><svg class="icon" viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-lock"></use></svg></span>
-            <p class="route__tag">Станция 3</p>
-            <h3>Никаких качелей в&nbsp;пути</h3>
-            <p>Фиксируем курс как стальную шпалу прямо в&nbsp;момент формирования счёта</p>
-          </li>
-        </ol>
-      </div>
-    </section>
-
-    <!-- УСЛОВИЯ «Правила пути / Железные стандарты» (тексты Тати 2026-09-29) -->
-    <section class="section section--light" id="terms" aria-labelledby="terms-title">
-      <div class="container">
-        <header class="section__head">
-          <p class="section__eyebrow reveal">Правила пути</p>
-          <h2 class="section__title section__title--center reveal" id="terms-title" data-reveal-delay="1">Железные стандарты <span class="text-gold-dark">«Локомотива»</span></h2>
-        </header>
-        <ul class="proofs">
-          <li class="proof reveal" data-reveal-delay="1"><span class="proof__icon"><svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-shield"></use></svg></span><h3>Белый маршрут (юрлицо&nbsp;РФ)</h3><p>Зарегистрированное в&nbsp;РФ ООО. Двигаемся легально — все расчёты только по&nbsp;агентскому договору и&nbsp;ДКП.</p></li>
-          <li class="proof reveal" data-reveal-delay="2"><span class="proof__icon"><svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-clock"></use></svg></span><h3>График экспресса: 1–3&nbsp;дня</h3><p>Деньги прибывают без опозданий. Исполняем поручение за&nbsp;1–3&nbsp;рабочих дня по&nbsp;большинству направлений.</p></li>
-          <li class="proof reveal" data-reveal-delay="3"><span class="proof__icon"><svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-globe"></use></svg></span><h3>Любой тоннаж и&nbsp;валюта</h3><p>Работаем с&nbsp;USD, CNY и&nbsp;другими валютами. Тянем финансовые составы без ограничений по&nbsp;сумме.</p></li>
-          <li class="proof reveal" data-reveal-delay="4"><span class="proof__icon"><svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-lock"></use></svg></span><h3>Железобетонный тариф</h3><p>Курс и&nbsp;агентское вознаграждение намертво фиксируются в&nbsp;счёте до&nbsp;оплаты. Никаких доплат и&nbsp;скрытых сборов в&nbsp;пути.</p></li>
-        </ul>
-      </div>
-    </section>
-
-
-    <!-- ЛИЧНЫЙ КАБИНЕТ. Показываем сам продукт, а не рассказываем о нём:
-         мокап собран разметкой, ссылки ведут на существующую /cabinet/. -->
-    <section class="section section--light" id="cabinet-preview" aria-labelledby="cab-title">
-      <div class="container">
-        <div class="cabinet-v2">
-          <div>
-            <p class="section__eyebrow reveal">Личный кабинет</p>
-            <h2 class="section__title reveal" data-reveal-delay="1" id="cab-title">Статус платежа — на&nbsp;вашем <span class="text-gold-dark">электронном&nbsp;табло</span></h2>
-            <p class="section__sub reveal" data-reveal-delay="2" style="margin-left:0">
-              Не нужно звонить менеджеру, чтобы узнать, где деньги. Ваш кабинет — это личная диспетчерская в&nbsp;телефоне и&nbsp;на&nbsp;ПК.
-              Вы видите весь маршрут платежа онлайн: от&nbsp;фиксации курса до&nbsp;зачисления. Всё строго по&nbsp;расписанию и&nbsp;без слепых зон.
-            </p>
-            <ul class="proofs reveal" data-reveal-delay="2" style="margin-top:1.4rem">
-              <li class="proof"><span class="proof__icon"><svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-clock"></use></svg></span><h3>Маршрут поручения</h3><p>Все «станции» на&nbsp;виду: заявка, фиксация курса, отправка в&nbsp;банк, исполнение.</p></li>
-              <li class="proof"><span class="proof__icon"><svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-doc"></use></svg></span><h3>Документы под рукой</h3><p>Отчёт агента, акт и&nbsp;подтверждение платежа надёжно прикреплены к&nbsp;карточке сделки. Бумаги не&nbsp;потеряются в&nbsp;пути.</p></li>
-            </ul>
-            <div class="cta-row reveal" data-reveal-delay="3"><a class="btn btn--navy" href="/cabinet/">Как подключить кабинет</a></div>
-          </div>
-          <figure class="cabinet-shot reveal" data-reveal-delay="2">
-            <img src="/assets/img/cabinet-screen.jpg?v=20260917a" width="572" height="904"
-                 alt="Экран личного кабинета: балансы, текущие действия, разделы «Документы», «Конвертация», «История»" loading="lazy">
-            <figcaption>
-              <a class="btn btn--gold cabinet-shot__cta" href="https://app.lokomotivneva.ru/cabinet/#signup"
-                 target="_blank" rel="noopener">Создать личный кабинет</a>
-            </figcaption>
-          </figure>
-        </div>
-      </div>
-    </section>
-
-    <!-- КАК ЭТО РАБОТАЕТ -->
+    <!-- МАРШРУТ ПЛАТЕЖА (бывш. «Как это работает»): этапы подписаны «Станция 1…5» -->
     <section class="section section--navy section--pattern" aria-labelledby="how-title">
       <div class="container">
         <header class="section__head">
-          <p class="section__eyebrow reveal">Как это работает</p>
-          <h2 class="section__title section__title--center reveal" id="how-title" data-reveal-delay="1">Пять этапов <span class="text-gold">под одним договором</span></h2>
+          <p class="section__eyebrow reveal">Маршрут платежа</p>
+          <h2 class="section__title section__title--center reveal" id="how-title" data-reveal-delay="1">Пять станций <span class="text-gold">под одним договором</span></h2>
         </header>
-        <ol class="steps reveal">
+        <ol class="steps steps--stations reveal">
           <li class="step"><h3>Заявка и документы</h3><p>Присылаете инвойс, контракт и реквизиты получателя.</p></li>
           <li class="step"><h3>Расчёт и фиксация курса</h3><p>Считаем курс с наценкой, вознаграждение 0,3% и комиссию банка, фиксируем в счёте.</p></li>
           <li class="step"><h3>Агентский договор</h3><p>Заключаем договор с вашим юрлицом или ИП.</p></li>
@@ -417,29 +335,12 @@ _tmr.push({id: "3797721", type: "pageView", start: (new Date()).getTime()});
     </section>
 
 
-    <!-- ПРЕИМУЩЕСТВА -->
-    <section class="section section--light" aria-labelledby="adv-title">
-      <div class="container">
-        <header class="section__head">
-          <p class="section__eyebrow reveal">Преимущества</p>
-          <h2 class="section__title section__title--center reveal" id="adv-title" data-reveal-delay="1">Почему <span class="text-gold-dark">с нами работают</span></h2>
-        </header>
-        <ul class="proofs reveal">
-          <li class="proof"><span class="proof__icon"><svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-truck"></use></svg></span><h3>Комплексность</h3><p>Платёж, перевозка, таможенное оформление и хранение в рамках одного договора.</p></li>
-          <li class="proof"><span class="proof__icon"><svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-route"></use></svg></span><h3>Непрерывность</h3><p>Несколько независимых маршрутов по каждому направлению.</p></li>
-          <li class="proof"><span class="proof__icon"><svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-lock"></use></svg></span><h3>Прозрачность</h3><p>Курс и вознаграждение фиксируются до перевода средств и не пересматриваются.</p></li>
-          <li class="proof"><span class="proof__icon"><svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-doc"></use></svg></span><h3>Полнота учёта</h3><p>Комплект документов для бухгалтерии, налоговой и валютного контроля.</p></li>
-          <li class="proof"><span class="proof__icon"><svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-shield"></use></svg></span><h3>Проверяемость</h3><p>Российское юридическое лицо. Реквизиты, устав и образец договора открыты.</p></li>
-        </ul>
-      </div>
-    </section>
-
     <!-- КОМПЛЕКСНО -->
     <section class="section section--navy section--pattern" aria-labelledby="cx-title">
       <div class="container">
         <header class="section__head">
           <p class="section__eyebrow reveal">Платёж + доставка</p>
-          <h2 class="section__title section__title--center reveal" id="cx-title" data-reveal-delay="1">Вся цепочка <span class="text-gold">под одним договором</span></h2>
+          <h2 class="section__title section__title--center reveal" id="cx-title" data-reveal-delay="1">Весь состав <span class="text-gold">под одним договором</span></h2>
         </header>
         <div class="chain reveal">
           <div class="chain__step"><svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-coins"></use></svg><h3>Платёж поставщику</h3><p>Перевод в валюте получателя</p></div>
@@ -452,17 +353,43 @@ _tmr.push({id: "3797721", type: "pageView", start: (new Date()).getTime()});
       </div>
     </section>
 
-    <!-- ДОКУМЕНТЫ -->
-    <section class="section section--light" aria-labelledby="docs-title">
+    <!-- ПРЕИМУЩЕСТВА «Правила пути» — один блок вместо «Железные стандарты» +
+         «Почему с нами работают» (Тати 2026-09-29: каждый тезис — один раз). -->
+    <section class="section section--light" id="terms" aria-labelledby="terms-title">
       <div class="container">
         <header class="section__head">
-          <p class="section__eyebrow reveal">Проверьте нас</p>
-          <h2 class="section__title section__title--center reveal" id="docs-title" data-reveal-delay="1">Документы <span class="text-gold-dark">открыты</span></h2>
+          <p class="section__eyebrow reveal">Правила пути</p>
+          <h2 class="section__title section__title--center reveal" id="terms-title" data-reveal-delay="1">Железные стандарты <span class="text-gold-dark">«Локомотива»</span></h2>
         </header>
-        <ul class="docpack reveal">
-          <li class="docpack__item--link"><a href="/assets/docs/egrul-lokomotiv.pdf" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-doc"></use></svg><span><b>Выписка ЕГРЮЛ</b><span>С сайта ФНС, от 19.08.2026 · PDF</span></span></a></li>
-          <li class="docpack__item--link"><a href="/assets/docs/kartochka-lokomotiv.jpg" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-doc"></use></svg><span><b>Карточка предприятия</b><span>Реквизиты и банковские данные · JPG</span></span></a></li>
+        <ul class="proofs">
+          <li class="proof reveal" data-reveal-delay="1"><span class="proof__icon"><svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-lock"></use></svg></span><h3>Тариф фиксируется в&nbsp;счёте</h3><p>Курс и&nbsp;вознаграждение агента фиксируются в&nbsp;счёте до&nbsp;оплаты и&nbsp;не&nbsp;пересматриваются. Доплат после оплаты нет.</p></li>
+          <li class="proof reveal" data-reveal-delay="2"><span class="proof__icon"><svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-clock"></use></svg></span><h3>Срок — 1–3&nbsp;рабочих дня</h3><p>По&nbsp;большинству направлений. Точный срок называем при расчёте.</p></li>
+          <li class="proof reveal" data-reveal-delay="3"><span class="proof__icon"><svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-shield"></use></svg></span><h3>Белый маршрут</h3><p>Российское ООО. Агентский договор и&nbsp;ДКП с&nbsp;вашим юрлицом или&nbsp;ИП. Закрывающий пакет: отчёт агента, акт, подтверждение платежа — для бухгалтерии, налоговой и&nbsp;валютного контроля.</p></li>
+          <li class="proof reveal" data-reveal-delay="4"><span class="proof__icon"><svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-globe"></use></svg></span><h3>Любая валюта, любая сумма</h3><p>USD, CNY, EUR, AED и&nbsp;другие валюты. Без ограничений по&nbsp;сумме.</p></li>
         </ul>
+      </div>
+    </section>
+
+    <!-- БЕЗОПАСНОСТЬ — три пункта; бывший блок «Документы открыты» влит сюда
+         (его ссылки — в пункте III, скрытые цифры доверия и отзывы — ниже). -->
+    <section class="section section--navy section--pattern" id="safeguards" aria-labelledby="safe-title">
+      <div class="container">
+        <header class="section__head">
+          <p class="section__eyebrow reveal">Безопасность сделки</p>
+          <h2 class="section__title section__title--center reveal" data-reveal-delay="1" id="safe-title">Запасные пути <span class="text-gold">для вашего платежа</span></h2>
+        </header>
+        <div class="safeguards">
+          <article class="safeguard reveal"><span class="safeguard__num">I</span><h3>Несколько маршрутов</h3><p>По&nbsp;каждому направлению — независимые платёжные маршруты. Если один недоступен, поручение уходит другим.</p></article>
+          <!-- TODO: подтвердить у клиента, что утверждение верно на дату публикации -->
+          <article class="safeguard reveal" data-reveal-delay="1"><span class="safeguard__num">II</span><h3>Ноль заблокированных переводов</h3><p>За&nbsp;всё время работы — ни&nbsp;одного заблокированного перевода.</p></article>
+          <article class="safeguard reveal" data-reveal-delay="2"><span class="safeguard__num">III</span><h3>Открытая проверка</h3><p>Документы доступны службе безопасности клиента:</p>
+            <ul class="safeguard__links">
+              <li><a href="/assets/docs/egrul-lokomotiv.pdf" target="_blank" rel="noopener">Выписка ЕГРЮЛ (PDF)</a></li>
+              <li><a href="/assets/docs/kartochka-lokomotiv.jpg" target="_blank" rel="noopener">Карточка предприятия (JPG)</a></li>
+              <li><a href="/trust/">Как проверить агента</a></li>
+            </ul>
+          </article>
+        </div>
         <!-- Цифры доверия. ОДИН источник с hero — site-config.js → proof.
              Пока proof.show = false, блок скрыт (см. TODO в конфиге). -->
         <ul class="trust-stats reveal" data-loko-proof hidden>
@@ -479,27 +406,34 @@ _tmr.push({id: "3797721", type: "pageView", start: (new Date()).getTime()});
           <ul class="reviews" data-loko-reviews></ul>
         </div>
 
-        <div class="cta-row reveal" style="justify-content:center"><a class="btn btn--navy" href="/trust/">Как проверить агента</a></div>
       </div>
     </section>
 
-
-    <!-- КАК МЫ ЗАЩИЩАЕМ ПЛАТЁЖ. Шесть пунктов — только проверяемые факты,
-         каждый совпадает с тем, что уже сказано на /trust/ и в договоре. -->
-    <section class="section section--navy section--pattern" id="safeguards" aria-labelledby="safe-title">
+    <!-- ЛИЧНЫЙ КАБИНЕТ. Показываем сам продукт, а не рассказываем о нём:
+         мокап собран разметкой, ссылки ведут на существующую /cabinet/. -->
+    <section class="section section--light" id="cabinet-preview" aria-labelledby="cab-title">
       <div class="container">
-        <header class="section__head">
-          <p class="section__eyebrow reveal">Безопасность сделки</p>
-          <h2 class="section__title section__title--center reveal" data-reveal-delay="1" id="safe-title">Как мы защищаем <span class="text-gold">ваш платёж</span></h2>
-          <p class="section__sub reveal" data-reveal-delay="2">Шесть принципов, на которых построена работа с деньгами клиента.</p>
-        </header>
-        <div class="safeguards">
-          <article class="safeguard reveal"><span class="safeguard__num">I</span><h3>Несколько маршрутов</h3><p>По каждому направлению есть независимые платёжные маршруты — если один недоступен, поручение уходит другим.</p></article>
-          <article class="safeguard reveal" data-reveal-delay="1"><span class="safeguard__num">II</span><h3>Курс и комиссия в счёте</h3><p>Фиксируются до оплаты и не пересматриваются — кассовый разрыв из-за курса исключён.</p></article>
-          <article class="safeguard reveal" data-reveal-delay="2"><span class="safeguard__num">III</span><h3>Договор с вашим юрлицом</h3><p>Российское ООО, агентский договор и ДКП с вашей компанией или ИП — основание для перевода.</p></article>
-          <article class="safeguard reveal" data-reveal-delay="1"><span class="safeguard__num">IV</span><h3>Ноль заблокированных</h3><p>За всё время работы не было заблокированных переводов ни по одному направлению.</p></article>
-          <article class="safeguard reveal" data-reveal-delay="2"><span class="safeguard__num">V</span><h3>Закрывающий пакет</h3><p>Отчёт агента, акт и подтверждение платежа — для бухгалтерии, налоговой и валютного контроля.</p></article>
-          <article class="safeguard reveal" data-reveal-delay="3"><span class="safeguard__num">VI</span><h3>Открытая проверка</h3><p>Выписка ЕГРЮЛ, карточка предприятия и образец договора доступны службе безопасности клиента.</p></article>
+        <div class="cabinet-v2">
+          <div>
+            <p class="section__eyebrow reveal">Личный кабинет</p>
+            <h2 class="section__title reveal" data-reveal-delay="1" id="cab-title">Статус платежа — на&nbsp;вашем <span class="text-gold-dark">электронном&nbsp;табло</span></h2>
+            <p class="section__sub reveal" data-reveal-delay="2" style="margin-left:0">
+              Весь маршрут платежа онлайн — от&nbsp;фиксации курса до&nbsp;зачисления поставщику. Без звонков менеджеру.
+            </p>
+            <ul class="proofs reveal" data-reveal-delay="2" style="margin-top:1.4rem">
+              <li class="proof"><span class="proof__icon"><svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-clock"></use></svg></span><h3>Маршрут поручения</h3><p>Заявка, фиксация курса, отправка в&nbsp;банк, исполнение.</p></li>
+              <li class="proof"><span class="proof__icon"><svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-doc"></use></svg></span><h3>Документы по&nbsp;сделке</h3><p>Закрывающие документы в&nbsp;карточке сделки, скачать можно в&nbsp;любой момент.</p></li>
+            </ul>
+            <div class="cta-row reveal" data-reveal-delay="3"><a class="btn btn--navy" href="/cabinet/">Как подключить кабинет</a></div>
+          </div>
+          <figure class="cabinet-shot reveal" data-reveal-delay="2">
+            <img src="/assets/img/cabinet-screen.jpg?v=20260917a" width="572" height="904"
+                 alt="Экран личного кабинета: балансы, текущие действия, разделы «Документы», «Конвертация», «История»" loading="lazy">
+            <figcaption>
+              <a class="btn btn--gold cabinet-shot__cta" href="https://app.lokomotivneva.ru/cabinet/#signup"
+                 target="_blank" rel="noopener">Создать личный кабинет</a>
+            </figcaption>
+          </figure>
         </div>
       </div>
     </section>
@@ -514,31 +448,31 @@ _tmr.push({id: "3797721", type: "pageView", start: (new Date()).getTime()});
         <div class="faq reveal">
           <details class="faq__item">
             <summary class="faq__q">На каком основании вы проводите платежи?</summary>
-            <div class="faq__a"><p>ООО «Локомотив» — российское юридическое лицо. Расчёты ведём по агентскому договору с вашим юрлицом или ИП и договору купли-продажи (ДКП). По итогу выдаём отчёт агента, акт и подтверждение платежа.</p></div>
+            <div class="faq__a"><p>По агентскому договору с вашим юрлицом или ИП и ДКП. ООО «Локомотив» — российское юридическое лицо.</p></div>
           </details>
           <details class="faq__item">
             <summary class="faq__q">В какие страны и в каких валютах проходят платежи?</summary>
-            <div class="faq__a"><p>Китай, Гонконг, ОАЭ, Турция, страны ЕС и Великобритания — в USD, CNY, EUR, AED и других валютах, без ограничений по сумме. Иные страны — по предварительному согласованию с Агентом.</p></div>
+            <div class="faq__a"><p>Китай, Гонконг, ОАЭ, Турция, страны ЕС и Великобритания. USD, CNY, EUR, AED и другие валюты. Другие страны — по согласованию.</p></div>
           </details>
           <details class="faq__item">
             <summary class="faq__q">За какой срок исполняется платёж?</summary>
-            <div class="faq__a"><p>1–3 рабочих дня по большинству направлений. Точный срок зависит от направления, валюты и банка получателя — назовём его при расчёте.</p></div>
+            <div class="faq__a"><p>1–3 рабочих дня по большинству направлений. Зависит от страны, валюты и банка получателя.</p></div>
           </details>
           <details class="faq__item">
             <summary class="faq__q">Что нужно для проведения платежа?</summary>
-            <div class="faq__a"><p>Инвойс или контракт, реквизиты получателя и данные вашего юрлица или ИП для агентского договора. Остальное берём на себя.</p></div>
+            <div class="faq__a"><p>Инвойс или контракт, реквизиты получателя и данные вашей компании.</p></div>
           </details>
           <details class="faq__item">
             <summary class="faq__q">Какие документы получу для бухгалтерии и валютного контроля?</summary>
-            <div class="faq__a"><p>Полный закрывающий пакет: отчёт агента, акт и подтверждение платежа — для бухгалтерии, налоговой и валютного контроля.</p></div>
+            <div class="faq__a"><p>Отчёт агента, акт и подтверждение платежа.</p></div>
           </details>
           <details class="faq__item">
             <summary class="faq__q">Как формируются курс и стоимость услуги?</summary>
-            <div class="faq__a"><p>Курс — межбанк, наценка к нему зависит от суммы платежа; вознаграждение агента — 0,3% от суммы платежа. Курс и вознаграждение фиксируются в счёте до оплаты и не пересматриваются.</p></div>
+            <div class="faq__a"><p>Курс — межбанк плюс наценка, которая зависит от суммы. Вознаграждение агента — от 0,3% от суммы платежа. Всё фиксируется в счёте до оплаты.</p></div>
           </details>
           <details class="faq__item">
             <summary class="faq__q">Можете взять на себя логистику и таможню?</summary>
-            <div class="faq__a"><p>Да. Платёж поставщику, перевозку, таможенное оформление и хранение можно оформить в рамках одного договора.</p></div>
+            <div class="faq__a"><p>Да, в рамках одного договора — см. <a href="/complex/">«Платёж + доставка»</a>.</p></div>
           </details>
         </div>
       </div>
@@ -550,7 +484,7 @@ _tmr.push({id: "3797721", type: "pageView", start: (new Date()).getTime()});
         <header class="section__head">
           <p class="section__eyebrow reveal">Заявка</p>
           <h2 class="section__title section__title--center reveal" id="zv-title" data-reveal-delay="1">Отправьте заявку — <span class="text-gold">вернёмся с расчётом</span></h2>
-          <p class="section__sub reveal" data-reveal-delay="2">Считаем по вашим документам: точный срок, маршрут и сумма к оплате. Курс и вознаграждение фиксируются в счёте</p>
+          <p class="section__sub reveal" data-reveal-delay="2">Пришлите направление и сумму — назовём срок, маршрут и сумму к оплате.</p>
         </header>
         <div class="contacts__grid">
           <div class="contacts__info reveal">
