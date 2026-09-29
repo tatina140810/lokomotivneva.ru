@@ -837,3 +837,26 @@
   .express__route { letter-spacing: .04em; font-size: .74rem; }
   .express__row--two { grid-template-columns: 1fr 1fr; }
 }
+
+
+/* ------ 18. Первый экран: картинка к краю, крупный текст с переносами ------
+   (Тати 2026-09-29). Картинка прижата к правому краю окна — выходит за
+   внутренний отступ контейнера; правую растушёвку снимаем, край = край экрана.
+   Заголовок крупнее и по строкам: «Выводим ваши платежи / из тупика»,
+   «Прямой экспресс до Китая, / Турции, ОАЭ и ЕС» (переносы — <br class="hero-br">). */
+.page-hero--v2 .hero-seal:has(.hero-seal__img) { right: calc(-1 * var(--gutter)); }
+.hero-seal__img {
+  -webkit-mask-image:
+    linear-gradient(to right, transparent 0, rgba(0,0,0,.35) 12%, #000 34%),
+    linear-gradient(to bottom, transparent 0, #000 22%, #000 78%, transparent 100%);
+          mask-image:
+    linear-gradient(to right, transparent 0, rgba(0,0,0,.35) 12%, #000 34%),
+    linear-gradient(to bottom, transparent 0, #000 22%, #000 78%, transparent 100%);
+}
+.page-hero--v2 h1 { font-size: clamp(2.5rem, 1.5rem + 3.2vw, 4.8rem); line-height: 1.06; }
+.hero-h1__main { white-space: normal; font-size: 1em; }
+.page-hero--v2 h1 .hero-h1__soft { font-size: .6em; margin-top: .45em; line-height: 1.15; }
+.page-hero--v2 h1 + .hero-sub { font-size: clamp(1.2rem, 1rem + .8vw, 1.75rem); }
+.page-hero--v2 .hero-accent { font-size: clamp(1.05rem, .95rem + .5vw, 1.4rem); }
+.page-hero--v2 .hero-accent + .hero-footnote { font-size: .85rem; }
+@media (max-width: 700px) { .hero-br { display: none; } }
