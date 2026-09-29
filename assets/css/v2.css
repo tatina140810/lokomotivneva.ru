@@ -884,3 +884,31 @@
   .steps--stations .step h3 { margin-top: .6rem; }
   .steps--stations .step p { margin: 0; max-width: none; }
 }
+
+/* ---------------- 21. «Наша бригада» (Тати 2026-09-29) ---------------------
+   Три факта о команде — табличками на тёмном фоне: подпись золотом, значение крупно. */
+#team .section__sub { max-width: 46rem; margin-inline: auto; font-size: clamp(1rem, .95rem + .25vw, 1.12rem); line-height: 1.6; }
+#team .section__head { max-width: 60rem; }
+.crew {
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(.8rem, .5rem + 1vw, 1.4rem);
+}
+.crew__item {
+  padding: 1.4rem 1.3rem 1.3rem;
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, .05);
+  border: 1px solid rgba(212, 175, 55, .28);
+  text-align: center;
+}
+.crew__item dt {
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--gold-400);
+}
+.crew__item dd { margin: .55rem 0 0; font-size: clamp(1.1rem, 1rem + .5vw, 1.4rem); font-weight: 800; color: var(--white); }
+.crew__item span { display: block; margin-top: .3rem; font-size: .85rem; color: var(--text-muted-light); }
+@media (max-width: 860px) { .crew { grid-template-columns: 1fr; } }
