@@ -479,6 +479,12 @@
    .page-hero h1 .text-gold { color: inherit } в additions.css, — иначе заголовок
    остаётся белым: то правило специфичнее одиночного класса. */
 .page-hero--v2 h1 .hero-h1__soft { color: var(--gold-400); }
+/* «Выводим ваши платежи из тупика» — в одну строку (Тати 2026-09-29). Шрифт
+   ужимается по ширине экрана, чтобы строка влезала в колонку; золотая строка
+   считается от размера h1, а не отсюда, поэтому её не задевает.
+   На телефоне перенос разрешён — одной строкой там вышел бы мелкий текст. */
+.hero-h1__main { display: block; white-space: nowrap; font-size: min(1em, 3.3vw); }
+@media (max-width: 700px) { .hero-h1__main { white-space: normal; font-size: 1em; } }
 /* Звёздочка после «0,3%» в заголовке и её сноска сразу под ним.
    У сноски калькулятора — «**», чтобы две оговорки не путались. */
 .hero-h1__star { font-size: .45em; line-height: 0; vertical-align: super; margin-left: .05em; }
