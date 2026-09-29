@@ -501,7 +501,7 @@ function ymGoal(goal) {
        Уходит в заявку вместе с отметкой о согласии, чтобы было видно, какой
        именно документ принимал человек. Меняя дату в /privacy/, менять и здесь
        — и в helper.js, там та же константа. */
-    var POLICY_VERSION = '2026-09-24';
+    var POLICY_VERSION = '2026-09-25';
     var consentField = $('#consent');
 
     form.addEventListener('submit', function (e) {
