@@ -818,3 +818,69 @@
 /* «Пять станций» на светлом фоне (Тати 2026-09-29): светлое золото подписей
    «Станция N» на белом не читалось — берём тёмное. */
 .section--light .steps--stations .step::before { color: var(--gold-700); }
+
+/* ---------- 20. «Пять станций» — схема линии, как на карте (Тати 2026-09-29) ----------
+   Вместо карточек: тёмная линия через все станции, на ней золотые кружки
+   с номером, под кружком — название и текст по центру. На телефоне линия
+   вертикальная, текст слева от неё. */
+.steps--stations {
+  --st: 3rem;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 0;
+  counter-reset: step;
+}
+.steps--stations .step {
+  position: relative;
+  padding: 0 .9rem;
+  background: none;
+  border: 0;
+  box-shadow: none;
+  border-radius: 0;
+  text-align: center;
+}
+.steps--stations .step:hover { transform: none; box-shadow: none; }
+/* отрезок линии: от центра своей станции до центра следующей */
+.steps--stations .step::after {
+  content: "";
+  position: absolute;
+  top: calc(var(--st) / 2 - 2px);
+  left: 50%;
+  width: 100%;
+  height: 4px;
+  background: var(--navy-800);
+  z-index: 0;
+}
+.steps--stations .step:last-child::after { display: none; }
+.section--light .steps--stations .step::before,
+.steps--stations .step::before {
+  content: counter(step);
+  position: relative;
+  z-index: 1;
+  display: inline-grid;
+  place-items: center;
+  width: var(--st);
+  height: var(--st);
+  margin: 0 0 1.1rem;
+  border-radius: 50%;
+  background: #FBF3DC;
+  border: 4px solid var(--gold-500);
+  color: var(--navy-800);
+  font-size: 1.05rem;
+  font-weight: 800;
+  letter-spacing: 0;
+  text-transform: none;
+  line-height: 1;
+}
+.steps--stations .step h3 { margin: 0 0 .45rem; font-size: 1.12rem; color: var(--text-dark); }
+.steps--stations .step p { margin: 0 auto; max-width: 15rem; font-size: .95rem; line-height: 1.55; color: var(--text-muted-dark); }
+
+@media (max-width: 860px) {
+  .steps--stations { grid-template-columns: 1fr; }
+  .steps--stations .step { padding: 0 0 1.8rem calc(var(--st) + 1rem); text-align: left; min-height: calc(var(--st) + .8rem); }
+  .steps--stations .step:last-child { padding-bottom: 0; }
+  .section--light .steps--stations .step::before,
+  .steps--stations .step::before { position: absolute; left: 0; top: 0; margin: 0; }
+  .steps--stations .step::after { top: calc(var(--st) / 2); left: calc(var(--st) / 2 - 2px); width: 4px; height: 100%; }
+  .steps--stations .step h3 { margin-top: .6rem; }
+  .steps--stations .step p { margin: 0; max-width: none; }
+}
