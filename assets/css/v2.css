@@ -425,7 +425,8 @@
   pointer-events: none;
   overflow: hidden;
 }
-.hero-seal__video {
+.hero-seal__video,
+.hero-seal__img {
   width: 100%;
   height: 100%;
   /* Ролик с монетами и картой — вертикальный, блок под него шире и ниже. При
@@ -488,5 +489,9 @@
 .hero-accent b { color: var(--gold-400); font-weight: 700; }
 .hero-accent .hero-h1__star { font-size: .7em; }
 .page-hero--v2 .hero-accent + .hero-footnote { margin: 0 0 1.1rem; font-size: .75rem; line-height: 1.4; color: var(--text-muted-light); }
+
+/* Локомотив: голова поезда правее центра кадра — сдвигаем обрез, чтобы при cover
+   не срезались фары; картинка светлее ролика, приглушать почти не нужно. */
+.hero-seal__img { display: block; object-position: 62% center; opacity: .95; }
 
 @media (max-width: 1000px) { .hero-seal { display: none; } }
