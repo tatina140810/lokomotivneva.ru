@@ -523,3 +523,159 @@
    обрез/маску. overflow у блока снимаем — обрезает сам первый экран. */
 .hero-seal:has(.hero-seal__img) { overflow: visible; }
 .hero-seal__img { transform: scale(1.3); transform-origin: 100% 55%; }
+
+
+/* ---------------- 14. Второй экран: боль + билеты-направления ----------------
+   Каждое направление оформлено как билет на «прямой экспресс» (Тати 2026-09-29):
+   корешок с номером и штрихкодом, основная часть с маршрутом, пунктир отрыва
+   с полукруглыми вырезами и золотой хвост с названием компании. */
+.pain__text {
+  max-width: 44rem;
+  margin: 1.1rem auto 0;
+  font-size: clamp(1rem, .95rem + .25vw, 1.12rem);
+  line-height: 1.6;
+  color: var(--text-muted-dark);
+}
+.tickets {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 1.3rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.ticket {
+  position: relative;
+  display: grid;
+  grid-template-columns: 4.4rem minmax(0, 1fr) 3.2rem;
+  background: var(--white);
+  border-radius: 14px;
+  box-shadow: 0 14px 34px -20px rgba(11, 30, 63, .4), 0 1px 2px rgba(11, 30, 63, .06);
+  overflow: hidden;
+  transition: transform .25s ease, box-shadow .25s ease;
+}
+.ticket:hover { transform: translateY(-3px); box-shadow: 0 20px 40px -20px rgba(11, 30, 63, .5), 0 1px 2px rgba(11, 30, 63, .06); }
+.ticket__stub {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  gap: .8rem;
+  padding: 1.1rem 0;
+  border-right: 1px solid var(--light-2);
+}
+.ticket__no {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-size: 1.7rem;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: .04em;
+  color: var(--navy-800);
+  font-variant-numeric: tabular-nums;
+}
+.ticket__no small {
+  font-size: .6rem;
+  font-weight: 700;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--text-muted-dark);
+  margin-block-end: .45rem;
+}
+.ticket__bar {
+  flex: 1;
+  max-height: 5.5rem;
+  min-height: 3rem;
+  width: 1.7rem;
+  background: repeating-linear-gradient(to bottom,
+    var(--navy-800) 0 2px, transparent 2px 4px,
+    var(--navy-800) 4px 5px, transparent 5px 7px,
+    var(--navy-800) 7px 10px, transparent 10px 12px);
+  opacity: .8;
+}
+.ticket__body { padding: 1.3rem 1.6rem 1.35rem; border-right: 2px dashed var(--light-2); }
+.ticket__label {
+  margin: 0 0 .35rem;
+  font-size: .68rem;
+  font-weight: 700;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--gold-700);
+}
+.ticket__route {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  margin: 0 0 1rem;
+  font-size: clamp(1.35rem, 1.1rem + .8vw, 1.8rem);
+  font-weight: 800;
+  color: var(--text-dark);
+}
+.ticket__route .icon { width: .8em; height: .8em; color: var(--gold-600); flex: none; }
+.ticket__meta {
+  display: grid;
+  grid-template-columns: repeat(3, auto);
+  justify-content: start;
+  gap: .3rem 1.8rem;
+  margin: 0 0 1.05rem;
+}
+.ticket__meta dt {
+  font-size: .64rem;
+  font-weight: 600;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--text-muted-dark);
+}
+.ticket__meta dd { margin: .15rem 0 0; font-size: 1.02rem; font-weight: 700; color: var(--navy-800); font-variant-numeric: tabular-nums; }
+.ticket__link {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  font-weight: 700;
+  color: var(--gold-700);
+  text-decoration: none;
+}
+.ticket__link .icon { width: 1rem; height: 1rem; transition: transform .2s; }
+.ticket__link:hover .icon { transform: translateX(3px); }
+.ticket__tail {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(180deg, var(--gold-400), var(--gold-600));
+}
+/* Вырезы на линии отрыва: круги цвета фона секции, половина уходит за край билета. */
+.ticket__tail::before,
+.ticket__tail::after {
+  content: "";
+  position: absolute;
+  left: -11px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--light);
+}
+.ticket__tail::before { top: -10px; }
+.ticket__tail::after { bottom: -10px; }
+.ticket__tail span {
+  writing-mode: vertical-rl;
+  font-size: .7rem;
+  font-weight: 800;
+  letter-spacing: .32em;
+  text-transform: uppercase;
+  color: var(--navy-800);
+}
+.tickets__note { margin: 1.6rem 0 0; text-align: center; font-size: .92rem; color: var(--text-muted-dark); }
+.tickets__note a { color: var(--gold-700); font-weight: 700; }
+
+@media (max-width: 860px) {
+  .tickets { grid-template-columns: 1fr; }
+}
+@media (max-width: 480px) {
+  .ticket { grid-template-columns: 3.2rem minmax(0, 1fr) 2.4rem; }
+  .ticket__no { font-size: 1.35rem; }
+  .ticket__bar { width: 1.3rem; }
+  .ticket__body { padding: 1.1rem 1.1rem 1.15rem; }
+  .ticket__meta { gap: .3rem 1.1rem; }
+  .ticket__meta dd { font-size: .92rem; }
+}
