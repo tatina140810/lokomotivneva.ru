@@ -15,7 +15,7 @@
   <link rel="icon" href="/assets/img/logo-160.jpg">
   <link rel="stylesheet" href="/assets/css/styles.css?v=20260928toast">
   <link rel="stylesheet" href="/assets/css/additions.css?v=20260924b">
-  <link rel="stylesheet" href="/assets/css/v2.css?v=20260929route">
+  <link rel="stylesheet" href="/assets/css/v2.css?v=20260929nocalc">
   <link rel="stylesheet" href="/assets/css/helper.css?v=20260924rkn">
   <script type="application/ld+json">
   {
@@ -132,55 +132,8 @@ _tmr.push({id: "3797721", type: "pageView", start: (new Date()).getTime()});
         <p class="hero-accent reveal" data-reveal-delay="1">Честный билет для вашего бизнеса — комиссия агента от&nbsp;<b>0,3%</b><sup class="hero-h1__star">*</sup></p>
         <p class="hero-footnote reveal" data-reveal-delay="1">* вознаграждение агента от рублёвой суммы платежа, без учёта комиссии банка</p>
 
-        <!-- Экспресс-расчёт перенесён в первый экран: раньше калькулятор был
-             третьей секцией. Цифры берутся из site-config.js → qualify.routes,
-             чтобы не разъезжаться с блоком «Подберём условия» ниже. -->
-        <!-- Экспресс-расчёт по формулам LokomotivPos (app.lokomotivneva.ru):
-             курс = profinance «Продажа» + наценка по объёму (1,7 / 1,5 / 1,3 %),
-             вознаграждение агента 0,3 % от рублёвой суммы,
-             комиссия банка (SWIFT) = 0,2 % в валюте платежа, зажатая тарифом банка.
-             Всё считает v2.js — правила там в одном месте. -->
-        <div class="express reveal" data-reveal-delay="2" data-express>
-          <p class="express__title">Расчёт платежа</p>
-          <div class="express__row">
-            <div class="express__field">
-              <label for="x-amount">Сумма платежа</label>
-              <input type="text" id="x-amount" inputmode="numeric" autocomplete="off" placeholder="например, 100 000" data-express-amount>
-            </div>
-            <div class="express__field">
-              <label for="x-currency">Валюта</label>
-              <select id="x-currency" data-express-currency>
-                <option value="USD">USD</option>
-                <option value="EUR">EUR</option>
-                <option value="CNY">CNY</option>
-                <option value="AED">AED</option>
-              </select>
-            </div>
-            <div class="express__field">
-              <label for="x-route">Направление</label>
-              <select id="x-route" data-express-route></select>
-            </div>
-          </div>
-          <!-- Валюты зависят от направления: в Китай мы не платим в евро,
-               в Европу — только в евро (см. assets/js/v2.js, DIRECTIONS). -->
-          <p class="express__ccynote" data-express-ccy-note></p>
-
-          <dl class="express__calc" data-express-calc>
-            <div><dt>Курс</dt><dd><b data-express-rate>85,6234 ₽</b></dd></div>
-            <div><dt>Сумма платежа</dt><dd><b data-express-base>—</b></dd></div>
-            <div><dt>Вознаграждение агента 0,3%</dt><dd><b data-express-fee>—</b></dd></div>
-            <div class="express__total"><dt>Итого к оплате<span class="express__star" aria-hidden="true">**</span></dt><dd><b data-express-total>—</b></dd></div>
-            <div><dt>Срок исполнения</dt><dd><b data-express-term>1–3 рабочих дня</b></dd></div>
-          </dl>
-          <!-- Сноска и оговорка держатся внутри карточки расчёта, сразу под
-               таблицей: ниже начинаются кнопки, и там оговорка про «Итого»
-               потерялась бы. Видны сразу, без раскрытия по звёздочке —
-               предупреждение о комиссии банка человек должен увидеть до
-               того, как примет сумму за окончательную. -->
-          <p class="express__note" id="express-note">** без учёта комиссии банка-исполнителя — назовём точную сумму при оформлении заявки. Курс с наценкой фиксируется в счёте в момент платежа.</p>
-          <p class="express__legal">Расчёт носит информационный характер и не является публичной офертой.</p>
-        </div>
-
+        <!-- Калькулятор с первого экрана убран (Тати 2026-09-29) — полный расчёт
+             на /calculator/. Скрипт v2.js без [data-express] просто не запускается. -->
         <div class="page-hero__actions reveal" data-reveal-delay="3">
           <a class="btn btn--gold btn--lg" href="#zayavka">Оставить заявку</a>
           <a class="btn btn--ghost btn--lg" href="/cabinet/">Личный кабинет</a>

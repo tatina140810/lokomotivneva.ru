@@ -770,3 +770,21 @@
   .route__tag { margin-top: .35rem; }
   .route__stop h3 + p { margin: 0; }
 }
+
+
+/* ---------- 16. Первый экран без калькулятора (Тати 2026-09-29) ------------
+   Калькулятор ушёл — текст держит экран сам: подзаголовок и строка с комиссией
+   крупнее, между блоками больше воздуха, кнопки отделены от сноски. */
+.page-hero--v2 h1 + .hero-sub { margin-top: -.2rem; margin-bottom: .8rem; font-size: clamp(1.15rem, 1rem + .6vw, 1.5rem); max-width: 40rem; }
+.page-hero--v2 .hero-accent { font-size: clamp(1.02rem, .95rem + .4vw, 1.25rem); margin-bottom: .5rem; }
+.page-hero--v2 .hero-accent + .hero-footnote { margin-bottom: 0; font-size: .8rem; }
+.page-hero--v2 .page-hero__actions { margin-top: clamp(2rem, 1.4rem + 1.8vw, 3.2rem); }
+/* Без калькулятора колонка с текстом стала низкой: текст прилипал к верху, а
+   картинка (она позиционируется по .hero-2col) сжималась. Растягиваем колонку
+   на всю высоту первого экрана — текст центрируется сеткой, картинка крупная. */
+.page-hero--v2 > .container { flex: 1; display: flex; }
+.page-hero--v2 .hero-2col { flex: 1; }
+/* Текст теперь по центру высоты — ровно на уровне табло. При +30% табло
+   заходило под заголовок на 1280–1440px; 1.15 держит табло правее текста,
+   а под текстом остаётся только растушёванный хвост поезда. */
+.hero-seal__img { transform: scale(1.15); transform-origin: 100% 50%; }
