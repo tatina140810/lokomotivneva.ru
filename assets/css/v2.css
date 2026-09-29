@@ -805,3 +805,13 @@
   .ticket__meta dd { font-size: .86rem; }
   .ticket__tail span { font-size: .6rem; letter-spacing: .24em; }
 }
+/* «Ваш импорт снова сошёл с рельсов?» — одной строкой (Тати 2026-09-29):
+   шапку секции не ограничиваем 780px, на телефоне перенос разрешён. */
+#directions .section__head { max-width: none; }
+@media (min-width: 761px) { #pain-title { white-space: nowrap; } }
+/* Текст боли — два предложения, каждое своей строкой без переноса (Тати 2026-09-29).
+   На узких экранах — обычный перенос. */
+@media (min-width: 900px) {
+  #directions .pain__text { max-width: none; }
+  .pain__line { display: block; white-space: nowrap; }
+}
