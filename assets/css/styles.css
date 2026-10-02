@@ -582,6 +582,9 @@ h6 .text-gold, h6 .text-gold-dark { color: inherit; }
   box-shadow: 0 26px 55px rgba(0, 0, 0, .45);
 }
 .card:hover::before { opacity: 1; }
+/* Подсветка — только декор: без этого слой ::before лежал поверх ссылки
+   «Подробнее →» в карточке и перехватывал клик (Тати 2026-10-02, /payments/). */
+.card::before { pointer-events: none; }
 
 /* Иконка в золотом кружке — фирменный приём с макетов */
 .card__icon, .feature__icon, .contacts__icon {
