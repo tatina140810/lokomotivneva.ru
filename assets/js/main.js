@@ -21,8 +21,12 @@ function vkGoal(goal) {
 /* Та же цель в Яндекс.Метрику (счётчик 112180979). Глобальная по той же причине.
    typeof-проверка — на случай, если Метрику заблокировал браузер: VK-цель и
    логика формы от этого не страдают. */
-function ymGoal(goal) {
-  try { if (typeof ym === 'function') ym(112180979, 'reachGoal', goal); } catch (e) {}
+function ymGoal(goal, params) {
+  try {
+    if (typeof ym !== 'function') return;
+    if (params) ym(112180979, 'reachGoal', goal, params);
+    else ym(112180979, 'reachGoal', goal);
+  } catch (e) {}
 }
 
 (function () {
@@ -551,6 +555,18 @@ function ymGoal(goal) {
         payload.entry = window.LOKO_STAT.entry;
       }
 
+      /* Направление платежа. Страница направления кладёт в форму скрытое поле
+         direction (напр. turkey) с подписью data-label. Отдельным ключом — для
+         записи заявки; подписью в начале сообщения — чтобы менеджер видел
+         направление в уведомлении, даже если панель новый ключ пока не выводит. */
+      var directionField = form.querySelector('[name="direction"]');
+      var direction = directionField ? directionField.value : '';
+      if (direction) {
+        payload.direction = direction;
+        var directionLabel = directionField.getAttribute('data-label') || direction;
+        payload.message = 'Направление: ' + directionLabel + (payload.message ? '\n' + payload.message : '');
+      }
+
       sending = true;
       if (submitBtn) { submitBtn.disabled = true; submitBtn.dataset.label = submitBtn.textContent; submitBtn.textContent = 'Отправляем…'; }
 
@@ -562,7 +578,7 @@ function ymGoal(goal) {
           /* Отмечаем достижение цели: по этому событию считается конверсия канала. */
           if (window.LOKO_STAT && window.LOKO_STAT.lead) window.LOKO_STAT.lead();
           vkGoal('lead_form');
-          ymGoal('lead_form');
+          ymGoal('lead_form', direction ? { direction: direction } : null);
           showToast(name + ', заявка принята! Ответим в течение рабочего дня — свяжемся по указанному телефону.');
           form.reset();
           fields.forEach(function (field) { setFieldError(field, ''); });
