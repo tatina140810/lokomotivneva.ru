@@ -1039,3 +1039,7 @@ body.is-search-open { overflow: hidden; }
 @media (prefers-reduced-motion: reduce) {
   .cookie { transition: none; }
 }
+
+/* Список обычным начертанием — когда пункты продолжают фразу-подводку,
+   а не перечисляют преимущества (/payments/turkey/, причины возврата платежа). */
+.checklist--plain li { font-weight: 400; }
