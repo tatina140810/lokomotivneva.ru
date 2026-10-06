@@ -5,6 +5,7 @@
     /individuals/  — раздел удалён с сайта, отдаёт 404
     /privacy/      — служебная страница с meta robots: noindex
     /cases/        — раздел удалён с сайта, отдаёт 404
+    /blog/ — временно исключён, страница пустая (noindex), вернуть после публикации первой статьи
   lastmod = дата последнего изменения страницы в репозитории.
 -->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
@@ -133,12 +134,6 @@
     <lastmod>2026-10-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://lokomotivneva.ru/blog/</loc>
-    <lastmod>2026-10-05</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
   </url>
 
 </urlset>
