@@ -1043,3 +1043,33 @@ body.is-search-open { overflow: hidden; }
 /* Список обычным начертанием — когда пункты продолжают фразу-подводку,
    а не перечисляют преимущества (/payments/turkey/, причины возврата платежа). */
 .checklist--plain li { font-weight: 400; }
+
+/* Видео «О нас» под первым экраном (Тати 2026-10-06): обложка → по клику плеер YouTube. */
+.about-video .section__head { margin-bottom: 28px; }
+.about-video__frame {
+  position: relative; max-width: 880px; margin: 0 auto; aspect-ratio: 16 / 9;
+  border-radius: var(--radius-lg); overflow: hidden; background: var(--navy-800);
+  box-shadow: var(--shadow-card);
+}
+.about-video__frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.about-video__play {
+  position: absolute; inset: 0; width: 100%; height: 100%; padding: 0; border: 0;
+  background: var(--navy-800); cursor: pointer; color: #fff;
+}
+.about-video__play img { width: 100%; height: 100%; object-fit: cover; opacity: .85; transition: opacity .2s; }
+.about-video__play:hover img, .about-video__play:focus-visible img { opacity: 1; }
+.about-video__icon {
+  position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+  width: 76px; height: 76px; border-radius: 50%; display: grid; place-items: center;
+  background: var(--gold-600); color: var(--navy-900); padding-left: 4px;
+  box-shadow: 0 10px 30px rgba(7, 22, 48, .35); transition: transform .2s;
+}
+.about-video__play:hover .about-video__icon { transform: translate(-50%, -50%) scale(1.06); }
+.about-video__label {
+  position: absolute; left: 50%; bottom: 18px; transform: translateX(-50%);
+  font-weight: 600; font-size: 15px; text-shadow: 0 2px 8px rgba(0, 0, 0, .5);
+}
+@media (max-width: 600px) {
+  .about-video__icon { width: 60px; height: 60px; }
+  .about-video__frame { border-radius: var(--radius); }
+}

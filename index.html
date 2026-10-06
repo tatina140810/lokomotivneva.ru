@@ -14,7 +14,7 @@
   <meta property="og:locale" content="ru_RU">
   <link rel="icon" href="/assets/img/logo-160.jpg">
   <link rel="stylesheet" href="/assets/css/styles.css?v=20261002card">
-  <link rel="stylesheet" href="/assets/css/additions.css?v=20260924b">
+  <link rel="stylesheet" href="/assets/css/additions.css?v=20261006video">
   <link rel="stylesheet" href="/assets/css/v2.css?v=20260929crew">
   <link rel="stylesheet" href="/assets/css/helper.css?v=20260924rkn">
   <script type="application/ld+json">
@@ -184,6 +184,26 @@ _tmr.push({id: "3797721", type: "pageView", start: (new Date()).getTime()});
       </div>
     </section>
 
+    </section>
+
+    <!-- ВИДЕО «О НАС» сразу под первым экраном (Тати 2026-10-06). Плеер YouTube не
+         грузится, пока не нажмут «Смотреть»: страница открывается так же быстро. -->
+    <section class="section section--light about-video" id="about-video" aria-labelledby="about-video-title">
+      <div class="container">
+        <header class="section__head">
+          <p class="section__eyebrow reveal">О компании</p>
+          <h2 class="section__title section__title--center reveal" id="about-video-title" data-reveal-delay="1">Знакомьтесь: <span class="text-gold-dark">«Локомотив»</span></h2>
+        </header>
+        <div class="about-video__frame reveal" data-reveal-delay="2">
+          <button type="button" class="about-video__play" data-yt-id="9RKO7Z1zpAA" aria-label="Смотреть видео о компании «Локомотив»">
+            <img src="https://i.ytimg.com/vi/9RKO7Z1zpAA/hqdefault.jpg" alt="" loading="lazy" decoding="async" width="480" height="360">
+            <span class="about-video__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="30" height="30"><path d="M8 5v14l11-7z" fill="currentColor"/></svg>
+            </span>
+            <span class="about-video__label">Смотреть видео</span>
+          </button>
+        </div>
+      </div>
     </section>
 
     <!-- БОЛЬ + НАПРАВЛЕНИЯ-БИЛЕТЫ (второй экран, Тати 2026-09-29): сначала боль
@@ -555,6 +575,7 @@ _tmr.push({id: "3797721", type: "pageView", start: (new Date()).getTime()});
   <script src="/assets/js/site-config.js?v=20260919mail" defer></script>
   <script src="/assets/js/site.js?v=20260917m" defer></script>
   <script src="/assets/js/main.js?v=20260929pd" defer></script>
+  <script src="/assets/js/about-video.js?v=20261006" defer></script>
   <script src="/assets/js/search.js?v=20260917m" defer></script>
   <script src="/assets/js/v2.js?v=20260929calc" defer></script>
   <script src="/assets/js/helper-kb.js?v=20261006ot" defer></script>
