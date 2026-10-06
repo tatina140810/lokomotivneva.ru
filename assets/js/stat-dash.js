@@ -297,17 +297,18 @@
   var SHORT = {
     yandex_ads: 'Реклама (Директ)', yandex_search: 'Поиск Яндекса', yandex_maps: 'Карты и Бизнес',
     google_ads: 'Реклама Google', google_search: 'Поиск Google',
-    telegram_ads: 'Реклама в Telegram', vk_ads: 'Реклама ВКонтакте', search_other: 'Другие поисковики',
+    telegram_ads: 'Реклама в Telegram', vk_ads: 'Реклама ВКонтакте', youtube: 'YouTube', search_other: 'Другие поисковики',
     social: 'Соцсети', messenger: 'Мессенджеры', email: 'Рассылки',
     referral: 'Ссылки с сайтов', direct: 'Прямые заходы', other: 'Прочее',
   };
   var YANDEX_KEYS = ['yandex_ads', 'yandex_search', 'yandex_maps'];
   var TELEGRAM_KEYS = ['telegram_ads'];
   var DIRECT_KEYS = ['direct'];
+  var YOUTUBE_KEYS = ['youtube'];
 
   /* Каналы, у которых своя карточка: Тати смотрит на них по отдельности
      (Яндекс, Telegram, прямые заходы), всё остальное собирается в четвёртую. */
-  var OWN_CARD_KEYS = YANDEX_KEYS.concat(TELEGRAM_KEYS, DIRECT_KEYS);
+  var OWN_CARD_KEYS = YANDEX_KEYS.concat(TELEGRAM_KEYS, YOUTUBE_KEYS, DIRECT_KEYS);
 
   /* Четыре карточки вместо прежних двух: «Яндекс» и «остальные» не отвечали на
      вопрос, сколько дала реклама в Telegram и сколько людей пришло само.
@@ -331,6 +332,9 @@
       { cls: 'yandex', label: 'Пришли из Яндекса', keys: YANDEX_KEYS, leadLabel: 'Заявок из Яндекса', rows: true },
       { cls: 'telegram', label: 'Пришли из Telegram', keys: TELEGRAM_KEYS, leadLabel: 'Заявок из Telegram',
         note: 'переходы по рекламной метке; из личных переписок — в «Мессенджерах»' },
+      /* YouTube — ссылка под роликом «О нас» с меткой utm_source=youtube (Тати 2026-10-06). */
+      { cls: 'youtube', label: 'Пришли с YouTube', keys: YOUTUBE_KEYS, leadLabel: 'Заявок с YouTube',
+        note: 'переходы по ссылке под видео и с youtube.com' },
       { cls: 'direct', label: 'Прямые заходы', keys: DIRECT_KEYS, leadLabel: 'Заявок с прямых заходов',
         note: 'адрес набрали вручную, закладка, QR-код или ссылка без источника' },
       { cls: 'other', label: 'Другие каналы', keys: restKeys, leadLabel: 'Заявок из других каналов', rows: true },

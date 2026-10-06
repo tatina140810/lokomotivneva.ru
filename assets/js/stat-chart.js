@@ -16,6 +16,7 @@
   var SERIES_FULL = [
     { key: 'yandex', label: 'Из Яндекса', color: '#E0342B' },
     { key: 'telegram', label: 'Из Telegram', color: '#1E7FD8' },
+    { key: 'youtube', label: 'С YouTube', color: '#E67E22' },
     { key: 'direct', label: 'Прямые заходы', color: '#2E9E44', dash: '6 4' },
     { key: 'rest', label: 'Другие каналы', color: '#8E44AD' },
   ];
