@@ -305,10 +305,11 @@
   var TELEGRAM_KEYS = ['telegram_ads'];
   var DIRECT_KEYS = ['direct'];
   var YOUTUBE_KEYS = ['youtube'];
+  var VK_KEYS = ['vk_ads'];
 
   /* Каналы, у которых своя карточка: Тати смотрит на них по отдельности
      (Яндекс, Telegram, прямые заходы), всё остальное собирается в четвёртую. */
-  var OWN_CARD_KEYS = YANDEX_KEYS.concat(TELEGRAM_KEYS, YOUTUBE_KEYS, DIRECT_KEYS);
+  var OWN_CARD_KEYS = YANDEX_KEYS.concat(TELEGRAM_KEYS, VK_KEYS, YOUTUBE_KEYS, DIRECT_KEYS);
 
   /* Четыре карточки вместо прежних двух: «Яндекс» и «остальные» не отвечали на
      вопрос, сколько дала реклама в Telegram и сколько людей пришло само.
@@ -332,6 +333,10 @@
       { cls: 'yandex', label: 'Пришли из Яндекса', keys: YANDEX_KEYS, leadLabel: 'Заявок из Яндекса', rows: true },
       { cls: 'telegram', label: 'Пришли из Telegram', keys: TELEGRAM_KEYS, leadLabel: 'Заявок из Telegram',
         note: 'переходы по рекламной метке; из личных переписок — в «Мессенджерах»' },
+      /* Реклама ВКонтакте — запущена 2026-10-07: только платные переходы (метка VK Рекламы
+         utm_source=vk_ads или переход с ads.vk.ru). Обычные ссылки из ленты VK — в «Соцсетях». */
+      { cls: 'vk', label: 'Пришли из VK Рекламы', keys: VK_KEYS, leadLabel: 'Заявок из VK Рекламы',
+        note: 'только рекламные переходы; посты и ссылки из ленты VK — в «Других каналах»' },
       /* YouTube — ссылка под роликом «О нас» с меткой utm_source=youtube (Тати 2026-10-06). */
       { cls: 'youtube', label: 'Пришли с YouTube', keys: YOUTUBE_KEYS, leadLabel: 'Заявок с YouTube',
         note: 'переходы по ссылке под видео и с youtube.com' },

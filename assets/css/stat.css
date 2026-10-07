@@ -17,6 +17,7 @@
   --direct: #2E9E44;
   --rest: #8E44AD;
   --youtube: #E67E22;
+  --vk: #12A5B5;
   --good: #2E7D53;
   --bad: #B3261E;
   --radius: 10px;
@@ -71,6 +72,7 @@ a { color: var(--other); }
 .split__card--telegram { border-left-color: var(--telegram); }
 .split__card--direct { border-left-color: var(--direct); }
 .split__card--youtube { border-left-color: var(--youtube); }
+.split__card--vk { border-left-color: var(--vk); }
 .split__label { font-size: 13px; color: var(--ink-2); margin-bottom: 4px; }
 .split__value { font-size: 40px; font-weight: 650; line-height: 1.05; letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
 .split__unit { font-size: 15px; font-weight: 400; color: var(--ink-2); margin-left: 6px; }
