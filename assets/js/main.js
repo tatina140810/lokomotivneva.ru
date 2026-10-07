@@ -580,6 +580,8 @@ function ymGoal(goal, params) {
           vkGoal('lead_form');
           ymGoal('lead_form', direction ? { direction: direction } : null);
           showToast(name + ', заявка принята! Ответим в течение рабочего дня — свяжемся по указанному телефону.');
+          /* Окно заявки (lead-modal.js) закрывается по этому событию. */
+          try { document.dispatchEvent(new CustomEvent('loko:lead-sent')); } catch (err) {}
           form.reset();
           fields.forEach(function (field) { setFieldError(field, ''); });
         } else if (status === 429) {

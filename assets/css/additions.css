@@ -1073,3 +1073,34 @@ body.is-search-open { overflow: hidden; }
   .about-video__icon { width: 60px; height: 60px; }
   .about-video__frame { border-radius: var(--radius); }
 }
+
+/* Окно заявки (assets/js/lead-modal.js, Тати 2026-10-07). */
+.lead-modal { position: fixed; inset: 0; z-index: 1000; display: flex; align-items: center; justify-content: center; padding: 16px; }
+.lead-modal[hidden] { display: none; }
+.lead-modal__backdrop { position: absolute; inset: 0; background: rgba(7, 22, 48, .62); opacity: 0; transition: opacity .2s; }
+.lead-modal__dialog {
+  position: relative; width: 100%; max-width: 480px; max-height: calc(100vh - 32px); overflow-y: auto;
+  background: #fff; color: var(--text-dark, #0B1E3F); border-radius: var(--radius-lg, 22px);
+  box-shadow: var(--shadow-card); padding: 28px 28px 22px;
+  transform: translateY(14px); opacity: 0; transition: transform .22s, opacity .22s;
+}
+.lead-modal.is-visible .lead-modal__backdrop { opacity: 1; }
+.lead-modal.is-visible .lead-modal__dialog { transform: none; opacity: 1; }
+.lead-modal__close {
+  position: absolute; top: 12px; right: 12px; width: 40px; height: 40px; border: 0; border-radius: 50%;
+  background: transparent; color: #55637A; cursor: pointer; display: grid; place-items: center;
+}
+.lead-modal__close:hover, .lead-modal__close:focus-visible { background: #F1F3F7; color: #0B1E3F; }
+.lead-modal__title { font-size: 22px; line-height: 1.25; margin: 0 40px 6px 0; }
+.lead-modal__sub { margin: 0 0 18px; color: #55637A; font-size: 14px; }
+.lead-modal .form { margin: 0; }
+html.is-lead-modal, html.is-lead-modal body { overflow: hidden; }
+/* Окно выше полосы cookie (999); сообщение об ошибке отправки — поверх окна. */
+html.is-lead-modal .toast { z-index: 1001; }
+@media (max-width: 600px) {
+  .lead-modal { padding: 0; align-items: flex-end; }
+  .lead-modal__dialog { max-width: none; border-radius: 18px 18px 0 0; max-height: 92vh; padding: 22px 18px 18px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .lead-modal__backdrop, .lead-modal__dialog { transition: none; }
+}
