@@ -737,6 +737,11 @@
 .express__route:focus-visible { outline: 2px solid var(--gold-500); outline-offset: 2px; }
 .express__route[aria-pressed="true"] { background: var(--gold-500); border-color: var(--gold-500); color: var(--navy-900); }
 .express__row--two { grid-template-columns: 1.5fr 1fr; }
+/* Сумма и валюта — одной высоты и по одной линии (Тати 2026-10-07): поле ввода и
+   выпадающий список браузер рисует разной высоты, поэтому задаём её явно. */
+.express__row { align-items: end; }
+.express__field input,
+.express__field select { box-sizing: border-box; height: 3rem; line-height: 1.2; margin: 0; }
 
 @media (max-width: 960px) {
   .calc-v2 { grid-template-columns: 1fr; }
