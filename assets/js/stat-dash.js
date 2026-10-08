@@ -213,6 +213,7 @@
     }
     html += '</div>';
 
+    html += '<div id="ad-api"></div>';
     html += '<div id="ads"></div>';
     html += '<div id="ads-monthly"></div>';
 
@@ -289,6 +290,8 @@
        изменения — цифры пересчитываются сразу и задним числом. */
     if (w.renderExcludeBox) w.renderExcludeBox($('#mine'), { api: API, token: token, onChange: load });
     /* Раздел «Реклама»: расход из кабинета + цена перехода и заявки по нашим данным. */
+    /* Реклама в кабинетах: показы, клики, расход и цены из Директа и VK по API. */
+    if (w.renderAdApiBox) w.renderAdApiBox($('#ad-api'), { api: API, token: token, summary: x, onChange: load });
     if (w.renderAdsBox) w.renderAdsBox($('#ads'), { api: API, token: token, summary: x, onChange: load });
     if (w.renderAdsMonthly) w.renderAdsMonthly($('#ads-monthly'), { api: API, token: token });
   }

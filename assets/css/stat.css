@@ -181,3 +181,21 @@ tbody tr:last-child td { border-bottom: 0; }
 .budget .totalrow td { border-top: 2px solid var(--ink-3); border-bottom: 0; font-weight: 600; padding-top: 12px; }
 .budget .totalrow td:first-child { font-weight: 600; }
 .adsform input#ad-title { width: 160px; }
+
+/* Реклама в кабинетах (Директ, VK по API): карточка на кабинет. */
+.apisync { margin-left: auto; }
+.apigrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; }
+.apitile { border: 1px solid var(--line); border-radius: 8px; padding: 14px 16px; }
+.apitile h3 { font-size: 14px; margin: 0 0 8px; }
+.apitile--off { background: var(--bg); }
+.apitile--off p { margin: 0; line-height: 1.5; }
+.apitile__main { font-size: 24px; font-weight: 600; font-variant-numeric: tabular-nums; margin-bottom: 10px; }
+.apitile__main .t-sub { font-size: 12px; font-weight: 400; }
+.apitile__kv { display: flex; justify-content: space-between; gap: 10px; font-size: 14px; padding: 3px 0; color: var(--ink-2); }
+.apitile__kv b { color: var(--ink); font-weight: 600; font-variant-numeric: tabular-nums; }
+.apitile__sep { border-top: 1px solid var(--line); margin: 8px 0; }
+.apitile p.t-sub, .apierr { margin: 10px 0 0; font-size: 12px; }
+.apierr { color: var(--bad); word-break: break-word; }
+.scrollx { overflow-x: auto; }
+.scrollx td:not(:first-child) { white-space: nowrap; }
+.scrollx td:first-child { min-width: 170px; }

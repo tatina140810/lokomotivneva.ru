@@ -90,9 +90,10 @@
           + '<div class="t-sub">' + dmy(r.periodStart) + ' — ' + dmy(r.periodEnd)
           + (r.currency !== 'RUB' ? ' · в ' + sign.trim() : '') + '</div></td>'
           + '<td>' + money(r.total) + '</td>'
-          + '<td>' + money(r.spentToDate) + '</td>'
+          + '<td>' + money(r.spentToDate)
+          + (r.apiSince ? '<div class="t-sub">из кабинета с ' + dmy(r.apiSince) + '</div>' : '') + '</td>'
           + '<td><b>' + remain + '</b>'
-          + '<div class="t-sub">' + (r.remainingMeasured ? 'по замеру' : 'расчётный') + '</div></td>'
+          + (r.remaining == null ? '' : '<div class="t-sub">' + (r.remainingMeasured ? 'по замеру' : 'расчётный') + '</div>') + '</td>'
           + '<td>' + money(r.spentInPeriod) + '</td>'
           + '<td>' + (r.visits == null ? '—' : nf.format(r.visits)) + '</td>'
           + '<td>' + money(r.costPerVisit) + '</td>'
@@ -256,8 +257,8 @@
 
     function draw(spendRows) {
       host.innerHTML = '<div class="card"><div class="card__head"><h2>Затраты на рекламу</h2>'
-        + '<span class="card__note">все статьи в одной таблице; суммы вносятся вручную — '
-        + 'ни eLama, ни Telegram Ads не отдают их автоматически</span></div>'
+        + '<span class="card__note">все статьи в одной таблице; Директ и VK — из кабинетов '
+        + 'автоматически, остальное (Telegram, экраны, буклеты) вносится вручную</span></div>'
         + origin() + table() + abuse() + form() + list(spendRows) + '</div>';
 
       var kindSel = d.getElementById('ad-kind');
