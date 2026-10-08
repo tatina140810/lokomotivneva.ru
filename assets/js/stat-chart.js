@@ -38,6 +38,29 @@
     return e;
   }
 
+  /* Интерактивная легенда (Тати 2026-10-08): клик скрывает/показывает канал, двойной
+     клик — «только этот канал», повторный двойной — снова все. Шкала Y считается
+     только по видимым линиям: ради этого всё и сделано — пик VK задирал ось, и
+     Яндекс с прямыми заходами лежали плоско у нуля.
+     Состояние живёт в адресе (?hide=vk,youtube), чтобы отфильтрованный вид можно было
+     переслать ссылкой. Последнюю видимую линию кликом не скрыть — пустой график
+     ничего не показывает. */
+  var hidden = {};
+  function param(s) { return s.key === 'rest' ? 'other' : s.key; }   // «Другие каналы» в адресе — other
+  try {
+    (new URLSearchParams(w.location.search).get('hide') || '').split(',')
+      .forEach(function (k) { if (k) hidden[k] = true; });
+  } catch (e) { /* старый браузер — без фильтра из адреса */ }
+  function saveHidden() {
+    try {
+      var p = new URLSearchParams(w.location.search);
+      var keys = Object.keys(hidden);
+      if (keys.length) p.set('hide', keys.join(',')); else p.delete('hide');
+      var q = p.toString().replace(/%2C/g, ',');
+      w.history.replaceState(w.history.state, '', w.location.pathname + (q ? '?' + q : '') + w.location.hash);
+    } catch (e) { /* без адреса фильтр просто не переживёт перезагрузку */ }
+  }
+
   /* rows: [{ day, yandex, telegram, direct, rest }] (или старое { day, yandex, other }) */
   w.renderStatChart = function (host, rows) {
     host.textContent = '';
@@ -46,17 +69,66 @@
       return;
     }
     var SERIES = rows[0].telegram != null ? SERIES_FULL : SERIES_OLD;
+    function visible() {
+      var v = SERIES.filter(function (s) { return !hidden[param(s)]; });
+      return v.length ? v : SERIES;          // в адресе скрыли всё — показываем всё
+    }
 
+    // Легенду не пересоздаём при переключении: иначе двойной клик попадёт уже в другой элемент.
     var legend = d.createElement('div');
     legend.className = 'chart__legend';
-    legend.innerHTML = SERIES.map(function (s) { return '<span>' + dot(s.color) + s.label + '</span>'; }).join('');
+    legend.innerHTML = SERIES.map(function (s) {
+      return '<button type="button" class="chart__key" data-k="' + param(s) + '">' + dot(s.color) + s.label + '</button>';
+    }).join('') + '<button type="button" class="chart__all">Показать все</button>';
     host.appendChild(legend);
 
     var box = d.createElement('div');
     box.className = 'chart';
     host.appendChild(box);
 
-    var max = 0;
+    function sync() {
+      var vis = visible();
+      [].forEach.call(legend.querySelectorAll('.chart__key'), function (b) {
+        var on = vis.some(function (s) { return param(s) === b.getAttribute('data-k'); });
+        b.classList.toggle('is-off', !on);
+        b.setAttribute('aria-pressed', on ? 'true' : 'false');
+      });
+      legend.querySelector('.chart__all').hidden = vis.length === SERIES.length;
+      draw(box, rows, vis);
+    }
+    function setHidden(keys) {
+      hidden = {};
+      keys.forEach(function (k) { hidden[k] = true; });
+      saveHidden();
+      sync();
+    }
+    function others(k) { return SERIES.map(param).filter(function (x) { return x !== k; }); }
+
+    legend.addEventListener('click', function (e) {
+      if (e.target.closest('.chart__all')) { setHidden([]); return; }
+      var b = e.target.closest('.chart__key');
+      if (!b) return;
+      var k = b.getAttribute('data-k'), vis = visible().map(param);
+      var isOn = vis.indexOf(k) >= 0;
+      if (isOn && vis.length === 1) return;  // последнюю видимую не скрываем
+      setHidden(SERIES.map(param).filter(function (x) {
+        return x === k ? isOn : vis.indexOf(x) < 0;
+      }));
+    });
+    /* Двойному клику предшествуют два обычных — они взаимно гасятся, так что здесь
+       состояние уже исходное. */
+    legend.addEventListener('dblclick', function (e) {
+      var b = e.target.closest('.chart__key');
+      if (!b) return;
+      var k = b.getAttribute('data-k'), vis = visible().map(param);
+      setHidden(vis.length === 1 && vis[0] === k ? [] : others(k));
+    });
+    sync();
+  };
+
+  function draw(box, rows, SERIES) {
+    box.textContent = '';
+    var max = 0;                                            // только по видимым линиям
     rows.forEach(function (r) { SERIES.forEach(function (s) { max = Math.max(max, r[s.key] || 0); }); });
     /* Пустой период не должен рисовать шкалу 0…0 — ось схлопнется в линию. */
     max = Math.max(max, 4);
@@ -171,5 +243,5 @@
     hit.addEventListener('mouseleave', hide);
     hit.addEventListener('touchstart', function (e) { if (e.touches[0]) show(e.touches[0]); }, { passive: true });
     hit.addEventListener('touchmove', function (e) { if (e.touches[0]) show(e.touches[0]); }, { passive: true });
-  };
+  }
 })(window, document);
