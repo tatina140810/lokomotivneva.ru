@@ -8,11 +8,13 @@
    Поэтому чем чаще вносится остаток, тем точнее цифры. */
 (function (w, d) {
   'use strict';
+  var DETECTED = [];
   var CHANNELS = [
     ['', 'Без сайта (буклеты, визитки, офлайн)'],
     ['yandex_ads', 'Яндекс.Директ'],
     ['telegram_ads', 'Реклама в Telegram'],
     ['vk_ads', 'Реклама ВКонтакте'],
+    ['youtube', 'YouTube'],
     ['offline_led', 'Экраны / наружная'],
     ['google_ads', 'Google Ads'],
     ['social', 'Соцсети'],
@@ -169,9 +171,20 @@
         + 'из записи за длинный период берётся доля по дням.</p>';
     }
 
+    /* Новая реклама (Тати 2026-10-08): метки, по которым люди уже приходят на сайт, а
+       расходов по ним не внесено. Клик подставляет статью и канал в форму. */
+    function detected() {
+      if (!DETECTED.length) return '';
+      return '<p class="adstotal" id="ad-new">Новая реклама приводит людей, а расходов по ней нет: '
+        + DETECTED.map(function (x, i) {
+          return '<button type="button" class="bar__btn" data-new="' + i + '" style="margin:2px 4px">'
+            + esc(x.channelLabel || x.source) + ' · ' + esc(x.source) + ' — ' + nf.format(x.visits) + ' виз.</button>';
+        }).join('') + '<br><span class="t-sub">Нажмите — статья и канал подставятся в форму, останется сумма.</span></p>';
+    }
+
     function form() {
       var today = new Date().toISOString().slice(0, 10);
-      return '<div class="adsform">'
+      return detected() + '<div class="adsform">'
         + '<div class="adsform__row">'
         + '<label>Что вносим<select id="ad-kind">'
         + '<option value="balance">Остаток на счёте</option>'
@@ -181,6 +194,7 @@
         + '<label>Статья<input type="text" id="ad-title" list="ad-titles" placeholder="Яндекс.Директ"></label>'
         + '<datalist id="ad-titles">'
         + (sum.budgetTable || []).map(function (r) { return '<option value="' + esc(r.title) + '">'; }).join('')
+        + CHANNELS.filter(function (c) { return c[0]; }).map(function (c) { return '<option value="' + esc(c[1]) + '">'; }).join('')
         + '<option value="Буклеты"><option value="Визитки">'
         + '</datalist>'
         + '<label>Связать с<select id="ad-ch">' + CHANNELS.map(function (c) {
@@ -267,6 +281,7 @@
         [/telegram|телеграм/i, 'telegram_ads'],
         [/вконтакте|vk\b|вк\b/i, 'vk_ads'],
         [/google|гугл/i, 'google_ads'],
+        [/youtube|ютуб/i, 'youtube'],
         [/экран|led|наружн|сити/i, 'offline_led'],
       ];
       titleInput.addEventListener('input', function () {
@@ -280,6 +295,15 @@
         for (var i = 0; i < BY_WORD.length; i++) {
           if (BY_WORD[i][0].test(t)) { chSel.value = BY_WORD[i][1]; return; }
         }
+      });
+
+      [].forEach.call(host.querySelectorAll('[data-new]'), function (b) {
+        b.addEventListener('click', function () {
+          var x = DETECTED[Number(b.getAttribute('data-new'))];
+          titleInput.value = x.channelLabel || x.source;
+          if (x.channel && chSel.querySelector('option[value="' + x.channel + '"]')) chSel.value = x.channel;
+          d.getElementById('ad-sum').focus();
+        });
       });
 
       d.getElementById('ad-add').addEventListener('click', function () {
@@ -330,9 +354,19 @@
       });
     }
 
+    // Статьи для формы — с сервера (lib/adChannels.js): новая реклама появляется в списке
+    // без правки страницы. Нет ответа — остаётся встроенный список.
+    var chReq = w.fetch(api + '/site-analytics/spend-channels', { headers: head })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (res) {
+        if (!res) return;
+        CHANNELS = [['', 'Без сайта (буклеты, визитки, офлайн)']]
+          .concat((res.channels || []).map(function (c) { return [c.key, c.label]; }));
+        DETECTED = res.detected || [];
+      }).catch(function () {});
     w.fetch(api + '/site-analytics/spend', { headers: head })
       .then(function (r) { return r.ok ? r.json() : { spend: [] }; })
-      .then(function (res) { draw(res.spend || []); })
+      .then(function (res) { return chReq.then(function () { draw(res.spend || []); }); })
       .catch(function () { draw([]); });
   };
 })(window, document);

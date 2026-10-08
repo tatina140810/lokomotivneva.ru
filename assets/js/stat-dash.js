@@ -214,6 +214,7 @@
     html += '</div>';
 
     html += '<div id="ads"></div>';
+    html += '<div id="ads-monthly"></div>';
 
     // 5. Конкретные источники и страницы входа.
     html += '<div class="grid2">';
@@ -289,6 +290,7 @@
     if (w.renderExcludeBox) w.renderExcludeBox($('#mine'), { api: API, token: token, onChange: load });
     /* Раздел «Реклама»: расход из кабинета + цена перехода и заявки по нашим данным. */
     if (w.renderAdsBox) w.renderAdsBox($('#ads'), { api: API, token: token, summary: x, onChange: load });
+    if (w.renderAdsMonthly) w.renderAdsMonthly($('#ads-monthly'), { api: API, token: token });
   }
 
   /* Разбивка внутри карточки. У Яндекса показываем все три канала всегда, даже с
