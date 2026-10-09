@@ -2,9 +2,9 @@
    считается весь расход счёта. «Мастер кампаний» в API не попадает, поэтому его расход =
    изменение остатка + пополнения − расход кампаний из API.
 
-   Кабинет Директа показывает суммы БЕЗ НДС, а API отдаёт расход с НДС. Поэтому по
-   умолчанию сумма вводится «как в кабинете», без НДС, и сервер приводит её к общей
-   базе (с НДС). Недельный бюджет — справка, в расчётах не участвует.
+   Общая база — суммы С НДС: API отдаёт расход с НДС, счета и остатки Директа у Тати
+   тоже с НДС 22% (2026-10-09). Галочка «без НДС» — для редкой суммы без налога: сервер
+   досчитает её до базы. Недельный бюджет — справка, в расчётах не участвует.
    Записи ложатся в общую таблицу расходов (/site-analytics/spend) статьёй «Яндекс.Директ». */
 (function (w, d) {
   'use strict';
@@ -45,7 +45,7 @@
         + '<option value="topup">Пополнение</option></select></label>'
         + '<label>Дата<input type="date" id="acc-date" value="' + today() + '"></label>'
         + '<label>Сумма, ₽<input type="text" inputmode="decimal" id="acc-sum" placeholder="29 455"></label>'
-        + '<label class="apiacc__chk"><input type="checkbox" id="acc-novat" checked> без НДС, как в кабинете</label>'
+        + '<label class="apiacc__chk"><input type="checkbox" id="acc-novat"> сумма без НДС</label>'
         + '<button type="button" class="bar__btn" id="acc-save">Внести</button></div>'
         + '<p class="apierr" id="acc-err"></p></div>';
     },
