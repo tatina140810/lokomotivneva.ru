@@ -524,7 +524,10 @@ function ymGoal(goal, params) {
       }
 
       var name = $('#name').value.trim();
-      var honeypot = form.querySelector('[name="company"]');
+      /* Ловушка для ботов. Поле называлось «Компания», и автозаполнение Яндекс.Браузера
+         подставляло туда название фирмы — живые заявки уходили в мусор (Тати 2026-10-09).
+         Новое имя автозаполнение не узнаёт; старое — для страниц из кэша. */
+      var honeypot = form.querySelector('[name="lk_trap"], [name="company"]');
       var payload = {
         name: name,
         phone: $('#phone').value.trim(),

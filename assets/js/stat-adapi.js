@@ -72,7 +72,8 @@
         + kv('Мастер кампаний (по остатку)', rub(s.otherCost), 'изменение остатка + пополнения − кампании из API')
         + warn + '<div class="apitile__sep"></div>'
         + '<p class="t-sub apitile__note">Показы и клики — только кампании из API</p>'
-      : '<div class="apitile__main">' + rub(s.cost) + '<span class="t-sub"> расход за период</span></div>';
+      : '<div class="apitile__main">' + rub(s.cost) + '<span class="t-sub"> расход с НДС за период</span></div>'
+        + (s.costNet != null ? kv('В кабинете (без НДС)', rub2(s.costNet), 'так расход показывает кабинет VK') : '');
     return '<div class="apitile"><h3>' + esc(s.label) + '</h3>'
       + head
       + kv('Показы', cnt(s.impressions))
@@ -102,13 +103,23 @@
       }).join('') + '</tbody></table></div>';
   }
 
+  /* Период карточек — крупно: по умолчанию страница открывается на «Сегодня», и без
+     подписи сегодняшние цифры легко принять за итог за всё время (Тати 2026-10-09). */
+  function periodLabel(p) {
+    if (!p) return '';
+    var o = { day: '2-digit', month: '2-digit', year: 'numeric', timeZone: 'Europe/Moscow' };
+    var a = new Date(p.from).toLocaleDateString('ru-RU', o);
+    var b = new Date(p.to).toLocaleDateString('ru-RU', o);
+    return '<b>' + (a === b ? 'за ' + a : 'за ' + a + ' — ' + b) + '</b>';
+  }
+
   w.renderAdApiBox = function (host, opts) {
     var block = opts.summary && opts.summary.adApi;
     if (!host || !block) return;
     var anyOn = block.sources.some(function (s) { return s.connected || s.hasData; });
 
     host.innerHTML = '<div class="card"><div class="card__head"><h2>Реклама в кабинетах</h2>'
-      + '<span class="card__note">Директ и VK Реклама: данные из кабинетов, обновляются сами каждые 30 минут</span>'
+      + '<span class="card__note">' + periodLabel(opts.summary.period) + ' · данные из кабинетов, обновляются сами каждые 30 минут</span>'
       + (anyOn ? '<button type="button" class="bar__btn apisync" id="api-sync">Обновить сейчас</button>' : '')
       + '</div>'
       + '<div class="apigrid">' + block.sources.map(function (s) { return tile(s, opts.summary); }).join('') + '</div>'

@@ -15,7 +15,7 @@
 
   var FORM_HTML =
     '<form class="form" id="lead-form" novalidate>' +
-      '<div aria-hidden="true" style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden"><label>Компания<input type="text" name="company" tabindex="-1" autocomplete="off"></label></div>' +
+      '<div aria-hidden="true" style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden"><label>Не заполняйте это поле<input type="text" name="lk_trap" tabindex="-1" autocomplete="off" data-lpignore="true" data-form-type="other"></label></div>' +
       '<div class="field"><label class="field__label" for="name">Имя <span aria-hidden="true">*</span></label><input class="field__input" type="text" id="name" name="name" autocomplete="name" placeholder="Как к вам обращаться" required minlength="2" aria-describedby="name-error"><p class="field__error" id="name-error" role="alert" hidden></p></div>' +
       '<div class="field"><label class="field__label" for="phone">Телефон <span aria-hidden="true">*</span></label><input class="field__input" type="tel" id="phone" name="phone" autocomplete="tel" placeholder="+7 (___) ___-__-__ или +код страны" required inputmode="tel" aria-describedby="phone-error"><p class="field__error" id="phone-error" role="alert" hidden></p></div>' +
       '<div class="field"><label class="field__label" for="message">Направление и сумма</label><textarea class="field__input field__input--area" id="message" name="message" rows="3" placeholder="Напр. Китай, оплата поставщику ~100 000 ¥, есть инвойс" aria-describedby="message-error"></textarea><p class="field__error" id="message-error" role="alert" hidden></p></div>' +
