@@ -199,3 +199,16 @@ tbody tr:last-child td { border-bottom: 0; }
 .scrollx { overflow-x: auto; }
 .scrollx td:not(:first-child) { white-space: nowrap; }
 .scrollx td:first-child { min-width: 170px; }
+
+/* Счёт Директа: остаток, пополнения, недельный бюджет-справка. */
+.apiwarn { margin: 6px 0 0; font-size: 12px; color: #8A5A00; background: #FFF6E0; border-radius: 6px; padding: 6px 8px; }
+.apitile__note { margin: 0 0 4px; font-size: 12px; }
+.apiacc { border-top: 1px solid var(--line); margin-top: 12px; padding-top: 10px; }
+.apiacc__line { margin: 0 0 6px; font-size: 13px; color: var(--ink-2); }
+.apiacc__row { display: flex; flex-wrap: wrap; gap: 8px; align-items: flex-end; margin-top: 8px; }
+.apiacc__row label { display: flex; flex-direction: column; gap: 3px; font-size: 12px; color: var(--ink-2); }
+.apiacc__row input, .apiacc__row select { border: 1px solid var(--line); border-radius: 7px; padding: 6px 8px; font: inherit; font-size: 13px; background: #fff; color: var(--ink); }
+.apiacc__row input[type="text"] { width: 110px; }
+.apiacc__row .apiacc__chk { flex-direction: row; align-items: center; gap: 6px; padding-bottom: 7px; }
+.linkbtn { background: none; border: 0; padding: 0; font: inherit; color: var(--other); text-decoration: underline; cursor: pointer; }
+.apiacc__row[hidden] { display: none; }
