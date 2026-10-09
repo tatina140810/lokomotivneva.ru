@@ -245,7 +245,9 @@
             var shown = nf.format(Math.round(Number(r.amount))) + sign
               + (r.currency && r.currency !== 'RUB'
                 ? '<div class="t-sub">' + money(r.amount_rub) + ' по курсу</div>' : '');
-            return '<tr><td>' + esc(r.title || '—')
+            // Сомнительная запись видна, но в расчёт не идёт (ignored_reason на сервере).
+            return '<tr' + (r.ignored_reason ? ' class="t-zero"' : '') + '><td>' + esc(r.title || '—')
+              + (r.ignored_reason ? '<div class="apierr">Сомнительная, не учитывается: ' + esc(r.ignored_reason) + '</div>' : '')
               + (r.note ? '<div class="t-sub">' + esc(r.note) + '</div>' : '') + '</td>'
               + '<td>' + (kind === 'spend'
                 ? dmy(r.period_start) + ' — ' + dmy(r.period_end)
