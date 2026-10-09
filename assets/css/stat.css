@@ -212,3 +212,13 @@ tbody tr:last-child td { border-bottom: 0; }
 .apiacc__row .apiacc__chk { flex-direction: row; align-items: center; gap: 6px; padding-bottom: 7px; }
 .linkbtn { background: none; border: 0; padding: 0; font: inherit; color: var(--other); text-decoration: underline; cursor: pointer; }
 .apiacc__row[hidden] { display: none; }
+
+/* Почасовой остаток Директа (наблюдение). */
+.apibal { border-top: 1px solid var(--line); margin-top: 12px; padding-top: 10px; }
+.apibal h4 { font-size: 13px; margin: 0 0 8px; }
+.apibal table { font-size: 13px; }
+.apibal th, .apibal td { padding: 6px 6px; }
+.apibal__manual td { background: #F5F7FA; font-weight: 600; }
+.apibal__alert { background: #FDECEA; border: 1px solid #F3C1BC; color: var(--bad); border-radius: 8px; padding: 10px 12px; margin-bottom: 10px; font-size: 13px; line-height: 1.5; }
+.apibal__alert .apierr { margin-top: 6px; }
+.apibal .scrollx td:last-child { white-space: normal; font-weight: 600; }
