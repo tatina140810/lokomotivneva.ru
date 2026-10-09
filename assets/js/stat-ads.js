@@ -251,7 +251,8 @@
               + (r.note ? '<div class="t-sub">' + esc(r.note) + '</div>' : '') + '</td>'
               + '<td>' + (kind === 'spend'
                 ? dmy(r.period_start) + ' — ' + dmy(r.period_end)
-                : 'на ' + dmy(r.period_start)) + '</td>'
+                : 'на ' + dmy(r.period_start) + (r.occurred_at ? ', ' + new Date(r.occurred_at).toLocaleTimeString('ru-RU',
+                  { hour: '2-digit', minute: '2-digit', timeZone: 'Europe/Moscow' }) + ' МСК' : '')) + '</td>'
               + '<td>' + shown + '</td>'
               + '<td><button type="button" class="bar__btn" data-del="' + r.id + '">Убрать</button></td></tr>';
           }).join('') + '</tbody></table>';

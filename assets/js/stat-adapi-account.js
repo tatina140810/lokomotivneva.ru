@@ -44,6 +44,8 @@
         + '<label>Что<select id="acc-kind"><option value="balance">Остаток на счёте</option>'
         + '<option value="topup">Пополнение</option></select></label>'
         + '<label>Дата<input type="date" id="acc-date" value="' + today() + '"></label>'
+        + '<label title="По Москве. Пополнение позже замера в тот же день не считается расходом">Время, МСК'
+        + '<input type="time" id="acc-time"></label>'
         + '<label>Сумма, ₽<input type="text" inputmode="decimal" id="acc-sum" placeholder="29 455"></label>'
         + '<label class="apiacc__chk"><input type="checkbox" id="acc-novat"> сумма без НДС</label>'
         + '<button type="button" class="bar__btn" id="acc-save">Внести</button></div>'
@@ -58,7 +60,7 @@
       function fail(r) {
         return r.json().catch(function () { return {}; }).then(function (j) {
           throw new Error({ bad_amount: 'Сумма — число, до двух знаков после запятой.',
-            bad_period: 'Укажите дату.' }[j.error] || 'Не сохранилось (' + r.status + ').');
+            bad_period: 'Укажите дату.', bad_time: 'Время — в формате ЧЧ:ММ.' }[j.error] || 'Не сохранилось (' + r.status + ').');
         });
       }
 
@@ -84,6 +86,7 @@
           body: JSON.stringify({
             channel: 'yandex_ads', title: 'Яндекс.Директ', kind: d.getElementById('acc-kind').value,
             period_start: day, period_end: day, amount: sum, currency: 'RUB',
+            time: d.getElementById('acc-time').value || null,
             vat: d.getElementById('acc-novat').checked ? 'excl' : 'incl',
           }),
         }).then(function (r) { return r.ok ? opts.onChange() : fail(r); })
