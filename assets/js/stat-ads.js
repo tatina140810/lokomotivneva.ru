@@ -95,6 +95,8 @@
           + '<td><b>' + remain + '</b>'
           + (r.remaining == null ? '' : '<div class="t-sub">' + (r.remainingMeasured ? 'по замеру' : 'расчётный') + '</div>') + '</td>'
           + '<td>' + money(r.spentInPeriod)
+          + (r.vk ? '<div class="t-sub">свои; бонусы ' + money(r.vk.bonusInPeriod) + ', всего по кабинету ' + money(r.vk.fullInPeriod)
+            + (r.vk.partial ? ' — до замера' : '') + '</div>' : '')
           + (r.otherInPeriod ? '<div class="t-sub">API ' + money(r.apiInPeriod) + ' · по остатку ' + money(r.otherInPeriod)
             + (r.otherPartial ? ', замер ' + dmy(r.otherKnownUntil) : '') + '</div>' : '') + '</td>'
           + '<td>' + (r.visits == null ? '—' : nf.format(r.visits)) + '</td>'

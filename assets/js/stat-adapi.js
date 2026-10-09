@@ -72,8 +72,14 @@
         + kv('Мастер кампаний (по остатку)', rub(s.otherCost), 'изменение остатка + пополнения − кампании из API')
         + warn + '<div class="apitile__sep"></div>'
         + '<p class="t-sub apitile__note">Показы и клики — только кампании из API</p>'
-      : '<div class="apitile__main">' + rub(s.cost) + '<span class="t-sub"> расход с НДС за период</span></div>'
-        + (s.costNet != null ? kv('В кабинете (без НДС)', rub2(s.costNet), 'так расход показывает кабинет VK') : '');
+      : '<div class="apitile__main">' + rub(s.cost) + '<span class="t-sub"> расход за период, как в кабинете</span></div>';
+    // VK со своими деньгами и бонусами — свой верх карточки и цены (stat-adapi-vk.js).
+    var vk = w.adApiVk && w.adApiVk.applies(s);
+    if (vk && w.adApiVk.head(s)) head = w.adApiVk.head(s);
+    var prices = (vk && w.adApiVk.prices(s))
+      || kv('Цена перехода', rub2(s.costPerVisit))
+        + kv('Заявки с сайта', cnt(s.leads))
+        + kv('Цена заявки', rub(s.costPerLead), acc ? 'весь расход счёта на заявки с канала' : '');
     return '<div class="apitile"><h3>' + esc(s.label) + '</h3>'
       + head
       + kv('Показы', cnt(s.impressions))
@@ -83,10 +89,8 @@
       + kv('Цена 1000 показов', rub2(s.cpm))
       + '<div class="apitile__sep"></div>'
       + kv('Переходы на сайт', cnt(s.visits), 'по нашему счётчику: визиты с этого канала')
-      + kv('Цена перехода', rub2(s.costPerVisit))
-      + kv('Заявки с сайта', cnt(s.leads))
-      + kv('Цена заявки', rub(s.costPerLead), acc ? 'весь расход счёта на заявки с канала' : '')
-      + status + (acc ? w.adApiAccount.html(s, summary) : '')
+      + prices
+      + status + (acc ? w.adApiAccount.html(s, summary) : '') + (vk ? w.adApiVk.form() : '')
       + (w.adApiBalance ? w.adApiBalance.html(s) : '')
       + (w.adApiReconcile ? w.adApiReconcile.html(s) : '') + '</div>';
   }
@@ -125,11 +129,12 @@
       + '</div>'
       + '<div class="apigrid">' + block.sources.map(function (s) { return tile(s, opts.summary); }).join('') + '</div>'
       + (anyOn ? '<h3 class="adsh3">По кампаниям</h3>' + campaigns(block.campaigns) : '')
-      + '<p class="t-sub" id="api-msg" style="margin:10px 0 0">Расход с НДС, как списывается со счёта. '
+      + '<p class="t-sub" id="api-msg" style="margin:10px 0 0">Директ — с НДС; VK — как в кабинете (НДС уже внутри). '
       + 'Заявки и переходы — по нашему счётчику на сайте, на уровне канала: без меток в ссылке '
       + 'заявку нельзя приписать конкретной кампании.</p></div>';
 
     if (w.adApiAccount) w.adApiAccount.bind(opts);
+    if (w.adApiVk) w.adApiVk.bind(opts);
     if (w.adApiBalance) w.adApiBalance.bind(opts);
     if (w.adApiReconcile) w.adApiReconcile.bind(opts);
     var btn = d.getElementById('api-sync');
