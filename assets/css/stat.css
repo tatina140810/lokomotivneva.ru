@@ -222,3 +222,4 @@ tbody tr:last-child td { border-bottom: 0; }
 .apibal__alert { background: #FDECEA; border: 1px solid #F3C1BC; color: var(--bad); border-radius: 8px; padding: 10px 12px; margin-bottom: 10px; font-size: 13px; line-height: 1.5; }
 .apibal__alert .apierr { margin-top: 6px; }
 .apibal .scrollx td:last-child { white-space: normal; font-weight: 600; }
+.rc__text { width: 100%; box-sizing: border-box; margin-top: 8px; border: 1px solid var(--line); border-radius: 7px; padding: 8px; font: inherit; font-size: 13px; }

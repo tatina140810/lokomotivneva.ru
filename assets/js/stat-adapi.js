@@ -87,7 +87,8 @@
       + kv('Заявки с сайта', cnt(s.leads))
       + kv('Цена заявки', rub(s.costPerLead), acc ? 'весь расход счёта на заявки с канала' : '')
       + status + (acc ? w.adApiAccount.html(s, summary) : '')
-      + (w.adApiBalance ? w.adApiBalance.html(s) : '') + '</div>';
+      + (w.adApiBalance ? w.adApiBalance.html(s) : '')
+      + (w.adApiReconcile ? w.adApiReconcile.html(s) : '') + '</div>';
   }
 
   function campaigns(list) {
@@ -130,6 +131,7 @@
 
     if (w.adApiAccount) w.adApiAccount.bind(opts);
     if (w.adApiBalance) w.adApiBalance.bind(opts);
+    if (w.adApiReconcile) w.adApiReconcile.bind(opts);
     var btn = d.getElementById('api-sync');
     if (!btn) return;
     btn.addEventListener('click', function () {
