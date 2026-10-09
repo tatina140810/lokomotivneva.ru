@@ -89,6 +89,11 @@
   /* Границы считаем здесь, по часовому поясу смотрящего: если бы их определял
      сервер, «сегодня» на экране и в базе расходились бы на несколько часов. */
   var period = { days: 0 };  // по умолчанию — «Сегодня» (Тати 2026-10-06)
+  /* Календарная дата по часам смотрящего — её же видят карточки кабинетов и подпись
+     периода (Тати 2026-10-09: из Бишкека «Сегодня» подписывалось «08.10 — 09.10»). */
+  function localDay(d) {
+    return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+  }
   function bounds() {
     var to = new Date();
     var from;
@@ -97,10 +102,13 @@
       to = new Date(period.to + 'T23:59:59');
     } else if (period.days === 0) {
       from = new Date(); from.setHours(0, 0, 0, 0);
+    } else if (period.days === -1) {           // «Вчера» — полные вчерашние сутки
+      from = new Date(); from.setDate(from.getDate() - 1); from.setHours(0, 0, 0, 0);
+      to = new Date(from); to.setHours(23, 59, 59, 999);
     } else {
       from = new Date(Date.now() - period.days * 86400000);
     }
-    return { from: from.toISOString(), to: to.toISOString() };
+    return { from: from.toISOString(), to: to.toISOString(), daysFrom: localDay(from), daysTo: localDay(to) };
   }
 
   $('#period').addEventListener('click', function (e) {
@@ -127,7 +135,8 @@
   function load() {
     var b = bounds();
     $('#content').innerHTML = '<p class="loading">Загружаем данные…</p>';
-    fetch(API + '/site-analytics/summary?from=' + encodeURIComponent(b.from) + '&to=' + encodeURIComponent(b.to), {
+    fetch(API + '/site-analytics/summary?from=' + encodeURIComponent(b.from) + '&to=' + encodeURIComponent(b.to)
+      + '&days_from=' + b.daysFrom + '&days_to=' + b.daysTo, {
       headers: { Authorization: 'Bearer ' + token },
     })
       .then(function (r) {

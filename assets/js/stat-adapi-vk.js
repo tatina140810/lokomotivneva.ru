@@ -50,9 +50,12 @@
           + '. Дальше раздел неизвестен — внесите свежие остатки из кабинета.</p>';
       }
       return '<div class="apitile__main">' + rub(v.own.inPeriod) + '<span class="t-sub"> своих денег за период</span></div>'
-        + kv('Всего по кабинету (свои + бонусы)', rub2(v.full.inPeriod))
+        + kv('Всего по кабинету (свои + бонусы)', rub2(v.full.inPeriod)
+          + '<div class="t-sub">по остаткам' + (v.knownUntil ? ', до замера ' + at(v.knownUntil) : '') + '</div>')
         + kv('из них бонусы', rub2(v.bonus.inPeriod), 'бонусы VK — не наши затраты')
-        + kv('По статистике кабинета', rub2(v.statsInPeriod), 'расход из статистики VK за те же дни — для сверки')
+        + kv('По статистике кабинета', rub2(v.statsInPeriod)
+          + '<div class="t-sub">за те же дни' + (s.lastSyncAt ? ', данные на ' + at(s.lastSyncAt) : '') + '</div>',
+          'расход из статистики VK по дням — для сверки')
         + '<div class="apitile__sep"></div>'
         + kv('Остаток своих', rub2(v.own.balance)) + kv('Остаток бонусов', rub2(v.bonus.balance))
         + kv('Пополнено своих / бонусов', rub(v.own.topups) + ' / ' + rub(v.bonus.topups))

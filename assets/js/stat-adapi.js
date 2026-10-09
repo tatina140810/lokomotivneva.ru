@@ -110,12 +110,23 @@
 
   /* Период карточек — крупно: по умолчанию страница открывается на «Сегодня», и без
      подписи сегодняшние цифры легко принять за итог за всё время (Тати 2026-10-09). */
+  /* Подпись = ровно те календарные дни, за которые взяты цифры карточек (period.days
+     приходит с сервера: выбранные даты, начало поднято до запуска статистики). */
   function periodLabel(p) {
     if (!p) return '';
-    var o = { day: '2-digit', month: '2-digit', year: 'numeric', timeZone: 'Europe/Moscow' };
-    var a = new Date(p.from).toLocaleDateString('ru-RU', o);
-    var b = new Date(p.to).toLocaleDateString('ru-RU', o);
-    return '<b>' + (a === b ? 'за ' + a : 'за ' + a + ' — ' + b) + '</b>';
+    var dm = function (s) { return s.split('-').reverse().join('.'); };
+    var local = function (shift) {
+      var d = new Date(); d.setDate(d.getDate() + shift);
+      return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+    };
+    var a, b;
+    if (p.days) { a = p.days.from; b = p.days.to; } else {
+      var o = { year: 'numeric', month: '2-digit', day: '2-digit', timeZone: 'Europe/Moscow' };
+      a = new Date(p.from).toLocaleDateString('en-CA', o); b = new Date(p.to).toLocaleDateString('en-CA', o);
+    }
+    var text = a !== b ? 'за ' + dm(a) + ' — ' + dm(b)
+      : a === local(0) ? 'Сегодня, ' + dm(a) : a === local(-1) ? 'Вчера, ' + dm(a) : 'за ' + dm(a);
+    return '<b>' + text + '</b>';
   }
 
   w.renderAdApiBox = function (host, opts) {
