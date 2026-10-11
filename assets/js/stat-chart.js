@@ -29,8 +29,10 @@
   var W = 1000, H = 300, PAD = { t: 16, r: 54, b: 28, l: 44 };
 
   function fmtDay(iso) {
-    var dt = new Date(iso);
-    return dt.getDate() + ' ' + ['янв', 'фев', 'мар', 'апр', 'мая', 'июн', 'июл', 'авг', 'сен', 'окт', 'ноя', 'дек'][dt.getMonth()];
+    // День приходит с сервера уже московским (YYYY-MM-DD) — берём цифры как есть, без
+    // пересчёта в пояс компьютера: иначе у смотрящего западнее UTC подпись уезжала бы на день.
+    var p = String(iso).slice(0, 10).split('-');
+    return Number(p[2]) + ' ' + ['янв', 'фев', 'мар', 'апр', 'мая', 'июн', 'июл', 'авг', 'сен', 'окт', 'ноя', 'дек'][Number(p[1]) - 1];
   }
   function el(tag, attrs) {
     var e = d.createElementNS('http://www.w3.org/2000/svg', tag);

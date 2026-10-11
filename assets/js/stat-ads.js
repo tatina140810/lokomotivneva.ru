@@ -69,7 +69,7 @@
           : money(r.startBalance);
         return esc(r.title) + ' — <b>' + orig + '</b> на ' + dmy(r.startBalanceDate);
       }).join(' · ');
-      return '<p class="adstotal">Учёт ведётся с <b>' + since.toLocaleDateString('ru-RU') + '</b>. '
+      return '<p class="adstotal">Учёт ведётся с <b>' + since.toLocaleDateString('ru-RU', { timeZone: 'Europe/Moscow' }) + '</b>. '
         + (list ? 'Остатки на момент запуска: ' + list + '.' : 'Остатки на счетах пока не внесены.')
         + '<br><span class="t-sub">Дальше достаточно вносить остаток на день отчёта — '
         + 'расход посчитается сам: прошлый остаток плюс пополнения минус новый.</span></p>';
@@ -188,7 +188,7 @@
     }
 
     function form() {
-      var today = new Date().toISOString().slice(0, 10);
+      var today = new Date().toLocaleDateString('en-CA', { timeZone: 'Europe/Moscow' });  // московский день, не UTC
       return detected() + '<div class="adsform">'
         + '<div class="adsform__row">'
         + '<label>Что вносим<select id="ad-kind">'

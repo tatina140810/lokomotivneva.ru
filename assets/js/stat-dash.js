@@ -6,7 +6,9 @@
    Вход — по учётной записи сотрудника, отдельных паролей для сайта не заводим. */
 (function (w, d) {
   'use strict';
-  var API = 'https://app.lokomotivneva.ru/api';
+  // Компания LOKOMOTIV (этап 4, 2026-10-11): посещения, заявки и звонки пишутся в её базу,
+  // поэтому и вход, и сводка — через /api-loko. Через /api читались бы данные Бишкека.
+  var API = 'https://app.lokomotivneva.ru/api-loko';
   var TOKEN_KEY = 'loko_stat_token';
   var $ = function (sel) { return d.querySelector(sel); };
   var token = null;
@@ -86,27 +88,33 @@
   });
 
   /* ------------------------------- Период --------------------------------- */
-  /* Границы считаем здесь, по часовому поясу смотрящего: если бы их определял
-     сервер, «сегодня» на экране и в базе расходились бы на несколько часов. */
+  /* Сутки — московские для ВСЕХ, где бы ни сидел смотрящий (Тати 2026-10-11): заход
+     в 16:00 по Бишкеку — это 13:00 по Москве, и «сегодня»/«вчера» у всех одни и те же.
+     Раньше брался пояс компьютера, и в Бишкеке «сегодня» начиналось на 3 часа раньше:
+     14 посетителей у одного против 1 у другого. Москва — потому что расходы Директа и
+     VK в системе считаются по московским суткам. Перехода на летнее время в РФ нет. */
+  var MSK = '+03:00';
+  var DAY_MS = 86400000;
   var period = { days: 0 };  // по умолчанию — «Сегодня» (Тати 2026-10-06)
-  /* Календарная дата по часам смотрящего — её же видят карточки кабинетов и подпись
-     периода (Тати 2026-10-09: из Бишкека «Сегодня» подписывалось «08.10 — 09.10»). */
+  /* Московская календарная дата момента — её видят карточки кабинетов и подпись периода. */
   function localDay(d) {
-    return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+    return d.toLocaleDateString('en-CA', { timeZone: 'Europe/Moscow' });
   }
+  function mskStart(day) { return new Date(day + 'T00:00:00' + MSK); }
   function bounds() {
     var to = new Date();
     var from;
+    var todayStart = mskStart(localDay(new Date()));
     if (period.from && period.to) {
-      from = new Date(period.from + 'T00:00:00');
-      to = new Date(period.to + 'T23:59:59');
+      from = mskStart(period.from);
+      to = new Date(period.to + 'T23:59:59.999' + MSK);
     } else if (period.days === 0) {
-      from = new Date(); from.setHours(0, 0, 0, 0);
-    } else if (period.days === -1) {           // «Вчера» — полные вчерашние сутки
-      from = new Date(); from.setDate(from.getDate() - 1); from.setHours(0, 0, 0, 0);
-      to = new Date(from); to.setHours(23, 59, 59, 999);
+      from = todayStart;
+    } else if (period.days === -1) {           // «Вчера» — полные вчерашние сутки по Москве
+      from = new Date(todayStart.getTime() - DAY_MS);
+      to = new Date(todayStart.getTime() - 1);
     } else {
-      from = new Date(Date.now() - period.days * 86400000);
+      from = new Date(Date.now() - period.days * DAY_MS);
     }
     return { from: from.toISOString(), to: to.toISOString(), daysFrom: localDay(from), daysTo: localDay(to) };
   }
@@ -168,7 +176,7 @@
     if (x.dataSince) {
       var since = new Date(x.dataSince);
       var days = Math.max(1, Math.round((Date.now() - since.getTime()) / 86400000));
-      html += '<p class="since">Статистика ведётся с ' + since.toLocaleDateString('ru-RU')
+      html += '<p class="since">Статистика ведётся с ' + since.toLocaleDateString('ru-RU', { timeZone: 'Europe/Moscow' })
         + (x.periodClipped ? ' — за более ранний период данных нет' : '')
         + ' · наблюдений: ' + days + (days === 1 ? ' день' : (days < 5 ? ' дня' : ' дней')) + '</p>';
     }

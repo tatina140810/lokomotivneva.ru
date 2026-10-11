@@ -29,9 +29,11 @@
   function when(iso) {
     if (!iso) return '';
     var t = new Date(iso);
-    var hm = t.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
-    return t.toDateString() === new Date().toDateString()
-      ? 'сегодня в ' + hm : t.toLocaleDateString('ru-RU') + ' в ' + hm;
+    // Москва для всех смотрящих — как и сутки на странице (Тати 2026-10-11).
+    var tz = { timeZone: 'Europe/Moscow' };
+    var hm = t.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit', timeZone: 'Europe/Moscow' });
+    return t.toLocaleDateString('en-CA', tz) === new Date().toLocaleDateString('en-CA', tz)
+      ? 'сегодня в ' + hm : t.toLocaleDateString('ru-RU', { timeZone: 'Europe/Moscow' }) + ' в ' + hm;
   }
 
   function kv(k, v, hint) {
@@ -116,8 +118,8 @@
     if (!p) return '';
     var dm = function (s) { return s.split('-').reverse().join('.'); };
     var local = function (shift) {
-      var d = new Date(); d.setDate(d.getDate() + shift);
-      return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+      // «Сегодня/вчера» — по московским суткам, как и цифры (Тати 2026-10-11).
+      return new Date(Date.now() + shift * 86400000).toLocaleDateString('en-CA', { timeZone: 'Europe/Moscow' });
     };
     var a, b;
     if (p.days) { a = p.days.from; b = p.days.to; } else {

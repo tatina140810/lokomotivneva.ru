@@ -31,7 +31,7 @@
 
     function draw(me, list) {
       var rows = (list || []).map(function (x) {
-        var when = x.created_at ? new Date(x.created_at).toLocaleDateString('ru-RU') : '';
+        var when = x.created_at ? new Date(x.created_at).toLocaleDateString('ru-RU', { timeZone: 'Europe/Moscow' }) : '';
         return '<tr><td>' + esc(x.label || 'без подписи')
           + '<div class="t-sub">' + esc(x.ip_hash).slice(0, 12) + '… · с ' + when + '</div></td>'
           + '<td><button type="button" class="bar__btn" data-back="' + esc(x.ip_hash) + '">Снова учитывать</button></td></tr>';
