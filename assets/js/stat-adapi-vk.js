@@ -47,26 +47,29 @@
       var flags = (v.flags || []).map(function (f) {
         return '<p class="apiwarn">' + flagText(f) + '</p>';
       }).join('');
-      if (v.partial) {
+      // С оценкой по остатку из API раздел известен до последнего часового замера;
+      // предупреждение — только если оценки нет (нет замеров API после ручного).
+      if (v.partial && !v.estimated) {
         flags += '<p class="apiwarn">Свои и бонусы учтены до замера ' + (v.knownUntil ? at(v.knownUntil) : '—')
           + '. Дальше раздел неизвестен — внесите свежие остатки из кабинета.</p>';
       }
+      var est = v.estimated ? ', оценка' : '';
       return '<div class="apitile__main">' + rub(v.own.inPeriodVat) + '<span class="t-sub"> своих денег потрачено за период, с НДС</span></div>'
         + kv('Своих в кабинете', rub2(v.own.inPeriod) + '<div class="t-sub">без НДС, по остаткам'
-          + (v.knownUntil ? ' до замера ' + at(v.knownUntil) : '') + '</div>', 'расход своих по остаткам; × 1,22 — потрачено с НДС')
+          + (v.knownUntil ? ' до ' + at(v.knownUntil) : '') + est + '</div>', 'расход своих по остаткам; × 1,22 — потрачено с НДС')
         + kv('Бонусы потрачено', rub2(v.bonus.inPeriod), 'бонусы VK бесплатные — в затраты и цены не входят')
         + kv('Полный расход кабинета', rub2(v.statsInPeriod)
           + '<div class="t-sub">с НДС, в кабинете без НДС: ' + rub2(s.costNet)
           + (s.lastSyncAt ? '; данные на ' + at(s.lastSyncAt) : '') + '</div>',
           'статистика VK × 1,22 — как если бы бонусов не было; для сравнения с Директом')
         + '<div class="apitile__sep"></div>'
-        + kv('Остаток своих', rub2(v.own.balance) + '<div class="t-sub">в кабинете, без НДС; оплачено за него '
+        + kv('Остаток своих', rub2(v.own.balance) + '<div class="t-sub">в кабинете, без НДС' + est + '; оплачено за него '
           + rub2(v.own.balanceVat) + '</div>')
-        + kv('Остаток бонусов', rub2(v.bonus.balance))
+        + kv('Остаток бонусов', rub2(v.bonus.balance) + (v.estimated ? '<div class="t-sub">оценка</div>' : ''))
         + kv('Бюджет: оплачено по счетам', rub2(v.own.paid), 'сумма счетов с НДС за пополнения своих')
         + kv('Бонусы получено', rub2(v.bonus.topups))
         + (v.apiBalance ? kv('Общий остаток по API', rub2(v.apiBalance.total), 'на ' + at(v.apiBalance.at) + '; свои + бонусы вместе') : '')
-        + flags + '<div class="apitile__sep"></div>';
+        + flags + (w.adApiVkAuto ? w.adApiVkAuto.html(s) : '') + '<div class="apitile__sep"></div>';
     },
 
     // Цены по своим деньгам — основная строка; по полному расходу — вторая.
@@ -99,6 +102,7 @@
     },
 
     bind: function (opts) {
+      if (w.adApiVkAuto) w.adApiVkAuto.bind(opts);
       var save = d.getElementById('vk-save');
       if (!save) return;
       var err = d.getElementById('vk-err');
