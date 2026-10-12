@@ -34,6 +34,12 @@
     var p = String(iso).slice(0, 10).split('-');
     return Number(p[2]) + ' ' + ['янв', 'фев', 'мар', 'апр', 'мая', 'июн', 'июл', 'авг', 'сен', 'окт', 'ноя', 'дек'][Number(p[1]) - 1];
   }
+  /* По часам (одни сутки, Тати 2026-10-12): час приходит с сервера уже московским. */
+  function fmtHour(h) { return String(h).padStart(2, '0') + ':00'; }
+  function fmtX(r) { return r.hour != null ? fmtHour(r.hour) : fmtDay(r.day); }
+  function fmtTip(r) {
+    return r.hour != null ? fmtHour(r.hour) + '–' + fmtHour(r.hour + 1) + ' МСК, ' + fmtDay(r.day) : fmtDay(r.day);
+  }
   function el(tag, attrs) {
     var e = d.createElementNS('http://www.w3.org/2000/svg', tag);
     for (var k in attrs) if (attrs[k] != null) e.setAttribute(k, attrs[k]);
@@ -63,7 +69,8 @@
     } catch (e) { /* без адреса фильтр просто не переживёт перезагрузку */ }
   }
 
-  /* rows: [{ day, yandex, telegram, direct, rest }] (или старое { day, yandex, other }) */
+  /* rows: [{ day, yandex, telegram, direct, rest }] (или старое { day, yandex, other });
+     у почасовых строк есть ещё hour (0–23, МСК) — тогда по оси часы и подпись «время МСК». */
   w.renderStatChart = function (host, rows) {
     host.textContent = '';
     if (!rows || rows.length === 0) {
@@ -136,12 +143,14 @@
     max = Math.max(max, 4);
     var top = Math.ceil(max / 4) * 4;                       // круглый потолок шкалы
 
-    var innerW = W - PAD.l - PAD.r, innerH = H - PAD.t - PAD.b;
+    var byHour = rows[0].hour != null;
+    var padB = byHour ? PAD.b + 16 : PAD.b;                 // место под подпись оси
+    var innerW = W - PAD.l - PAD.r, innerH = H - PAD.t - padB;
     var x = function (i) { return PAD.l + (rows.length === 1 ? innerW / 2 : (innerW * i) / (rows.length - 1)); };
     var y = function (v) { return PAD.t + innerH - (innerH * v) / top; };
 
     var svg = el('svg', { viewBox: '0 0 ' + W + ' ' + H, role: 'img',
-      'aria-label': 'Визиты по дням: ' + SERIES.map(function (s) { return s.label.toLowerCase(); }).join(', ') });
+      'aria-label': (byHour ? 'Визиты по часам, время МСК: ' : 'Визиты по дням: ') + SERIES.map(function (s) { return s.label.toLowerCase(); }).join(', ') });
 
     // Сетка и подписи шкалы — намеренно бледные: это фон, а не данные.
     for (var s = 0; s <= 4; s++) {
@@ -165,10 +174,15 @@
       marks.push(last);
     }
     marks.forEach(function (i) {
-      var t = el('text', { x: x(i), y: H - 8, 'text-anchor': 'middle', fill: C.ink3, 'font-size': 12 });
-      t.textContent = fmtDay(rows[i].day);
+      var t = el('text', { x: x(i), y: H - padB + 20, 'text-anchor': 'middle', fill: C.ink3, 'font-size': 12 });
+      t.textContent = fmtX(rows[i]);
       svg.appendChild(t);
     });
+    if (byHour) {
+      var cap = el('text', { x: PAD.l + innerW / 2, y: H - 4, 'text-anchor': 'middle', fill: C.ink3, 'font-size': 12 });
+      cap.textContent = 'время МСК';
+      svg.appendChild(cap);
+    }
 
     function line(s) {
       var pts = rows.map(function (r, i) { return x(i) + ',' + y(r[s.key] || 0); }).join(' ');
@@ -191,6 +205,13 @@
       lab.yy = y(lab.v) + 4;
       if (i > 0 && lab.yy - labels[i - 1].yy < MIN_DY) lab.yy = labels[i - 1].yy + MIN_DY;
     });
+    /* Несколько нулей в конце разъезжались вниз под ось и налезали на подпись последней
+       даты/часа — поджимаем стопку снизу к оси, порядок сохраняется. */
+    var floor = PAD.t + innerH + 4;
+    for (var li = labels.length - 1; li >= 0; li--) {
+      var cap = floor - (labels.length - 1 - li) * MIN_DY;
+      if (labels[li].yy > cap) labels[li].yy = cap;
+    }
     labels.forEach(function (lab) {
       var t = el('text', { x: W - PAD.r + 8, y: lab.yy, fill: lab.color, 'font-size': 12, 'font-weight': 600 });
       t.textContent = String(lab.v);
@@ -227,7 +248,7 @@
       SERIES.forEach(function (s, k) {
         dots[k].setAttribute('cx', x(i)); dots[k].setAttribute('cy', y(row[s.key] || 0)); dots[k].setAttribute('opacity', 1);
       });
-      tip.innerHTML = '<div style="margin-bottom:4px">' + fmtDay(row.day) + '</div>'
+      tip.innerHTML = '<div style="margin-bottom:4px">' + fmtTip(row) + '</div>'
         + SERIES.map(function (s) { return '<div class="tip__row">' + dot(s.color) + s.label + ': <b>' + (row[s.key] || 0) + '</b></div>'; }).join('');
       tip.style.opacity = 1;
       var leftPct = (x(i) / W) * 100;

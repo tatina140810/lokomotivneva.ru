@@ -114,7 +114,10 @@
       from = new Date(todayStart.getTime() - DAY_MS);
       to = new Date(todayStart.getTime() - 1);
     } else {
-      from = new Date(Date.now() - period.days * DAY_MS);
+      /* «7 дней» = сегодня и шесть полных предыдущих московских суток (Тати 2026-10-12).
+         Раньше брались 7×24 часа от текущей минуты: визиты начинались с середины первого
+         дня, а карточки кабинетов брали его целиком, и подпись показывала 8 дат. */
+      from = new Date(todayStart.getTime() - (period.days - 1) * DAY_MS);
     }
     return { from: from.toISOString(), to: to.toISOString(), daysFrom: localDay(from), daysTo: localDay(to) };
   }
@@ -201,8 +204,12 @@
       + '</div>';
 
     // 3. Динамика.
-    html += '<div class="card"><div class="card__head"><h2>Динамика по дням</h2>'
-      + '<span class="card__note">визиты по каналам: Яндекс, Telegram, прямые заходы, другие</span></div>'
+    /* Одни сутки («Сегодня», «Вчера», одна дата) — по часам МСК: по дням это одна
+       точка без линии (Тати 2026-10-12). Сервер отдаёт hourly только для одних суток. */
+    var byHour = x.hourly && x.hourly.length > 0;
+    html += '<div class="card"><div class="card__head"><h2>' + (byHour ? 'Динамика по часам' : 'Динамика по дням') + '</h2>'
+      + '<span class="card__note">визиты по каналам: Яндекс, Telegram, VK Реклама, YouTube, прямые заходы, другие'
+      + (byHour ? ' · время МСК' : '') + '</span></div>'
       + '<div id="chart"></div></div>';
 
     // 4. Каналы — основная таблица.
@@ -302,7 +309,7 @@
     html += '<div id="mine"></div>';
 
     $('#content').innerHTML = html;
-    if (w.renderStatChart) w.renderStatChart($('#chart'), x.daily);
+    if (w.renderStatChart) w.renderStatChart($('#chart'), byHour ? x.hourly : x.daily);
     /* Блок «Мои визиты»: исключение своих заходов. Перерисовывает отчёт после
        изменения — цифры пересчитываются сразу и задним числом. */
     if (w.renderExcludeBox) w.renderExcludeBox($('#mine'), { api: API, token: token, onChange: load });
