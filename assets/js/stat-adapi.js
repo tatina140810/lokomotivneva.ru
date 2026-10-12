@@ -74,7 +74,8 @@
         + kv('Мастер кампаний (по остатку)', rub(s.otherCost), 'изменение остатка + пополнения − кампании из API')
         + warn + '<div class="apitile__sep"></div>'
         + '<p class="t-sub apitile__note">Показы и клики — только кампании из API</p>'
-      : '<div class="apitile__main">' + rub(s.cost) + '<span class="t-sub"> расход за период, как в кабинете</span></div>';
+      : '<div class="apitile__main">' + rub(s.cost) + '<span class="t-sub"> расход за период'
+        + (s.source === 'vk_ads' ? ', с НДС (в кабинете без НДС)' : '') + '</span></div>';
     // VK со своими деньгами и бонусами — свой верх карточки и цены (stat-adapi-vk.js).
     var vk = w.adApiVk && w.adApiVk.applies(s);
     if (vk && w.adApiVk.head(s)) head = w.adApiVk.head(s);
@@ -142,7 +143,7 @@
       + '</div>'
       + '<div class="apigrid">' + block.sources.map(function (s) { return tile(s, opts.summary); }).join('') + '</div>'
       + (anyOn ? '<h3 class="adsh3">По кампаниям</h3>' + campaigns(block.campaigns) : '')
-      + '<p class="t-sub" id="api-msg" style="margin:10px 0 0">Директ — с НДС; VK — как в кабинете (НДС уже внутри). '
+      + '<p class="t-sub" id="api-msg" style="margin:10px 0 0">Директ — с НДС; VK — с НДС (в кабинете без НДС, × 1,22). '
       + 'Заявки и переходы — по нашему счётчику на сайте, на уровне канала: без меток в ссылке '
       + 'заявку нельзя приписать конкретной кампании.</p></div>';
 

@@ -2,7 +2,9 @@
    поэтому раздел — из кабинета: пополнения с типом «свои»/«бонус» (у бонуса — срок
    сгорания) и замер остатков двумя числами на один момент. Бонусы — не затраты: цены
    перехода и заявки считаются по своим деньгам, по полному расходу — второй строкой.
-   НДС у VK уже внутри — суммы вносятся как в кабинете. */
+   НДС (Тати 2026-10-12): баланс и расход в кабинете — без НДС, пополнения оплачены
+   счетами с НДС 22 %. Затраты — свои деньги с НДС (расход своих × 1,22); пополнение
+   вносится двумя суммами: зачислено на баланс и оплачено по счёту. */
 (function (w, d) {
   'use strict';
   var nf = new Intl.NumberFormat('ru-RU');
@@ -49,16 +51,20 @@
         flags += '<p class="apiwarn">Свои и бонусы учтены до замера ' + (v.knownUntil ? at(v.knownUntil) : '—')
           + '. Дальше раздел неизвестен — внесите свежие остатки из кабинета.</p>';
       }
-      return '<div class="apitile__main">' + rub(v.own.inPeriod) + '<span class="t-sub"> своих денег за период</span></div>'
-        + kv('Всего по кабинету (свои + бонусы)', rub2(v.full.inPeriod)
-          + '<div class="t-sub">по остаткам' + (v.knownUntil ? ', до замера ' + at(v.knownUntil) : '') + '</div>')
-        + kv('из них бонусы', rub2(v.bonus.inPeriod), 'бонусы VK — не наши затраты')
-        + kv('По статистике кабинета', rub2(v.statsInPeriod)
-          + '<div class="t-sub">за те же дни' + (s.lastSyncAt ? ', данные на ' + at(s.lastSyncAt) : '') + '</div>',
-          'расход из статистики VK по дням — для сверки')
+      return '<div class="apitile__main">' + rub(v.own.inPeriodVat) + '<span class="t-sub"> своих денег потрачено за период, с НДС</span></div>'
+        + kv('Своих в кабинете', rub2(v.own.inPeriod) + '<div class="t-sub">без НДС, по остаткам'
+          + (v.knownUntil ? ' до замера ' + at(v.knownUntil) : '') + '</div>', 'расход своих по остаткам; × 1,22 — потрачено с НДС')
+        + kv('Бонусы потрачено', rub2(v.bonus.inPeriod), 'бонусы VK бесплатные — в затраты и цены не входят')
+        + kv('Полный расход кабинета', rub2(v.statsInPeriod)
+          + '<div class="t-sub">с НДС, в кабинете без НДС: ' + rub2(s.costNet)
+          + (s.lastSyncAt ? '; данные на ' + at(s.lastSyncAt) : '') + '</div>',
+          'статистика VK × 1,22 — как если бы бонусов не было; для сравнения с Директом')
         + '<div class="apitile__sep"></div>'
-        + kv('Остаток своих', rub2(v.own.balance)) + kv('Остаток бонусов', rub2(v.bonus.balance))
-        + kv('Пополнено своих / бонусов', rub(v.own.topups) + ' / ' + rub(v.bonus.topups))
+        + kv('Остаток своих', rub2(v.own.balance) + '<div class="t-sub">в кабинете, без НДС; оплачено за него '
+          + rub2(v.own.balanceVat) + '</div>')
+        + kv('Остаток бонусов', rub2(v.bonus.balance))
+        + kv('Бюджет: оплачено по счетам', rub2(v.own.paid), 'сумма счетов с НДС за пополнения своих')
+        + kv('Бонусы получено', rub2(v.bonus.topups))
         + (v.apiBalance ? kv('Общий остаток по API', rub2(v.apiBalance.total), 'на ' + at(v.apiBalance.at) + '; свои + бонусы вместе') : '')
         + flags + '<div class="apitile__sep"></div>';
     },
@@ -67,19 +73,21 @@
     prices: function (s) {
       var v = s.vkFunds;
       if (!v) return null;
-      return kv('Цена перехода', rub2(s.costPerVisit) + '<div class="t-sub">по полному: ' + rub2(v.costPerVisitFull) + '</div>')
+      return kv('Цена перехода', rub2(s.costPerVisit) + '<div class="t-sub">по полному расходу: ' + rub2(v.costPerVisitFull) + '</div>',
+          'основная — по своим деньгам с НДС; вторая — по полному расходу кабинета с НДС')
         + kv('Заявки с сайта', s.leads == null ? '—' : nf.format(s.leads))
-        + kv('Цена заявки', rub(s.costPerLead) + '<div class="t-sub">по полному: ' + rub(v.costPerLeadFull) + '</div>');
+        + kv('Цена заявки', rub(s.costPerLead) + '<div class="t-sub">по полному расходу: ' + rub(v.costPerLeadFull) + '</div>');
     },
 
     form: function () {
-      return '<div class="apiacc"><p class="apiacc__line"><b>VK: пополнения и остатки</b> <span class="t-sub">— как в кабинете, НДС уже внутри</span></p>'
+      return '<div class="apiacc"><p class="apiacc__line"><b>VK: пополнения и остатки</b> <span class="t-sub">— суммы кабинета без НДС; оплата по счёту — с НДС</span></p>'
         + '<div class="apiacc__row">'
         + '<label>Что<select id="vk-kind"><option value="topup">Пополнение</option><option value="balance">Остатки из кабинета</option></select></label>'
         + '<label>Дата<input type="date" id="vk-date" value="' + today() + '"></label>'
         + '<label>Время, МСК<input type="time" id="vk-time"></label></div>'
         + '<div class="apiacc__row" id="vk-topup">'
-        + '<label>Сумма, ₽<input type="text" inputmode="decimal" id="vk-sum"></label>'
+        + '<label>Зачислено, ₽<input type="text" inputmode="decimal" id="vk-sum" placeholder="5 000"></label>'
+        + '<label id="vk-paid-wrap">Оплачено по счёту, ₽<input type="text" inputmode="decimal" id="vk-paid" placeholder="× 1,22"></label>'
         + '<label>Чьи<select id="vk-funds"><option value="own">свои</option><option value="bonus">бонус</option></select></label>'
         + '<label id="vk-exp-wrap" hidden>Сгорает<input type="date" id="vk-exp"></label>'
         + '<label>Пометка<input type="text" id="vk-note" placeholder="№ счёта, акция"></label></div>'
@@ -100,6 +108,8 @@
         d.getElementById('vk-topup').hidden = kind.value !== 'topup';
         d.getElementById('vk-bal').hidden = kind.value !== 'balance';
         d.getElementById('vk-exp-wrap').hidden = fundsSel.value !== 'bonus';
+        // Бонус бесплатный — оплаты по счёту у него нет.
+        d.getElementById('vk-paid-wrap').hidden = fundsSel.value === 'bonus';
       }
       kind.addEventListener('change', sync);
       fundsSel.addEventListener('change', sync);
@@ -113,7 +123,8 @@
           if (r.ok) return r.json();
           return r.json().catch(function () { return {}; }).then(function (j) {
             throw new Error({ bad_amount: 'Сумма — число, до двух знаков после запятой.', bad_time: 'Время — ЧЧ:ММ.',
-              bad_expires: 'Срок сгорания — только у бонуса.', bad_period: 'Укажите дату.' }[j.error] || 'Не сохранилось (' + r.status + ').');
+              bad_expires: 'Срок сгорания — только у бонуса.', bad_period: 'Укажите дату.',
+              bad_paid: 'Оплачено по счёту — число, до двух знаков после запятой.' }[j.error] || 'Не сохранилось (' + r.status + ').');
           });
         });
       }
@@ -125,15 +136,18 @@
         var jobs;
         if (kind.value === 'topup') {
           if (!num('vk-sum')) { err.textContent = 'Введите сумму.'; return; }
-          jobs = [post(Object.assign({}, base, { amount: num('vk-sum'), funds: fundsSel.value,
+          // Свои: оплачено по счёту; пусто — зачислено × 1,22 (сервер). Бонус: оплачено 0.
+          var bonus = fundsSel.value === 'bonus';
+          jobs = [post(Object.assign({}, base, { amount: num('vk-sum'), funds: fundsSel.value, vat: 'excl',
+            paid: bonus ? '0' : (num('vk-paid') || null),
             expires_on: fundsSel.value === 'bonus' ? (d.getElementById('vk-exp').value || null) : null,
             note: d.getElementById('vk-note').value || null }))];
         } else {
           // Остатки — парой на один момент: иначе раздел расхода не посчитать.
           if (!num('vk-own') || !num('vk-bonus')) { err.textContent = 'Нужны оба остатка: свои и бонусы.'; return; }
           if (!base.time) { err.textContent = 'Укажите время замера — VK тратит в течение дня.'; return; }
-          jobs = [post(Object.assign({}, base, { amount: num('vk-own'), funds: 'own' })),
-            post(Object.assign({}, base, { amount: num('vk-bonus'), funds: 'bonus' }))];
+          jobs = [post(Object.assign({}, base, { amount: num('vk-own'), funds: 'own', vat: 'excl' })),
+            post(Object.assign({}, base, { amount: num('vk-bonus'), funds: 'bonus', vat: 'excl' }))];
         }
         save.disabled = true;
         Promise.all(jobs).then(function () { opts.onChange(); })
