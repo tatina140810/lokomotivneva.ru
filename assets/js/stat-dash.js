@@ -105,7 +105,12 @@
     var to = new Date();
     var from;
     var todayStart = mskStart(localDay(new Date()));
-    if (period.from && period.to) {
+    if (period.all) {
+      /* «За всё время» (Тати 2026-10-12): начало заведомо раньше запуска статистики —
+         сервер сам поднимет его до первого события и так же обрежет даты карточек
+         кабинетов, поэтому визиты, график и реклама берутся за одни и те же дни. */
+      from = mskStart('2020-01-01');
+    } else if (period.from && period.to) {
       from = mskStart(period.from);
       to = new Date(period.to + 'T23:59:59.999' + MSK);
     } else if (period.days === 0) {
@@ -125,7 +130,8 @@
   $('#period').addEventListener('click', function (e) {
     var btn = e.target.closest('.bar__btn');
     if (!btn || !btn.hasAttribute('data-days')) return;
-    period = { days: Number(btn.getAttribute('data-days')) };
+    var dd = btn.getAttribute('data-days');
+    period = dd === 'all' ? { all: true } : { days: Number(dd) };
     [].forEach.call(d.querySelectorAll('#period .bar__btn[data-days]'), function (b) {
       b.setAttribute('aria-pressed', String(b === btn));
     });
@@ -180,7 +186,7 @@
       var since = new Date(x.dataSince);
       var days = Math.max(1, Math.round((Date.now() - since.getTime()) / 86400000));
       html += '<p class="since">Статистика ведётся с ' + since.toLocaleDateString('ru-RU', { timeZone: 'Europe/Moscow' })
-        + (x.periodClipped ? ' — за более ранний период данных нет' : '')
+        + (x.periodClipped && !period.all ? ' — за более ранний период данных нет' : '')
         + ' · наблюдений: ' + days + (days === 1 ? ' день' : (days < 5 ? ' дня' : ' дней')) + '</p>';
     }
 
