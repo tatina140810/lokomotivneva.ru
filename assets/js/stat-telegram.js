@@ -15,7 +15,8 @@
   function eur(v) { return v == null ? '—' : nf.format(Number(v)) + ' €'; }
   function cnt(v) { return v == null ? '—' : nf0.format(Number(v)); }
   function pct(v) { return v == null ? '—' : String(v).replace('.', ',') + ' %'; }
-  function div(a, b) { return a != null && b ? a / b : null; }
+  // Без расхода цена — прочерк, как в «Затратах на рекламу», а не «0 ₽».
+  function div(a, b) { return a && b ? a / b : null; }
   function esc(v) {
     return String(v == null ? '' : v).replace(/[&<>"]/g, function (c) {
       return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c];
