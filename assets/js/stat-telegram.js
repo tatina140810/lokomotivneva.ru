@@ -67,12 +67,21 @@
     var t = opts.summary && opts.summary.telegram;
     if (!host || !t) return;
     var html = '<div class="card" id="tg-card"><div class="card__head"><h2>Реклама в Telegram</h2>'
-      + '<span class="card__note">расход по дням — из CSV Telegram Ads; «потрачено» и остаток — по замерам в €</span></div>';
+      + '<span class="card__note">' + (t.journal ? 'расход — из CSV Telegram Ads по курсу переводов; бюджет — оплаты eLama'
+        : 'расход по дням — из CSV Telegram Ads; «потрачено» и остаток — по замерам в €') + '</span></div>';
     if (t.stale) {
       html += '<p class="tgremind">' + (t.staleDays == null ? 'Telegram ещё не обновлялся'
-        : 'Telegram не обновлялся ' + t.staleDays + ' ' + daysWord(t.staleDays)) + ': загрузите CSV или внесите баланс.</p>';
+        : 'Telegram не обновлялся ' + t.staleDays + ' ' + daysWord(t.staleDays)) + ': загрузите CSV или внесите '
+        + (t.journal ? 'контрольный остаток' : 'баланс') + '.</p>';
     }
-    html += '<p class="apiacc__line">Курс оплаты: <b>' + (t.rate ? nf.format(t.rate.rate) + ' ₽ за 1 €' : '—') + '</b>'
+    var j = t.journal;
+    if (j) {
+      html += '<p class="apiacc__line">Курс переводов: <b>' + (t.rate ? nf.format(Math.round(t.rate.rate * 100) / 100) + ' ₽ за 1 €' : '—') + '</b>'
+        + (t.rate && t.rate.provisional ? ' <span class="tgprov">предварительный курс, уточнить по счетам eLama</span>' : '')
+        + ' <span class="t-sub">— последняя загрузка CSV: '
+        + (t.lastUpload ? new Date(t.lastUpload).toLocaleString('ru-RU', { timeZone: 'Europe/Moscow' }) + ' МСК' : 'не было') + '</span></p>'
+        + (w.renderTelegramFunds ? w.renderTelegramFunds(j) : '');
+    } else html += '<p class="apiacc__line">Курс оплаты: <b>' + (t.rate ? nf.format(t.rate.rate) + ' ₽ за 1 €' : '—') + '</b>'
       + (t.rate && t.rate.provisional ? ' <span class="tgprov">предварительный, уточнить по eLama</span>' : '')
       + (t.rate ? ' <span class="t-sub">— оплачено ' + rub(t.rate.paidRub) + ' ÷ зачислено ' + eur(t.rate.creditedEur)
         + '; в нём НДС и комиссия eLama</span>' : ' <span class="t-sub">— нет пополнений в €</span>') + '</p>'
@@ -81,13 +90,14 @@
       + (t.lastUpload ? new Date(t.lastUpload).toLocaleString('ru-RU', { timeZone: 'Europe/Moscow' }) + ' МСК' : 'не было') + '</span></p>'
       + (t.afterBalance && t.afterBalance.eur ? '<p class="apiacc__line">Остаток сейчас (расчёт): <b>' + eur(t.afterBalance.balanceEur)
         + ' = ' + rub(t.afterBalance.balanceRub) + '</b> <span class="t-sub">— замер минус расход из CSV после него ('
-        + eur(t.afterBalance.eur) + '); новый замер из кабинета заменит расчёт</span></p>' : '')
-      + '<p class="apiacc__line">За период по CSV: <b>' + eur(t.inPeriod.eur) + ' = ' + rub(t.inPeriod.rub) + '</b>'
+        + eur(t.afterBalance.eur) + '); новый замер из кабинета заменит расчёт</span></p>' : '');
+    html += '<p class="apiacc__line">За период по CSV: <b>' + eur(t.inPeriod.eur) + ' = ' + rub(t.inPeriod.rub) + '</b>'
       + ' <span class="t-sub">показы ' + nf0.format(t.inPeriod.impressions) + ', клики ' + nf0.format(t.inPeriod.clicks)
       + ', действия ' + nf0.format(t.inPeriod.actions) + '</span></p>'
       + chart(t.daily) + issuesHtml(t.issues) + adsHtml(t.ads)
       + '<div id="tg-csv"></div></div>';
     host.innerHTML = html;
+    if (j && w.bindTelegramFunds) w.bindTelegramFunds(d.getElementById('tg-card'), opts);
     if (w.bindTelegramCsv) w.bindTelegramCsv(d.getElementById('tg-csv'), opts);
   };
 })(window, document);

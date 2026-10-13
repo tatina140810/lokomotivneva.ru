@@ -9,7 +9,7 @@
     no_header: 'не нашлась шапка с датой и расходом', no_rows: 'нет строк с датой и расходом',
     no_ad_name: 'укажите название объявления', file_too_large: 'файл больше 1 МБ',
     no_files: 'файлы не выбраны', too_many_files: 'не больше 30 файлов за раз',
-    no_rate: 'нет пополнений Telegram в € — курс не посчитать',
+    no_rate: 'нет переводов Telegram в € — курс не посчитать',
   };
   function esc(v) {
     return String(v == null ? '' : v).replace(/[&<>"]/g, function (c) {
@@ -58,8 +58,9 @@
     function show(res) {
       var ok = res.files.every(function (f) { return !f.error; });
       var tot = res.files.reduce(function (s, f) { return s + (f.error ? 0 : f.eur); }, 0);
-      box.innerHTML = '<p class="apiacc__line"><b>Предпросмотр</b> <span class="t-sub">— курс оплаты '
-        + (res.rate ? nf.format(res.rate.rate) + ' ₽ за 1 €' + (res.rate.provisional ? ' (предварительный, уточнить по eLama)' : '') : 'не посчитан') + '</span></p>'
+      box.innerHTML = '<p class="apiacc__line"><b>Предпросмотр</b> <span class="t-sub">— курс переводов '
+        + (res.rate ? nf.format(res.rate.rate) + ' ₽ за 1 €' + (res.rate.provisional ? ' (предварительный курс, уточнить по счетам eLama)' : '') : 'не посчитан')
+        + '; в сводке рубли пересчитываются по журналу переводов</span></p>'
         + '<table><thead><tr><th>Файл</th><th>Объявление</th><th>Строк</th><th>Период</th><th>Расход, €</th><th>Расход, ₽</th><th>Заменит дней</th></tr></thead><tbody>'
         + res.files.map(function (f, i) {
           return '<tr><td>' + esc(f.fileName) + '</td><td><input type="text" class="tgname" id="tg-name-' + i + '" value="'

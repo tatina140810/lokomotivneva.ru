@@ -238,5 +238,16 @@ tbody tr:last-child td { border-bottom: 0; }
 .tgname { width: 100%; min-width: 140px; border: 1px solid var(--line); border-radius: 6px; padding: 4px 6px; font: inherit; font-size: 13px; }
 .tgsave:not([disabled]) { background: var(--navy); border-color: var(--navy); color: #fff; }
 #tg-preview table { font-size: 13px; }
-@media (max-width: 640px) { #tg-preview, .tgads { display: block; overflow-x: auto; } }
+@media (max-width: 640px) { #tg-preview, .tgads, .tgfunds { display: block; overflow-x: auto; } }
 .tgprov { display: inline-block; margin-left: 4px; padding: 1px 7px; border-radius: 10px; background: #FFF6E0; color: #8A5A00; font-size: 12px; font-weight: 600; }
+/* Журнал оплат и переводов Telegram (stat-telegram-funds.js) */
+.tgh { margin: 14px 0 6px; font-size: 15px; }
+.tgfunds { margin: 8px 0; }
+.tgfunds td { vertical-align: middle; }
+.tgrate { width: 90px; margin-right: 6px; }
+.tgdel { border: 0; background: none; color: var(--muted, #888); font-size: 18px; line-height: 1; cursor: pointer; padding: 0 4px; }
+.tgdel:hover { color: #C0392B; }
+.tgadd { flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.tgadd input, .tgadd select { min-width: 0; max-width: 100%; }
+#tgf-amount, #tgf-tranche { width: 110px; }
+#tgf-note { flex: 1 1 160px; }

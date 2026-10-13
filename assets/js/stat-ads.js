@@ -94,7 +94,7 @@
           + '<td>' + money(r.spentToDate)
           + (r.apiSince ? '<div class="t-sub">' + (r.channel === 'telegram_ads' ? 'по CSV с ' : 'из кабинета с ') + dmy(r.apiSince) + '</div>' : '') + '</td>'
           + '<td><b>' + remain + '</b>'
-          + (r.remaining == null ? '' : '<div class="t-sub">' + (r.remainingMeasured ? 'по замеру' : 'расчётный') + '</div>') + '</td>'
+          + (r.remaining == null ? '' : '<div class="t-sub">' + (r.channel === 'telegram_ads' && r.fundsJournal ? 'оплаты − расход' : r.remainingMeasured ? 'по замеру' : 'расчётный') + '</div>') + '</td>'
           + '<td>' + money(r.spentInPeriod)
           + (r.vk ? '<div class="t-sub">свои с НДС; бонусы ' + money(r.vk.bonusInPeriod) + ', полный расход с НДС ' + money(r.vk.fullInPeriod)
             + (r.vk.partial ? ' — до замера' : '') + '</div>' : '')
