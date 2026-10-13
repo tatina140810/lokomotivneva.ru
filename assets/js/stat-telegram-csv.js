@@ -57,20 +57,23 @@
     }
     function show(res) {
       var ok = res.files.every(function (f) { return !f.error; });
-      var tot = res.files.reduce(function (s, f) { return s + (f.error ? 0 : f.eur); }, 0);
+      var tot = res.files.reduce(function (s, f) { return s + (f.error || f.kind === 'stats' ? 0 : f.eur); }, 0);
+      var KIND = { reports: 'расход (Reports)', stats: 'показы и клики (Statistics) — не расход' };
+      var c = function (v) { return v == null ? '—' : nf.format(v); };
       box.innerHTML = '<p class="apiacc__line"><b>Предпросмотр</b> <span class="t-sub">— курс переводов '
         + (res.rate ? nf.format(res.rate.rate) + ' ₽ за 1 €' + (res.rate.provisional ? ' (предварительный курс, уточнить по счетам eLama)' : '') : 'не посчитан')
         + '; в сводке рубли пересчитываются по журналу переводов</span></p>'
-        + '<table><thead><tr><th>Файл</th><th>Объявление</th><th>Строк</th><th>Период</th><th>Расход, €</th><th>Расход, ₽</th><th>Заменит дней</th></tr></thead><tbody>'
+        + '<table><thead><tr><th>Файл</th><th>Вид</th><th>Объявление</th><th>Дней</th><th>Период (UTC)</th><th>Показы</th><th>Клики</th><th>Расход, €</th><th>Расход, ₽</th><th>Заменит дней</th></tr></thead><tbody>'
         + res.files.map(function (f, i) {
-          return '<tr><td>' + esc(f.fileName) + '</td><td><input type="text" class="tgname" id="tg-name-' + i + '" value="'
+          return '<tr><td>' + esc(f.fileName) + '</td><td class="t-sub">' + esc(KIND[f.kind] || '') + '</td><td><input type="text" class="tgname" id="tg-name-' + i + '" value="'
             + esc(f.adName || '') + '" maxlength="200"></td>'
-            + (f.error ? '<td colspan="5" class="apierr">' + esc(ERR[f.error] || f.error) + '</td>'
+            + (f.error ? '<td colspan="7" class="apierr">' + esc(ERR[f.error] || f.error) + '</td>'
               : '<td>' + f.count + (f.skipped ? ' <span class="t-sub">(+' + f.skipped + ' пропущено)</span>' : '') + '</td><td>'
-                + dmy(f.from) + ' — ' + dmy(f.to) + '</td><td>' + nf.format(f.eur) + '</td><td>'
+                + dmy(f.from) + ' — ' + dmy(f.to) + '</td><td>' + c(f.views) + '</td><td>' + c(f.clicks) + '</td><td>' + c(f.eur) + '</td><td>'
                 + (f.rub == null ? '—' : nf.format(f.rub)) + '</td><td>' + (f.replaces || 0) + '</td>') + '</tr>';
         }).join('')
-        + '</tbody></table><p class="apiacc__line">Итого: <b>' + nf.format(Math.round(tot * 100) / 100) + ' €</b></p>'
+        + '</tbody></table><p class="apiacc__line">Итого расход: <b>' + nf.format(Math.round(tot * 100) / 100) + ' €</b> <span class="t-sub">— только файлы Reports; '
+        + 'название подставлено по коду AD… из имени файла или по прежним переименованиям, его можно поправить</span></p>'
         + '<div class="apiacc__row"><button type="button" class="bar__btn" id="tg-recheck">Проверить ещё раз</button>'
         + '<button type="button" class="bar__btn tgsave" id="tg-save"' + (ok && res.rate ? '' : ' disabled') + '>Сохранить</button>'
         + '<button type="button" class="bar__btn" id="tg-cancel">Отмена</button></div>';

@@ -43,9 +43,11 @@
     return '<div class="apitile"><h3>Telegram Ads</h3>'
       + '<div class="apitile__main">' + rub(p.rub) + '<span class="t-sub"> расход за период · ' + eur(p.eur) + '</span></div>'
       + kv('Показы', cnt(p.impressions))
-      + kv('Клики', cnt(p.clicks))
-      + kv('CTR', pct(p.impressions ? Math.round((p.clicks / p.impressions) * 1e4) / 100 : null), 'доля показов, по которым кликнули')
-      + kv('Цена клика', rub2(div(p.rub, p.clicks)))
+      + kv('Клики', cnt(p.clicks) + (p.clicks != null && !p.clicksComplete ? '*' : ''), p.clicks == null
+        ? 'в дневном отчёте Reports кликов нет — загрузите выгрузку Statistics' : p.clicksComplete ? '' : '* клики загружены не за все дни')
+      + kv('CTR', pct(p.clicks != null && p.clickImpressions ? Math.round((p.clicks / p.clickImpressions) * 1e4) / 100 : null),
+        'доля показов, по которым кликнули — по дням, где клики загружены')
+      + kv('Цена клика', rub2(p.clicksComplete ? div(p.rub, p.clicks) : null), p.clicksComplete ? '' : 'считается, когда клики загружены за все дни')
       + kv('Цена 1000 показов', rub2(p.impressions ? (p.rub / p.impressions) * 1000 : null))
       + '<div class="apitile__sep"></div>'
       + kv('Переходы на сайт', cnt(visits), 'по нашему счётчику: визиты с меткой Telegram Ads')
@@ -72,10 +74,11 @@
       + '<th>CTR</th><th>Расход, €</th><th>Расход, ₽</th><th>Цена 1000 показов</th><th>Остаток на объявлении</th></tr></thead><tbody>'
       + ads.map(function (a) {
         var p = a.period;
-        return '<tr><td>' + esc(a.name) + '<div class="t-sub">в CSV ' + dmy(a.from) + ' — ' + dmy(a.to) + ' (' + a.days + ' '
+        return '<tr><td>' + esc(a.name) + ' <button type="button" class="tgren" data-ren="' + esc(a.name) + '">Переименовать</button>'
+          + '<div class="t-sub">в CSV ' + dmy(a.from) + ' — ' + dmy(a.to) + ' (' + a.days + ' '
           + daysWord(a.days) + '), всего ' + eur(a.eur) + '; загружено ' + msk(a.uploadedAt) + '</div></td>'
           + '<td title="первый день объявления в CSV">' + dmy(a.from) + '</td>'
-          + '<td>' + cnt(p.impressions) + '</td><td>' + cnt(p.clicks) + '</td><td>' + pct(p.ctr) + '</td>'
+          + '<td>' + cnt(p.impressions) + '</td><td' + (p.clicks == null ? ' title="клики не загружены"' : '') + '>' + cnt(p.clicks) + '</td><td>' + pct(p.ctr) + '</td>'
           + '<td>' + eur(p.eur) + '</td><td>' + rub(p.rub) + '</td>'
           + '<td>' + (p.cpmEur == null ? '—' : eur(p.cpmEur) + ' <span class="t-sub">' + rub(p.cpmRub) + '</span>') + '</td>'
           + '<td class="t-sub" title="в CSV остатка нет — он виден в кабинете Telegram Ads">—</td></tr>';
@@ -113,5 +116,45 @@
     host.innerHTML = html;
     if (t.journal && w.bindTelegramFunds) w.bindTelegramFunds(d.getElementById('tg-card'), opts);
     if (w.bindTelegramCsv) w.bindTelegramCsv(d.getElementById('tg-csv'), opts);
+    bindRename(d.getElementById('tg-card'), t.ads, opts);
   };
+
+  /* Переименовать объявление после загрузки; имя существующего — объединить с ним.
+     Совпадающие дни сервер не объединяет (день посчитался бы дважды) и называет их. */
+  function bindRename(card, ads, opts) {
+    if (!card) return;
+    card.addEventListener('click', function (e) {
+      var from = e.target.dataset && e.target.dataset.ren;
+      if (from == null) return;
+      var cell = e.target.parentNode;
+      var old = cell.innerHTML;
+      cell.innerHTML = '<div class="tgrenf"><input type="text" class="tgname" maxlength="200" list="tg-ad-names" value="' + esc(from) + '">'
+        + '<datalist id="tg-ad-names">' + ads.map(function (a) { return '<option value="' + esc(a.name) + '">'; }).join('') + '</datalist>'
+        + '<button type="button" class="bar__btn tgsave">Сохранить</button><button type="button" class="bar__btn">Отмена</button>'
+        + '<span class="t-sub">впишите новое название или выберите существующее — тогда объявления объединятся</span>'
+        + '<p class="apierr"></p></div>';
+      var inp = cell.querySelector('input');
+      var err = cell.querySelector('.apierr');
+      var btns = cell.querySelectorAll('button');
+      inp.focus();
+      btns[1].addEventListener('click', function () { cell.innerHTML = old; });
+      btns[0].addEventListener('click', function () {
+        var to = inp.value.trim();
+        if (!to || to === from) { cell.innerHTML = old; return; }
+        var merge = ads.some(function (a) { return a.name === to; });
+        if (merge && !w.confirm('Объединить «' + from + '» с «' + to + '»? Расход и показы сложатся в одну строку.')) return;
+        btns[0].disabled = true;
+        w.fetch(opts.api + '/site-analytics/telegram-csv/rename', {
+          method: 'POST', headers: { Authorization: 'Bearer ' + opts.token, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ from: from, to: to }),
+        }).then(function (r) {
+          return r.json().catch(function () { return {}; }).then(function (x) {
+            if (r.status === 409 && x.days) throw new Error('Не объединено: у обоих объявлений есть дни ' + x.days.map(dmy).join(', ') + ' — один день посчитался бы дважды.');
+            if (!r.ok) throw new Error('Не получилось (' + r.status + ')');
+            if (opts.onChange) opts.onChange();
+          });
+        }).catch(function (x) { err.textContent = x.message; btns[0].disabled = false; });
+      });
+    });
+  }
 })(window, document);
