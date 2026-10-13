@@ -59,7 +59,7 @@
       var ok = res.files.every(function (f) { return !f.error; });
       var tot = res.files.reduce(function (s, f) { return s + (f.error ? 0 : f.eur); }, 0);
       box.innerHTML = '<p class="apiacc__line"><b>Предпросмотр</b> <span class="t-sub">— курс оплаты '
-        + (res.rate ? nf.format(res.rate.rate) + ' ₽ за 1 €' : 'не посчитан') + '</span></p>'
+        + (res.rate ? nf.format(res.rate.rate) + ' ₽ за 1 €' + (res.rate.provisional ? ' (предварительный, уточнить по eLama)' : '') : 'не посчитан') + '</span></p>'
         + '<table><thead><tr><th>Файл</th><th>Объявление</th><th>Строк</th><th>Период</th><th>Расход, €</th><th>Расход, ₽</th><th>Заменит дней</th></tr></thead><tbody>'
         + res.files.map(function (f, i) {
           return '<tr><td>' + esc(f.fileName) + '</td><td><input type="text" class="tgname" id="tg-name-' + i + '" value="'

@@ -239,3 +239,4 @@ tbody tr:last-child td { border-bottom: 0; }
 .tgsave:not([disabled]) { background: var(--navy); border-color: var(--navy); color: #fff; }
 #tg-preview table { font-size: 13px; }
 @media (max-width: 640px) { #tg-preview, .tgads { display: block; overflow-x: auto; } }
+.tgprov { display: inline-block; margin-left: 4px; padding: 1px 7px; border-radius: 10px; background: #FFF6E0; color: #8A5A00; font-size: 12px; font-weight: 600; }

@@ -73,6 +73,7 @@
         : 'Telegram не обновлялся ' + t.staleDays + ' ' + daysWord(t.staleDays)) + ': загрузите CSV или внесите баланс.</p>';
     }
     html += '<p class="apiacc__line">Курс оплаты: <b>' + (t.rate ? nf.format(t.rate.rate) + ' ₽ за 1 €' : '—') + '</b>'
+      + (t.rate && t.rate.provisional ? ' <span class="tgprov">предварительный, уточнить по eLama</span>' : '')
       + (t.rate ? ' <span class="t-sub">— оплачено ' + rub(t.rate.paidRub) + ' ÷ зачислено ' + eur(t.rate.creditedEur)
         + '; в нём НДС и комиссия eLama</span>' : ' <span class="t-sub">— нет пополнений в €</span>') + '</p>'
       + '<p class="apiacc__line">Последний замер остатка: <b>' + (t.lastBalance ? eur(t.lastBalance.eur) + ' = ' + rub(t.lastBalance.rub) : '—')
