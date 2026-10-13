@@ -132,6 +132,9 @@
     return '<b>' + text + '</b>';
   }
 
+  // Та же подпись периода — в разделе Telegram Ads (stat-telegram.js).
+  w.statPeriodLabel = periodLabel;
+
   w.renderAdApiBox = function (host, opts) {
     var block = opts.summary && opts.summary.adApi;
     if (!host || !block) return;

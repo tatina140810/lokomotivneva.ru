@@ -241,7 +241,6 @@ tbody tr:last-child td { border-bottom: 0; }
 @media (max-width: 640px) { #tg-preview, .tgads, .tgfunds { display: block; overflow-x: auto; } }
 .tgprov { display: inline-block; margin-left: 4px; padding: 1px 7px; border-radius: 10px; background: #FFF6E0; color: #8A5A00; font-size: 12px; font-weight: 600; }
 /* Журнал оплат и переводов Telegram (stat-telegram-funds.js) */
-.tgh { margin: 14px 0 6px; font-size: 15px; }
 .tgfunds { margin: 8px 0; }
 .tgfunds td { vertical-align: middle; }
 .tgrate { width: 90px; margin-right: 6px; }
@@ -251,3 +250,18 @@ tbody tr:last-child td { border-bottom: 0; }
 .tgadd input, .tgadd select { min-width: 0; max-width: 100%; }
 #tgf-amount, #tgf-tranche { width: 110px; }
 #tgf-note { flex: 1 1 160px; }
+
+/* Раздел «Telegram Ads» (2026-10-13): плитка итогов + график по дням, как у Директа и VK. */
+@media (min-width: 900px) { .tggrid { grid-template-columns: minmax(280px, 1fr) 2fr; } }
+.tgcov { margin: 6px 0 10px; }
+.tgc .tgchart { max-height: 240px; }
+.tgc__legend { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: 12px; color: var(--ink-2); margin-bottom: 4px; }
+.tgc__sw { display: inline-block; width: 12px; height: 3px; margin-right: 5px; vertical-align: middle; border-radius: 2px; }
+.tgc__sw--bar { height: 10px; background: var(--telegram); }
+.tgc__sw--imp { background: var(--navy); }
+.tgc__sw--clk { background: #E0A800; }
+.tgc__bar { fill: var(--telegram); opacity: .85; }
+.tgc__imp { fill: none; stroke: var(--navy); stroke-width: 1.5; }
+.tgc__clk { fill: none; stroke: #E0A800; stroke-width: 1.5; stroke-dasharray: 4 3; }
+.tgc__dimp { fill: var(--navy); }
+.tgc__dclk { fill: #E0A800; }

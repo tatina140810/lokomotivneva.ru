@@ -29,7 +29,7 @@
 
   w.renderTelegramFunds = function (j) {
     var badge = j.provisional ? ' <span class="tgprov">' + PROV + '</span>' : '';
-    var html = '<h3 class="tgh">Оплаты и переводы</h3>'
+    var html = '<h3 class="adsh3">Оплаты eLama и переводы в кабинет</h3>'
       + '<p class="apiacc__line">Оплачено eLama: <b>' + rub(j.paidRub) + '</b>'
       + ' <span class="t-sub">— бюджет Telegram в сводной таблице</span></p>'
       + '<p class="apiacc__line">Переведено в Telegram Ads: <b>' + eur(j.transferredEur) + ' = ' + rub(j.transferredRub) + '</b>' + badge + '</p>'
