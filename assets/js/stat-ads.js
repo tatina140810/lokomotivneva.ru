@@ -92,13 +92,13 @@
           + (r.currency !== 'RUB' ? ' · в ' + sign.trim() : '') + '</div></td>'
           + '<td>' + money(r.total) + '</td>'
           + '<td>' + money(r.spentToDate)
-          + (r.apiSince ? '<div class="t-sub">из кабинета с ' + dmy(r.apiSince) + '</div>' : '') + '</td>'
+          + (r.apiSince ? '<div class="t-sub">' + (r.channel === 'telegram_ads' ? 'по CSV с ' : 'из кабинета с ') + dmy(r.apiSince) + '</div>' : '') + '</td>'
           + '<td><b>' + remain + '</b>'
           + (r.remaining == null ? '' : '<div class="t-sub">' + (r.remainingMeasured ? 'по замеру' : 'расчётный') + '</div>') + '</td>'
           + '<td>' + money(r.spentInPeriod)
           + (r.vk ? '<div class="t-sub">свои с НДС; бонусы ' + money(r.vk.bonusInPeriod) + ', полный расход с НДС ' + money(r.vk.fullInPeriod)
             + (r.vk.partial ? ' — до замера' : '') + '</div>' : '')
-          + (r.otherInPeriod ? '<div class="t-sub">API ' + money(r.apiInPeriod) + ' · по остатку ' + money(r.otherInPeriod)
+          + (r.otherInPeriod ? '<div class="t-sub">' + (r.channel === 'telegram_ads' ? 'CSV ' : 'API ') + money(r.apiInPeriod) + ' · по остатку ' + money(r.otherInPeriod)
             + (r.otherPartial ? ', замер ' + dmy(r.otherKnownUntil) : '') + '</div>' : '') + '</td>'
           + '<td>' + (r.visits == null ? '—' : nf.format(r.visits)) + '</td>'
           + '<td>' + money(r.costPerVisit) + '</td>'
