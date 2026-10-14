@@ -399,8 +399,9 @@ _tmr.push({id: "3797721", type: "pageView", start: (new Date()).getTime()});
         </header>
         <div class="safeguards">
           <article class="safeguard reveal"><span class="safeguard__num">I</span><h3>Несколько маршрутов</h3><p>По&nbsp;каждому направлению — независимые платёжные маршруты. Если один недоступен, поручение уходит другим.</p></article>
-          <!-- TODO: подтвердить у клиента, что утверждение верно на дату публикации -->
-          <article class="safeguard reveal" data-reveal-delay="1"><span class="safeguard__num">II</span><h3>Ноль заблокированных переводов</h3><p>За&nbsp;всё время работы — ни&nbsp;одного заблокированного перевода.</p></article>
+          <!-- 38-ФЗ: утверждение «ноль заблокированных переводов за всё время работы» снято — у компании 2026 года
+               нет истории, чтобы его подтвердить. Опыт относится к команде, а не к ООО (2026-10-14). -->
+          <article class="safeguard reveal" data-reveal-delay="1"><span class="safeguard__num">II</span><h3>Опыт команды более 5&nbsp;лет</h3><p>Маршруты, по&nbsp;которым мы ведём платежи, команда отработала задолго до&nbsp;выхода на&nbsp;российский рынок.</p></article>
           <article class="safeguard reveal" data-reveal-delay="2"><span class="safeguard__num">III</span><h3>Открытая проверка</h3><p>Документы доступны службе безопасности клиента:</p>
             <ul class="safeguard__links">
               <li><a href="/assets/docs/egrul-lokomotiv.pdf" target="_blank" rel="noopener">Выписка ЕГРЮЛ (PDF)</a></li>
@@ -415,7 +416,6 @@ _tmr.push({id: "3797721", type: "pageView", start: (new Date()).getTime()});
           <li><b data-loko-stat="payments">—</b><span>платежей проведено</span></li>
           <li><b data-loko-stat="volume">—</b><span>млн ₽ суммарный оборот</span></li>
           <li><b data-loko-stat="avg">—</b><span>часов средний срок исполнения</span></li>
-          <li><b data-loko-stat="blocked">0</b><span>заблокированных переводов</span></li>
         </ul>
 
         <!-- Отзывы. Выводятся только когда в конфиге reviews.show = true
