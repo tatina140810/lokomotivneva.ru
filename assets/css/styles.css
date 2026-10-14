@@ -782,6 +782,8 @@ select optgroup {
 }
 .footer__bottom p { margin: 0; }
 .footer__bottom a:hover { color: var(--gold-400); }
+/* Номер в реестре операторов ПДн Роскомнадзора — мелкой строкой под ссылкой на политику (2026-10-14). */
+.footer__pd { display: block; margin-top: .2rem; font-size: .75rem; opacity: .75; }
 
 /* --------------------- 13. Анимации появления ---------------------------- */
 /* Прячем только при активном JS (класс is-js ставит main.js) —
