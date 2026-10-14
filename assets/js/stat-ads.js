@@ -263,11 +263,19 @@
       return html;
     }
 
+    /* Итог неполный, если у кабинета плашка «данные устарели» (stat-adapi.js, Тати 2026-10-15). */
+    function staleNote() {
+      var list = w.statStaleSources ? w.statStaleSources(sum) : [];
+      if (!list.length) return '';
+      return '<p class="stalewarn">Итог неполный: нет свежих данных по '
+        + list.map(function (x) { return x.dative; }).join(' и ') + '</p>';
+    }
+
     function draw(spendRows) {
       host.innerHTML = '<div class="card"><div class="card__head"><h2>Затраты на рекламу</h2>'
         + '<span class="card__note">все статьи в одной таблице; Директ и VK — из кабинетов '
         + 'автоматически, остальное (Telegram, экраны, буклеты) вносится вручную</span></div>'
-        + origin() + table() + abuse() + form() + list(spendRows) + '</div>';
+        + origin() + table() + staleNote() + abuse() + form() + list(spendRows) + '</div>';
 
       var kindSel = d.getElementById('ad-kind');
       function syncKind() {

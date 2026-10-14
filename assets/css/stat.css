@@ -241,6 +241,8 @@ tbody tr:last-child td { border-bottom: 0; }
 #tg-preview table { font-size: 13px; }
 @media (max-width: 640px) { #tg-preview, .tgads, .tgfunds { display: block; overflow-x: auto; } }
 .tgprov { display: inline-block; margin-left: 4px; padding: 1px 7px; border-radius: 10px; background: #FFF6E0; color: #8A5A00; font-size: 12px; font-weight: 600; }
+/* «Данные устарели» у кабинетов и в итоге затрат — цвета плашки «предварительный курс» (2026-10-15). */
+.stalewarn { margin: 0 0 10px; padding: 8px 12px; border-radius: 8px; background: #FFF6E0; color: #8A5A00; font-size: 13px; font-weight: 600; line-height: 1.45; }
 /* Журнал оплат и переводов Telegram (stat-telegram-funds.js) */
 .tgfunds { margin: 8px 0; }
 .tgfunds td { vertical-align: middle; }

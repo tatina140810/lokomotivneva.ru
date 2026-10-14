@@ -47,6 +47,36 @@
     return p[2] + '.' + p[1] + '.' + p[0];
   }
 
+  /* Плашка «данные устарели» (Тати 2026-10-15): кабинет не обновлялся дольше порога — расход
+     после этой даты в итог не попал. Только отображение; исчезает сама после обновления API.
+     Telegram сюда не входит: у него своё напоминание про CSV (stat-telegram.js). */
+  var STALE = {
+    yandex_direct: { hours: 48, short: 'Директа', dative: 'Яндекс.Директу' },
+    vk_ads: { hours: 24, short: 'VK', dative: 'VK Рекламе' },
+  };
+  function mskStamp(iso) {
+    var t = new Date(iso);
+    return t.toLocaleDateString('ru-RU', { timeZone: 'Europe/Moscow' }) + ' '
+      + t.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit', timeZone: 'Europe/Moscow' }) + ' МСК';
+  }
+  function staleOf(s) {
+    var rule = STALE[s.source];
+    if (!rule || !s.hasData || !s.lastSyncAt) return null;
+    if (Date.now() - new Date(s.lastSyncAt).getTime() <= rule.hours * 3600000) return null;
+    var since = mskStamp(s.lastSyncAt);
+    var text = 'Данные ' + rule.short + ' не обновлялись с ' + since;
+    if (s.source === 'yandex_direct') {
+      text += ': ' + (!s.connected ? 'кабинет не подключён' : s.lastError ? 'ошибка обновления' : 'обновление не приходит')
+        + '. Расход после этой даты не учтён, итог по рекламе занижен. Вносите остаток из кабинета вручную раз в неделю';
+    }
+    return { source: s.source, dative: rule.dative, text: text };
+  }
+  // Для итога «Затраты на рекламу» (stat-ads.js): по каким кабинетам нет свежих данных.
+  w.statStaleSources = function (summary) {
+    var block = summary && summary.adApi;
+    return block ? block.sources.map(staleOf).filter(Boolean) : [];
+  };
+
   function tile(s, summary) {
     if (!s.connected && !s.hasData) {
       return '<div class="apitile apitile--off"><h3>' + esc(s.label) + '</h3>'
@@ -83,7 +113,9 @@
       || kv('Цена перехода', rub2(s.costPerVisit))
         + kv('Заявки с сайта', cnt(s.leads))
         + kv('Цена заявки', rub(s.costPerLead), acc ? 'весь расход счёта на заявки с канала' : '');
+    var stale = staleOf(s);
     return '<div class="apitile"><h3>' + esc(s.label) + '</h3>'
+      + (stale ? '<p class="stalewarn">' + esc(stale.text) + '</p>' : '')
       + head
       + kv('Показы', cnt(s.impressions))
       + kv('Клики', cnt(s.clicks))
