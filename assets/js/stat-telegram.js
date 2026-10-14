@@ -85,6 +85,18 @@
       }).join('') + '</tbody></table></div>';
   }
 
+  /* История загрузок — свёрнута: у объявления в таблице одна строка, файлы здесь (Тати 2026-10-15). */
+  function uploadsHtml(list) {
+    if (!list || !list.length) return '';
+    return '<details class="tguploads"><summary>История загрузок (' + list.length + ')</summary>'
+      + '<div class="scrollx"><table><thead><tr><th>Файл</th><th>Объявление</th><th>Вид</th><th>Дни (UTC)</th><th>Расход, €</th><th>Загружено</th></tr></thead><tbody>'
+      + list.map(function (u) {
+        return '<tr><td>' + esc(u.file || '—') + '</td><td>' + esc(u.ad) + '</td><td class="t-sub">' + (u.kind === 'stats' ? 'показы и клики' : 'расход')
+          + '</td><td>' + dmy(u.from) + ' — ' + dmy(u.to) + ' (' + u.days + ')</td><td>' + (u.eur == null ? '—' : eur(u.eur)) + '</td><td class="t-sub">'
+          + msk(u.uploadedAt) + '</td></tr>';
+      }).join('') + '</tbody></table></div><p class="t-sub">У каждого дня остаётся последний загруженный файл: повторная загрузка заменяет дни того же объявления.</p></details>';
+  }
+
   function issuesHtml(list) {
     return (list || []).map(function (x) {
       return '<p class="apiwarn">CSV расходится с остатками за ' + dmy(x.from) + '–' + dmy(x.to) + ': по остаткам '
@@ -109,7 +121,7 @@
     }
     html += '<div class="apigrid tggrid">' + totals(t, row) + chartTile(t) + '</div>'
       + issuesHtml(t.issues)
-      + '<h3 class="adsh3">По объявлениям</h3>' + adsTable(t.ads);
+      + '<h3 class="adsh3">По объявлениям</h3>' + adsTable(t.ads) + uploadsHtml(t.uploads);
     if (t.journal && w.renderTelegramFunds) html += w.renderTelegramFunds(t.journal);
     html += '<p class="t-sub" style="margin:10px 0 0">Расход Telegram входит в «Затраты на рекламу» и итоги. Дни CSV — по UTC, '
       + 'как в кабинете Telegram Ads; период страницы — по МСК, поэтому расход позднего вечера может попасть в соседний день.</p></div>';

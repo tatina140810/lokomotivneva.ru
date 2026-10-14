@@ -275,3 +275,8 @@ tbody tr:last-child td { border-bottom: 0; }
 .tgrenf { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin: 4px 0; }
 .tgrenf .tgname { width: auto; flex: 1 1 180px; }
 .tgrenf .apierr { flex-basis: 100%; margin: 0; }
+
+/* Telegram Ads: свёрнутая история загрузок CSV (2026-10-15). */
+.tguploads { margin: 8px 0 4px; font-size: 13px; }
+.tguploads summary { cursor: pointer; color: var(--ink-2); font-weight: 600; }
+.tguploads table { margin-top: 6px; }
