@@ -114,11 +114,11 @@
        точечно в нужной строке. */
     qualify: {
       routes: [
-        { id: 'china',  label: 'Китай',           term: '1–3 рабочих дня',  feeFrom: 0.3, feeTo: 0.3 },
-        { id: 'turkey', label: 'Турция',          term: '1–3 рабочих дня', feeFrom: 0.3, feeTo: 0.3 },
-        { id: 'uae',    label: 'ОАЭ',             term: '1–3 рабочих дня', feeFrom: 0.3, feeTo: 0.3 },
-        { id: 'europe', label: 'Европа',          term: '1–3 рабочих дня', feeFrom: 0.3, feeTo: 0.3 },
-        { id: 'other',  label: 'Другое направление', term: '1–3 рабочих дня', feeFrom: 0.3, feeTo: 0.3 }
+        { id: 'china',  label: 'Китай',           term: 'обычно 1–3 рабочих дня',  feeFrom: 0.3, feeTo: 0.3 },
+        { id: 'turkey', label: 'Турция',          term: 'обычно 1–3 рабочих дня', feeFrom: 0.3, feeTo: 0.3 },
+        { id: 'uae',    label: 'ОАЭ',             term: 'обычно 1–3 рабочих дня', feeFrom: 0.3, feeTo: 0.3 },
+        { id: 'europe', label: 'Европа',          term: 'обычно 1–3 рабочих дня', feeFrom: 0.3, feeTo: 0.3 },
+        { id: 'other',  label: 'Другое направление', term: 'обычно 1–3 рабочих дня', feeFrom: 0.3, feeTo: 0.3 }
       ],
       /* Валюты платежа по справочнику направлений (backend/src/lib/paymentDirections.js).
          Лиры нет: в Турцию платим только долларами (Тати 2026-09-18). */
