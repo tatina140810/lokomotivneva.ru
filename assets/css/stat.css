@@ -232,7 +232,8 @@ tbody tr:last-child td { border-bottom: 0; }
 .vkauto__row label { display: flex; flex-direction: column; gap: 2px; font-size: 12px; color: var(--ink-3); }
 .vkauto__row input { font: inherit; font-size: 13px; padding: 4px 6px; border: 1px solid var(--line); border-radius: 6px; max-width: 140px; }
 /* Реклама в Telegram (2026-10-13): напоминание, график по дням, загрузка CSV. */
-.tgremind { margin: 0 0 12px; padding: 10px 12px; border-radius: 8px; background: #FFE58A; color: #5C3D00; font-weight: 600; font-size: 14px; border-left: 4px solid #E0A800; }
+/* Напоминание Telegram про CSV — в оформлении плашек «данные устарели» (.stalewarn, 2026-10-15). */
+.tgremind { margin: 0 0 10px; padding: 8px 12px; border-radius: 8px; background: #FFF6E0; color: #8A5A00; font-size: 13px; font-weight: 600; line-height: 1.45; }
 .tgchart { display: block; width: 100%; height: auto; max-height: 180px; margin: 8px 0; color: var(--ink-3); }
 .tgads { margin-top: 10px; font-size: 13px; }
 .tgupload { display: inline-block; }
