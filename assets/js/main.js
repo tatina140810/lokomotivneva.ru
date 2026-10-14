@@ -14,6 +14,31 @@
    ещё v2.js (калькулятор) и helper.js (помощник) — оба подключены после main.js.
    Если посетитель отказался от аналитики, _tmr — заглушка из head, и цель
    никуда не уходит. */
+/* Партнёрская программа (Тати 2026-10-14). Ссылка партнёра — любая страница с ?ref=КОД.
+   Код запоминаем в cookie lk_ref на 90 дней; первый код не перезаписываем (first-touch):
+   клиент закрепляется за тем, кто привёл его первым. Код — только [A-Z0-9-]{3,20},
+   остальное игнорируем. Любой сбой (запрещённые cookie и т.п.) сайт не роняет. */
+var LOKO_REF = (function () {
+  function valid(v) {
+    var s = String(v || '').trim().toUpperCase();
+    return /^[A-Z0-9-]{3,20}$/.test(s) ? s : '';
+  }
+  function read() {
+    try {
+      var m = document.cookie.match(/(?:^|;\s*)lk_ref=([^;]*)/);
+      return m ? valid(decodeURIComponent(m[1])) : '';
+    } catch (e) { return ''; }
+  }
+  try {
+    var fromUrl = valid(new URLSearchParams(window.location.search).get('ref'));
+    if (fromUrl && !read()) {
+      document.cookie = 'lk_ref=' + encodeURIComponent(fromUrl) + '; max-age=' + (90 * 24 * 3600)
+        + '; path=/; SameSite=Lax' + (location.protocol === 'https:' ? '; Secure' : '');
+    }
+  } catch (e) { /* адрес без параметров или cookie запрещены */ }
+  return { get: read, valid: valid };
+})();
+
 function vkGoal(goal) {
   try { (window._tmr = window._tmr || []).push({ type: 'reachGoal', id: 3797721, goal: goal }); } catch (e) {}
 }
@@ -482,6 +507,10 @@ function ymGoal(goal, params) {
   }
 
   if (form) {
+    /* Поле «Код партнёра (если есть)» подставляем из cookie — человек его не вводит сам. */
+    var refInput = form.querySelector('[name="ref"]');
+    if (refInput && !refInput.value) refInput.value = LOKO_REF.get();
+
     var fields = $$('input, textarea', form).filter(function (f) { return RULES[f.name]; });
 
     /* Проверяем поле при потере фокуса, ошибку снимаем сразу при исправлении */
@@ -548,6 +577,26 @@ function ymGoal(goal, params) {
         consent_text: consentField ? consentField.parentNode.textContent.trim() : ''
       };
 
+      /* Код партнёра, который привёл клиента: из поля формы, иначе из cookie lk_ref. */
+      var refField = form.querySelector('[name="ref"]');
+      var ref = LOKO_REF.valid(refField ? refField.value : '') || LOKO_REF.get();
+      if (ref) payload.ref = ref;
+
+      /* Заявка в партнёрскую программу (/partners/): отдельный тип, компания и вид
+         деятельности — в начале сообщения, чтобы менеджер видел их в уведомлении.
+         Поле компании называется org: name="company" — старая ловушка для ботов. */
+      var isPartner = form.getAttribute('data-kind') === 'partner';
+      if (isPartner) {
+        delete payload.ref;
+        payload.type = 'partner';
+        var org = form.querySelector('[name="org"]');
+        var activity = form.querySelector('[name="activity"]');
+        payload.message = ['Заявка в партнёрскую программу',
+          org && org.value.trim() ? 'Компания: ' + org.value.trim() : '',
+          activity && activity.value ? 'Деятельность: ' + activity.value : '',
+          payload.message].filter(Boolean).join('\n');
+      }
+
       /* Откуда пришёл человек. Метки визита ставит assets/js/stat.js; по ним система
          запишет в заявку канал (Яндекс.Директ, поиск, Telegram, прямой заход), и в
          отчёте видно, какая реклама приносит клиентов, а не только заходы. Статистику
@@ -582,10 +631,12 @@ function ymGoal(goal, params) {
           if (window.LOKO_STAT && window.LOKO_STAT.lead) window.LOKO_STAT.lead();
           vkGoal('lead_form');
           ymGoal('lead_form', direction ? { direction: direction } : null);
-          showToast(name + ', заявка принята! Ответим в течение рабочего дня — свяжемся по указанному телефону.');
+          showToast(isPartner ? 'Заявка принята. Свяжемся с вами в рабочее время.'
+            : name + ', заявка принята! Ответим в течение рабочего дня — свяжемся по указанному телефону.');
           /* Окно заявки (lead-modal.js) закрывается по этому событию. */
           try { document.dispatchEvent(new CustomEvent('loko:lead-sent')); } catch (err) {}
           form.reset();
+          if (refInput) refInput.value = LOKO_REF.get();
           fields.forEach(function (field) { setFieldError(field, ''); });
         } else if (status === 429) {
           /* Сработал лимит запросов на сервере — данные в форме оставляем, человеку
@@ -608,7 +659,7 @@ function ymGoal(goal, params) {
   }
 
   /* ===== Плавающая кнопка связи (Telegram) — на всех страницах ===== */
-  if (!document.querySelector('.fab-contact')) {
+  if (!document.querySelector('.fab-contact') && !document.body.hasAttribute('data-no-messengers')) {
     var fab = document.createElement('a');
     fab.className = 'fab-contact';
     fab.href = 'https://t.me/lokomotivneva';

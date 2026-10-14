@@ -73,6 +73,7 @@ a { color: var(--other); }
 .split__card--direct { border-left-color: var(--direct); }
 .split__card--youtube { border-left-color: var(--youtube); }
 .split__card--vk { border-left-color: var(--vk); }
+.split__card--partners { border-left-color: var(--other); }
 .split__label { font-size: 13px; color: var(--ink-2); margin-bottom: 4px; }
 .split__value { font-size: 40px; font-weight: 650; line-height: 1.05; letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
 .split__unit { font-size: 15px; font-weight: 400; color: var(--ink-2); margin-left: 6px; }

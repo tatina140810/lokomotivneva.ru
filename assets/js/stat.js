@@ -63,7 +63,7 @@
   try {
     var params = new URLSearchParams(d.location.search);
     ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term',
-      'yclid', 'gclid', 'ysclid', 'fbclid'].forEach(function (k) {
+      'yclid', 'gclid', 'ysclid', 'fbclid', 'ref'].forEach(function (k) {
       var v = params.get(k);
       if (v) marks[k] = String(v).slice(0, 200);
     });

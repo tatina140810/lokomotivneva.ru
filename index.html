@@ -532,6 +532,7 @@ _tmr.push({id: "3797721", type: "pageView", start: (new Date()).getTime()});
               <div class="field"><label class="field__label" for="name">Имя <span aria-hidden="true">*</span></label><input class="field__input" type="text" id="name" name="name" autocomplete="name" placeholder="Как к вам обращаться" required minlength="2" aria-describedby="name-error"><p class="field__error" id="name-error" role="alert" hidden></p></div>
               <div class="field"><label class="field__label" for="phone">Телефон <span aria-hidden="true">*</span></label><input class="field__input" type="tel" id="phone" name="phone" autocomplete="tel" placeholder="+7 (___) ___-__-__ или +код страны" required inputmode="tel" aria-describedby="phone-error"><p class="field__error" id="phone-error" role="alert" hidden></p></div>
               <div class="field"><label class="field__label" for="message">Направление и сумма</label><textarea class="field__input field__input--area" id="message" name="message" rows="3" placeholder="Напр. Китай, оплата поставщику ~100 000 ¥, есть инвойс" aria-describedby="message-error"></textarea><p class="field__error" id="message-error" role="alert" hidden></p></div>
+              <div class="field"><label class="field__label" for="ref-code">Код партнёра (если есть)</label><input class="field__input" type="text" id="ref-code" name="ref" autocomplete="off" maxlength="20" placeholder="Например: TEST-01" style="text-transform:uppercase"></div>
               <label class="checkbox"><input type="checkbox" id="consent" name="consent" required aria-describedby="consent-error"><span>Я согласен с <a href="/privacy/" target="_blank" rel="noopener">политикой обработки персональных данных</a></span></label>
               <p class="field__error" id="consent-error" role="alert" hidden></p>
               <button class="btn btn--gold btn--block btn--lg" type="submit">Отправить заявку</button>
@@ -557,7 +558,7 @@ _tmr.push({id: "3797721", type: "pageView", start: (new Date()).getTime()});
       </ul></nav>
       <nav class="footer__nav" aria-label="Компания"><h2 class="footer__heading">Компания</h2><ul>
         <li><a href="/complex/">Платёж + доставка</a></li><li><a href="/sellers/">Для селлеров</a></li>
-        <li><a href="/logistics/">Логистика</a></li><li><a href="/trust/">Проверьте нас</a></li>
+        <li><a href="/logistics/">Логистика</a></li><li><a href="/trust/">Проверьте нас</a></li><li><a href="/partners/">Партнёрам</a></li>
         <li><a href="/cabinet/">Личный кабинет</a></li><li><a href="/contacts/">Контакты</a></li>
       </ul></nav>
       <div class="footer__legal"><h2 class="footer__heading">Реквизиты</h2>
@@ -574,14 +575,14 @@ _tmr.push({id: "3797721", type: "pageView", start: (new Date()).getTime()});
 
   <script src="/assets/js/site-config.js?v=20261014fz38" defer></script>
   <script src="/assets/js/site.js?v=20260917m" defer></script>
-  <script src="/assets/js/lead-modal.js?v=20261009trap" defer></script>
-  <script src="/assets/js/main.js?v=20261009trap" defer></script>
+  <script src="/assets/js/lead-modal.js?v=20261014ref" defer></script>
+  <script src="/assets/js/main.js?v=20261014ref" defer></script>
   <script src="/assets/js/about-video.js?v=20261006" defer></script>
   <script src="/assets/js/search.js?v=20260917m" defer></script>
   <script src="/assets/js/v2.js?v=20260929calc" defer></script>
   <script src="/assets/js/helper-kb.js?v=20261014fz38" defer></script>
   <script src="/assets/js/helper.js?v=20260929pd" defer></script>
-  <script src="/assets/js/stat.js?v=20260918d" defer></script>
+  <script src="/assets/js/stat.js?v=20261014ref" defer></script>
   <script src="/assets/js/cookie.js?v=20260924b" defer></script>
 </body>
 </html>
