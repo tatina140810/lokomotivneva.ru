@@ -57,7 +57,7 @@
       + '<div class="apitile__sep"></div>'
       + (j ? kv('Остаток бюджета', rub(j.remainingRub), 'оплачено eLama минус расход по CSV, вместе с деньгами, ещё не переведёнными с eLama')
           + kv('В кабинете Telegram Ads (расчёт)', eur(j.cabinetEur), 'переведено минус расход по CSV')
-          + kv('У eLama, не переведено (оценка)', rub(j.unallocatedRub))
+          + kv('У eLama, не переведено (' + esc(w.telegramElamaNote ? w.telegramElamaNote(j) : 'оценка') + ')', rub(j.unallocatedRub))
         : kv('Остаток бюджета', row && row.remaining != null ? rub(row.remaining) : '—'))
       + '<p class="t-sub">Рубли — по курсу переводов' + (t.rate ? ' ' + nf2.format(t.rate.rate) + ' ₽ за 1 €' : '')
       + (t.rate && t.rate.provisional ? ' <span class="tgprov">предварительный курс, уточнить по счетам eLama</span>' : '') + '</p></div>';

@@ -12,6 +12,7 @@
     bad_rate: 'неверный курс', bad_kind: 'выберите вид записи', not_found: 'запись не найдена',
   };
   function rub(v) { return v == null ? '—' : nf0.format(Math.round(Number(v))) + ' ₽'; }
+  function rub2(v) { return v == null ? '—' : nf.format(Number(v)) + ' ₽'; }
   function eur(v) { return v == null ? '—' : nf.format(Number(v)) + ' €'; }
   function rate(v) { return v == null ? '—' : nf.format(Math.round(Number(v) * 100) / 100); }
   function esc(v) {
@@ -27,13 +28,23 @@
     return '<button type="button" class="tgdel" data-del="' + e.id + '" title="Убрать из журнала">×</button>';
   }
 
+  /* Подпись «У eLama, не переведено»: последняя сверка с кабинетом eLama совпала (±1 ₽) —
+     «по кабинету eLama, дата»; не совпала — оценка и цифра кабинета рядом; сверок нет — «оценка».
+     Сама сумма — по-прежнему расчёт «оплачено − переведено» (Тати 2026-10-15). */
+  w.telegramElamaNote = function (j) {
+    var last = (j.elamaChecks || []).slice(-1)[0];
+    if (!last) return 'оценка';
+    var dm = dmy(last.day).slice(0, 5);
+    return last.warn ? 'оценка; в кабинете eLama ' + dm + ' — ' + rub(last.rub) : 'по кабинету eLama, ' + dm;
+  };
+
   w.renderTelegramFunds = function (j) {
     var badge = j.provisional ? ' <span class="tgprov">' + PROV + '</span>' : '';
     var html = '<h3 class="adsh3">Оплаты eLama и переводы в кабинет</h3>'
       + '<p class="apiacc__line">Оплачено eLama: <b>' + rub(j.paidRub) + '</b>'
       + ' <span class="t-sub">— бюджет Telegram в сводной таблице</span></p>'
       + '<p class="apiacc__line">Переведено в Telegram Ads: <b>' + eur(j.transferredEur) + ' = ' + rub(j.transferredRub) + '</b>' + badge + '</p>'
-      + '<p class="apiacc__line">У eLama в рублях, не переведено (оценка): <b>' + rub(j.unallocatedRub) + '</b>'
+      + '<p class="apiacc__line">У eLama в рублях, не переведено (' + esc(w.telegramElamaNote(j)) + '): <b>' + rub(j.unallocatedRub) + '</b>'
       + ' <span class="t-sub">— это не расход</span></p>'
       + '<p class="apiacc__line">Расход по CSV: <b>' + eur(j.spentEur) + ' = ' + rub(j.spentRub) + '</b>'
       + ' <span class="t-sub">— € по курсу переводов, по очереди: сначала первый перевод</span></p>'
@@ -66,6 +77,15 @@
           + '</td><td class="t-sub">' + esc(c.note || '') + '</td><td>' + del(c) + '</td></tr>';
       }).join('') : '<tr><td colspan="6" class="t-sub">контрольных остатков нет</td></tr>') + '</tbody></table>';
 
+    if ((j.elamaChecks || []).length) {
+      html += '<table class="tbl tgfunds"><thead><tr><th>Остаток в кабинете eLama</th><th>В кабинете</th><th>По расчёту</th><th>Разница</th><th>Пометка</th><th></th></tr></thead><tbody>'
+        + j.elamaChecks.map(function (c) {
+          return '<tr><td>' + dmy(c.day) + utc(c.at) + '</td><td>' + rub2(c.rub) + '</td><td>' + rub2(c.expectedRub) + '</td><td'
+            + (c.warn ? ' class="apierr"' : '') + '>' + (c.diffRub > 0 ? '+' : '') + rub2(c.diffRub) + (c.warn ? ' — больше 1 ₽, проверьте оплаты и переводы' : '')
+            + '</td><td class="t-sub">' + esc(c.note || '') + '</td><td>' + del(c) + '</td></tr>';
+        }).join('') + '</tbody></table>';
+    }
+
     if (j.excluded && j.excluded.length) {
       html += '<p class="t-sub">Исключено из расчёта: ' + j.excluded.map(function (x) {
         return dmy(x.day) + ' ' + (x.kind === 'balance' ? 'замер ' : 'пополнение ') + nf.format(x.amount) + ' ' + (x.currency === 'EUR' ? '€' : '₽')
@@ -74,7 +94,8 @@
     }
 
     html += '<div class="apiacc__row tgadd"><select id="tgf-kind"><option value="payment">Оплата eLama, ₽</option>'
-      + '<option value="transfer">Перевод в Telegram Ads, €</option><option value="check">Контрольный остаток из кабинета, €</option></select>'
+      + '<option value="transfer">Перевод в Telegram Ads, €</option><option value="check">Контрольный остаток из кабинета, €</option>'
+      + '<option value="elama">Остаток в кабинете eLama, ₽</option></select>'
       + '<input type="date" id="tgf-day"><input type="time" id="tgf-time" title="Время по Бишкеку, необязательно">'
       + '<input type="text" id="tgf-amount" inputmode="decimal" placeholder="Сумма">'
       + '<input type="text" id="tgf-tranche" maxlength="40" placeholder="Партия">'
@@ -104,15 +125,15 @@
     }
     var kind = d.getElementById('tgf-kind');
     var tranche = d.getElementById('tgf-tranche');
-    kind.addEventListener('change', function () { tranche.hidden = kind.value === 'check'; });
+    kind.addEventListener('change', function () { tranche.hidden = kind.value === 'check' || kind.value === 'elama'; });
     d.getElementById('tgf-add').addEventListener('click', function () {
       var day = d.getElementById('tgf-day').value;
       var time = d.getElementById('tgf-time').value;
       var amount = d.getElementById('tgf-amount').value.replace(/\s/g, '').replace(',', '.');
       var body = { kind: kind.value, day: day, note: d.getElementById('tgf-note').value,
         at: day && time ? day + 'T' + time + ':00+06:00' : null };
-      body[kind.value === 'payment' ? 'amount_rub' : 'amount_eur'] = amount;
-      if (kind.value !== 'check') body.tranche = tranche.value;
+      body[kind.value === 'payment' || kind.value === 'elama' ? 'amount_rub' : 'amount_eur'] = amount;
+      if (kind.value === 'payment' || kind.value === 'transfer') body.tranche = tranche.value;
       call('POST', '', body);
     });
     host.addEventListener('click', function (e) {
