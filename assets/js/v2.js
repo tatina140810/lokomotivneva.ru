@@ -7,9 +7,11 @@
                    до 50 000 $ → +1,7 %, 50 000–200 000 $ → +1,5 %, свыше → +1,3 %
                    (backend/src/../callTreeCalc.js);
      • агент     — 0,3 % от рублёвой суммы платежа, НДС включён;
-   Комиссия банка (SWIFT) в этот расчёт НЕ входит (Тати 2026-09-18): она зависит от
-   банка-исполнителя и валюты, и в предварительной прикидке ей не место — менеджер
-   называет её при оформлении.
+     • SWIFT     — комиссия банка за перевод (Тати 2026-10-15, как в кабинете клиента):
+                   процент от суммы платежа, но не меньше минимума и не больше максимума,
+                   в валюте платежа; в рубли — по тому же курсу. Банк — по умолчанию
+                   системы (Элдик/РСК); от 150 000 $ в эквиваленте — бесплатно.
+                   Тарифы — backend/src/lib/bankFee.js, приходят из API.
    Курс и тарифы подтягиваются из LokomotivPos (RATES_ENDPOINT ниже): менеджер в
    карте звонка и калькулятор на сайте считают по одним и тем же цифрам. Значения
    ниже — запасные, на случай, если API недоступен.
@@ -35,6 +37,25 @@
     { upTo: Infinity, pct: 1.3 }
   ];
   var AGENT_FEE_PCT = 0.3;
+
+  /* Комиссия банка за SWIFT — запасные тарифы Элдика (РСК), основные приходят из API. */
+  var SWIFT = {
+    bank: 'rsk',
+    freeFromUsd: 150000,
+    tariffs: { rsk: {
+      USD: { pct: 0.2, min: 50, max: 150 },  EUR: { pct: 0.2, min: 25, max: 150 },
+      CNY: { pct: 0.2, min: 150, max: 1000 }, AED: { pct: 0.2, min: 200, max: 400 },
+      KZT: { pct: 0.1, min: 2000, max: 5000 }, RUB: { pct: 0.2, min: 200, max: 1000 }
+    } }
+  };
+  /* MEDIAN(минимум; сумма × ставка; максимум) — как в таблице «Платежи» и в кабинете. */
+  var swiftFee = function (sum, cur) {
+    var t = (SWIFT.tariffs[SWIFT.bank] || {})[cur] || { pct: 0.2 };
+    var v = sum * t.pct / 100;
+    if (t.min != null) v = Math.max(v, t.min);
+    if (t.max != null) v = Math.min(v, t.max);
+    return Math.round(v * 100) / 100;
+  };
 
   /* Валюты по направлениям — как в карте звонка оператора
      (backend/src/lib/paymentDirections.js). Пустой список = согласуем с менеджером,
@@ -135,18 +156,21 @@
        он уже учтён в самом курсе. */
     set('rate', nf(rate, 4) + ' ₽');
 
-    if (!sum) { ['base', 'fee', 'total'].forEach(function (k) { set(k, '—'); }); return; }
+    if (!sum) { ['base', 'fee', 'swift', 'total'].forEach(function (k) { set(k, '—'); }); return; }
 
     var base = sum * rate;                        // рубли по курсу с наценкой
     var fee = base * (AGENT_FEE_PCT / 100);       // вознаграждение агента 0,3 %
 
-    /* Комиссию банка (SWIFT) на сайте не показываем (Тати 2026-09-18): она зависит
-       от банка-исполнителя и валюты, назвать её заранее нельзя, а в предварительном
-       расчёте она только пугала цифрой. Менеджер называет её при оформлении —
-       в карте звонка расчёт полный. */
+    /* Комиссия банка за SWIFT (Тати 2026-10-15): в валюте платежа, в рубли — по тому
+       же курсу; крупный платёж (от 150 000 $ в эквиваленте) — бесплатно. */
+    var free = usdEquivalent >= SWIFT.freeFromUsd;
+    var swiftCur = free ? 0 : swiftFee(sum, cur);
+    var swiftRub = swiftCur * rate;
+
     set('base', nf(base, 2) + ' ₽');
     set('fee', nf(fee, 2) + ' ₽');
-    set('total', nf(base + fee, 2) + ' ₽');
+    set('swift', free ? 'бесплатно' : nf(swiftCur, 2) + ' ' + cur + ' ≈ ' + nf(swiftRub, 2) + ' ₽');
+    set('total', nf(base + fee + swiftRub, 2) + ' ₽');
   }
 
   /* Направления — из общего конфига сайта, чтобы срок не разъезжался с блоком
@@ -231,6 +255,11 @@
           });
         }
         if (typeof data.agentFeePct === 'number') AGENT_FEE_PCT = data.agentFeePct;
+        if (data.swift && data.swift.tariffs) {
+          SWIFT.tariffs = data.swift.tariffs;
+          if (data.swift.defaultBank) SWIFT.bank = data.swift.defaultBank;
+          if (typeof data.swift.freeFromUsd === 'number') SWIFT.freeFromUsd = data.swift.freeFromUsd;
+        }
         if (data.directions && data.directions.length) {
           var dirs = {};
           data.directions.forEach(function (r) { dirs[r.id] = r.currencies || []; });
