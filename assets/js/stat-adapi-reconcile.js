@@ -82,12 +82,13 @@
                 + '<th>Пополнение</th><th>Сумма</th><th>Разница</th></tr></thead><tbody>'
                 + j.rows.map(function (r) {
                   var l = LABEL[r.status];
-                  return '<tr><td class="' + l[1] + '">' + l[0] + '</td><td>' + dmy(r.invoiceDay) + '</td>'
-                    + '<td>' + rubC(r.invoiceC) + '</td><td>' + dmy(r.topupDay) + (r.auto ? ' <span class="t-sub">авто</span>' : '') + '</td>'
-                    + '<td>' + rubC(r.topupC) + '</td><td>' + (r.diffC ? rubC(r.diffC) : '')
-                    + (r.status === 'differs' && r.auto ? ' <button type="button" class="bar__btn" data-accept="'
+                  // Кнопка — в первом столбце: таблица шире карточки, последний столбец уезжает за край.
+                  return '<tr><td class="' + l[1] + '">' + l[0]
+                    + (r.status === 'differs' && r.auto ? '<br><button type="button" class="bar__btn" data-accept="'
                       + r.topupId + '" data-sum="' + (r.invoiceC / 100).toFixed(2) + '">Принять сумму счёта</button>' : '')
-                    + '</td></tr>';
+                    + '</td><td>' + dmy(r.invoiceDay) + '</td>'
+                    + '<td>' + rubC(r.invoiceC) + '</td><td>' + dmy(r.topupDay) + (r.auto ? ' <span class="t-sub">авто</span>' : '') + '</td>'
+                    + '<td>' + rubC(r.topupC) + '</td><td>' + (r.diffC ? rubC(r.diffC) : '') + '</td></tr>';
                 }).join('') + '</tbody></table></div>' : '');
             done.hidden = false;
             done.dataset.month = j.month;
