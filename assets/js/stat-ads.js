@@ -336,18 +336,39 @@
         if (!/^\d{1,12}(\.\d{1,2})?$/.test(amount)) { err.textContent = 'Введите сумму, например 11815 или 493.50'; return; }
         if (!from || !to) { err.textContent = kind === 'spend' ? 'Укажите период' : 'Укажите дату'; return; }
         if (to < from) { err.textContent = 'Дата «по» раньше даты «с»'; return; }
+        var body = {
+          title: title,
+          channel: d.getElementById('ad-ch').value || null,
+          kind: kind,
+          currency: d.getElementById('ad-cur').value,
+          period_start: from, period_end: to, amount: amount,
+        };
+        send(body);
+      });
+
+      // Пополнение Директа рядом с автопополнением (Тати 2026-10-16): сервер не пишет,
+      // пока не выбрано — заменить автозапись этой суммой или внести отдельно.
+      function askAuto(body, auto) {
+        var err = d.getElementById('ad-err');
+        err.innerHTML = 'Рядом уже есть пополнение Директа, записанное автоматически: '
+          + auto.map(function (a) { return dmy(a.day) + ' — ' + money(a.amount_rub); }).join(', ')
+          + '. Если это та же оплата — замените его суммой по счёту, иначе учтётся дважды.<br>'
+          + '<button type="button" class="bar__btn" id="ad-auto-swap">Заменить автозапись</button> '
+          + '<button type="button" class="bar__btn" id="ad-auto-keep">Это другая оплата — внести отдельно</button>';
+        d.getElementById('ad-auto-swap').onclick = function () { body.replace_auto = auto[0].id; send(body); };
+        d.getElementById('ad-auto-keep').onclick = function () { body.keep_auto = true; send(body); };
+      }
+
+      function send(body) {
+        var btn = d.getElementById('ad-add');
+        var err = d.getElementById('ad-err');
+        err.textContent = '';
         btn.disabled = true; btn.textContent = 'Сохраняем…';
         w.fetch(api + '/site-analytics/spend', {
-          method: 'POST', headers: head,
-          body: JSON.stringify({
-            title: title,
-            channel: d.getElementById('ad-ch').value || null,
-            kind: kind,
-            currency: d.getElementById('ad-cur').value,
-            period_start: from, period_end: to, amount: amount,
-          }),
+          method: 'POST', headers: head, body: JSON.stringify(body),
         }).then(function (r) {
           btn.disabled = false; btn.textContent = 'Внести';
+          if (r.status === 409) return r.json().then(function (j) { askAuto(body, j.auto || []); });
           if (!r.ok) {
             err.textContent = r.status === 503
               ? 'Не удалось получить курс валюты — попробуйте позже'
@@ -359,7 +380,7 @@
           btn.disabled = false; btn.textContent = 'Внести';
           err.textContent = 'Нет связи с системой';
         });
-      });
+      }
 
       [].forEach.call(host.querySelectorAll('[data-del]'), function (b) {
         b.addEventListener('click', function () {

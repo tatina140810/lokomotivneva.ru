@@ -1,7 +1,9 @@
 /* Сверка пополнений Директа с выгрузкой счетов (Тати 2026-10-09) — раз в месяц.
    Автопополнения создаются по росту остатка (рост × 1,22, до 100 ₽) и помечены
    «авто, уточнить по счёту». Здесь вставляют выгрузку счетов за месяц — строки «дата
-   сумма» в любом виде (из Excel, CSV) — и видят расхождения. Данные сверка не меняет.
+   сумма» в любом виде (из Excel, CSV) — и видят расхождения. Сама сверка данные не
+   меняет; у автопополнения с отличающейся суммой — кнопка «Принять сумму счёта»
+   (Тати 2026-10-16): в записи встаёт точная сумма из выгрузки.
    Напоминание горит, пока за прошедший месяц есть автопополнения и он не отмечен
    сверенным. */
 (function (w, d) {
@@ -59,6 +61,7 @@
       var out = d.getElementById('rc-out');
       var done = d.getElementById('rc-done');
       var head = { Authorization: 'Bearer ' + opts.token, 'Content-Type': 'application/json' };
+      var changed = false;      // в этой сверке принимали суммы счетов
 
       go.addEventListener('click', function () {
         err.textContent = '';
@@ -72,19 +75,38 @@
             out.innerHTML = '<p class="t-sub">Счетов за ' + monthName(j.month) + ': ' + j.invoices
               + (j.otherMonth ? ', из другого месяца пропущено: ' + j.otherMonth : '')
               + (j.unparsed.length ? '. Не разобраны строки: ' + j.unparsed.map(esc).join(' · ') : '')
-              + '. Расхождений: <b>' + bad + '</b>.</p>'
+              + '. Расхождений: <b>' + bad + '</b>.'
+              + (changed ? ' Суммы по счетам приняты — итоги страницы обновятся после «Отметить месяц сверенным» или перезагрузки.' : '')
+              + '</p>'
               + (j.rows.length ? '<div class="scrollx"><table><thead><tr><th>Итог</th><th>Счёт</th><th>Сумма счёта</th>'
                 + '<th>Пополнение</th><th>Сумма</th><th>Разница</th></tr></thead><tbody>'
                 + j.rows.map(function (r) {
                   var l = LABEL[r.status];
                   return '<tr><td class="' + l[1] + '">' + l[0] + '</td><td>' + dmy(r.invoiceDay) + '</td>'
                     + '<td>' + rubC(r.invoiceC) + '</td><td>' + dmy(r.topupDay) + (r.auto ? ' <span class="t-sub">авто</span>' : '') + '</td>'
-                    + '<td>' + rubC(r.topupC) + '</td><td>' + (r.diffC ? rubC(r.diffC) : '') + '</td></tr>';
+                    + '<td>' + rubC(r.topupC) + '</td><td>' + (r.diffC ? rubC(r.diffC) : '')
+                    + (r.status === 'differs' && r.auto ? ' <button type="button" class="bar__btn" data-accept="'
+                      + r.topupId + '" data-sum="' + (r.invoiceC / 100).toFixed(2) + '">Принять сумму счёта</button>' : '')
+                    + '</td></tr>';
                 }).join('') + '</tbody></table></div>' : '');
             done.hidden = false;
             done.dataset.month = j.month;
           })
           .catch(function (e) { err.textContent = e.message; });
+      });
+
+      out.addEventListener('click', function (e) {
+        var b = e.target.closest('[data-accept]');
+        if (!b) return;
+        b.disabled = true; err.textContent = '';
+        w.fetch(opts.api + '/site-analytics/ad-api/reconcile/accept', {
+          method: 'POST', headers: head,
+          body: JSON.stringify({ id: Number(b.dataset.accept), amount: b.dataset.sum }),
+        }).then(function (r) {
+          if (!r.ok) throw new Error(r.status === 404 ? 'Запись не найдена или сумма отличается больше чем на 500 ₽.' : 'Не сохранилось (' + r.status + ').');
+          changed = true;
+          go.click();     // пересверить: строка станет «совпало»
+        }).catch(function (e2) { b.disabled = false; err.textContent = e2.message; });
       });
 
       done.addEventListener('click', function () {
