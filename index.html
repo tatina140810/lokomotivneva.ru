@@ -15,7 +15,7 @@
   <link rel="icon" href="/assets/img/logo-160.jpg">
   <link rel="stylesheet" href="/assets/css/styles.css?v=20261014pd">
   <link rel="stylesheet" href="/assets/css/additions.css?v=20261007dark">
-  <link rel="stylesheet" href="/assets/css/v2.css?v=20261007h">
+  <link rel="stylesheet" href="/assets/css/v2.css?v=20261019rt">
   <link rel="stylesheet" href="/assets/css/helper.css?v=20260924rkn">
   <script type="application/ld+json">
   {
@@ -153,8 +153,8 @@ _tmr.push({id: "3797721", type: "pageView", start: (new Date()).getTime()});
 
       </div>
       </div>
-    <!-- ЛЕНТА КУРСОВ. Курс продажи с profinance.ru («Форекс ПФ», колонка «Продажа»)
-         плюс наценка 1,5% — тот же источник и та же логика, что в LokomotivPos.
+    <!-- ЛЕНТА КУРСОВ. Ориентировочный курс по тарифу субагента: profinance + коэффициент
+         по объёму — тот же источник и та же логика, что в LokomotivPos.
          Значения стоят в разметке и обновляются v2.js; если источник недоступен,
          посетитель видит последние проставленные цифры, а не прочерки. -->
       <section class="rates" aria-label="Курсы валют">
@@ -180,7 +180,7 @@ _tmr.push({id: "3797721", type: "pageView", start: (new Date()).getTime()});
             <span class="rate" data-rate="AED" aria-hidden="true"><span class="rate__code">AED</span><span class="rate__val">23,3160 ₽</span></span>
           </div>
         </div>
-        <p class="rates__note">Курс сделки фиксируется в счёте перед оплатой</p>
+        <p class="rates__note">Курс сделки фиксируется в Поручении перед оплатой</p>
       </div>
     </section>
 
@@ -294,9 +294,9 @@ _tmr.push({id: "3797721", type: "pageView", start: (new Date()).getTime()});
             <div class="cta-row reveal" data-reveal-delay="3"><a class="btn btn--gold btn--lg" href="#zayavka">Оставить заявку</a></div>
           </div>
 
-          <!-- Расчёт по формулам LokomotivPos (app.lokomotivneva.ru): курс =
-               profinance «Продажа» + наценка по объёму, вознаграждение агента 0,3 %
-               от рублёвой суммы. Всё считает v2.js — правила там в одном месте. -->
+          <!-- Расчёт по формулам LokomotivPos (app.lokomotivneva.ru): ориентировочный курс
+               по тарифу субагента: profinance + коэффициент по объёму; вознаграждение
+               агента — от рублёвой суммы. Всё считает v2.js — правила там в одном месте. -->
           <div class="express express--section reveal" data-reveal-delay="2" data-express>
             <p class="express__title">Направление</p>
             <div class="express__routes" role="group" aria-label="Направление платежа" data-express-routes>
@@ -325,14 +325,14 @@ _tmr.push({id: "3797721", type: "pageView", start: (new Date()).getTime()});
             <p class="express__ccynote" data-express-ccy-note></p>
 
             <dl class="express__calc" data-express-calc>
-              <div><dt>Курс</dt><dd><b data-express-rate>85,6234 ₽</b></dd></div>
+              <div><dt>Курс</dt><dd><b data-express-rate>85,6234 ₽</b><span class="express__ratetime" data-express-rate-time hidden></span></dd></div>
               <div><dt>Сумма платежа</dt><dd><b data-express-base>—</b></dd></div>
               <div><dt>Вознаграждение агента от 0,3%</dt><dd><b data-express-fee>—</b></dd></div>
               <div><dt>Комиссия банка за SWIFT</dt><dd><b data-express-swift>—</b></dd></div>
               <div class="express__total"><dt>Итого к оплате<span class="express__star" aria-hidden="true">**</span></dt><dd><b data-express-total>—</b></dd></div>
               <div><dt>Срок исполнения</dt><dd><b data-express-term>обычно 1–3 рабочих дня</b></dd></div>
             </dl>
-            <p class="express__note" id="express-note">** с комиссией банка за SWIFT по тарифу банка-исполнителя — процент от суммы (обычно 0,2%), но не меньше минимума и не больше максимума для валюты; при платеже от 150 000 $ — бесплатно. Расходы банков-корреспондентов — по факту. Курс с наценкой фиксируется в счёте в момент платежа.</p>
+            <p class="express__note" id="express-note">** с комиссией банка за SWIFT по тарифу банка-исполнителя — процент от суммы (обычно 0,2%), но не меньше минимума и не больше максимума для валюты; при платеже от 150 000 $ — бесплатно. Расходы банков-корреспондентов — по факту. Курс конвертации фиксируется субагентом и указывается в Поручении.</p>
             <p class="express__legal">Расчёт носит информационный характер и не является публичной офертой.</p>
           </div>
         </div>
@@ -348,7 +348,7 @@ _tmr.push({id: "3797721", type: "pageView", start: (new Date()).getTime()});
         </header>
         <ol class="steps steps--stations reveal">
           <li class="step"><h3>Заявка и документы</h3><p>Присылаете инвойс, контракт и реквизиты получателя.</p></li>
-          <li class="step"><h3>Расчёт и фиксация курса</h3><p>Считаем курс с наценкой, вознаграждение от 0,3% и комиссию банка, фиксируем в счёте.</p></li>
+          <li class="step"><h3>Расчёт и фиксация курса</h3><p>Рассчитываем курс по тарифу субагента, вознаграждение от 0,3% и комиссию банка. Курс фиксируется субагентом и указывается в Поручении.</p></li>
           <li class="step"><h3>Агентский договор</h3><p>Заключаем договор с вашим юрлицом или ИП.</p></li>
           <li class="step"><h3>Исполнение поручения</h3><p>Проводим платёж поставщику одним из маршрутов.</p></li>
           <li class="step"><h3>Пакет документов</h3><p>Отчёт агента, акт и подтверждение платежа.</p></li>
@@ -489,7 +489,7 @@ _tmr.push({id: "3797721", type: "pageView", start: (new Date()).getTime()});
           </details>
           <details class="faq__item">
             <summary class="faq__q">Как формируются курс и стоимость услуги?</summary>
-            <div class="faq__a"><p>Курс — межбанк плюс наценка, которая зависит от суммы. Вознаграждение агента — от 0,3% от суммы платежа. Всё фиксируется в счёте до оплаты.</p></div>
+            <div class="faq__a"><p>Курс конвертации устанавливает субагент, исполняющий платёж. Он зависит от суммы и валюты и фиксируется в Поручении в момент его подписания. Калькулятор на сайте показывает ориентировочный курс по тарифу субагента. Вознаграждение агента — от 0,3% от суммы платежа. Курс, вознаграждение и расходы фиксируются в Поручении до оплаты.</p></div>
           </details>
           <details class="faq__item">
             <summary class="faq__q">Можете взять на себя логистику и таможню?</summary>
@@ -581,8 +581,8 @@ _tmr.push({id: "3797721", type: "pageView", start: (new Date()).getTime()});
   <script src="/assets/js/main.js?v=20261014ref" defer></script>
   <script src="/assets/js/about-video.js?v=20261015rt" defer></script>
   <script src="/assets/js/search.js?v=20260917m" defer></script>
-  <script src="/assets/js/v2.js?v=20261015swift" defer></script>
-  <script src="/assets/js/helper-kb.js?v=20261014fz38" defer></script>
+  <script src="/assets/js/v2.js?v=20261019rt" defer></script>
+  <script src="/assets/js/helper-kb.js?v=20261019kurs" defer></script>
   <script src="/assets/js/helper.js?v=20260929pd" defer></script>
   <script src="/assets/js/stat.js?v=20261014ref" defer></script>
   <script src="/assets/js/cookie.js?v=20260924b" defer></script>

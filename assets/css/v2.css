@@ -357,6 +357,9 @@
 .express__calc dd { margin: 0; text-align: right; }
 .express__calc dd b { color: var(--text-light); font-variant-numeric: tabular-nums; font-weight: 600; }
 .express__calc dt span { color: var(--gold-400); }
+/* Подпись под курсом «ориентировочно, на ЧЧ:ММ МСК» — как подпись о валютах направления. */
+.express__calc dd .express__ratetime { display: block; margin-top: .1rem; font-size: .72rem; color: var(--text-muted-light); }
+.express__calc dd .express__ratetime[hidden] { display: none; }
 .express__total { margin-top: .35rem; padding-top: .45rem; border-top: 1px solid rgba(255,255,255,.16); }
 .express__total dt { color: var(--text-light); font-weight: 600; }
 .express__total dd b { color: var(--gold-400); font-size: 1.05rem; }

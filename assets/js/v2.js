@@ -2,10 +2,10 @@
    v2.js — расчёт платежа и лента курсов на главной. Библиотек нет.
    -----------------------------------------------------------------------------
    Правила расчёта — ровно те же, что в LokomotivPos (app.lokomotivneva.ru):
-     • курс      — profinance.ru «Курсы валют к рублю Forex», колонка ПРОДАЖА;
-     • наценка   — по объёму платежа в долларовом эквиваленте:
-                   до 50 000 $ → +1,7 %, 50 000–200 000 $ → +1,5 %, свыше → +1,3 %
-                   (backend/src/../callTreeCalc.js);
+     • курс      — ориентировочный курс по тарифу субагента: profinance + коэффициент
+                   по объёму (объём — в долларовом эквиваленте платежа;
+                   backend/src/../callTreeCalc.js). Точный курс фиксирует субагент
+                   в Поручении;
      • агент     — 0,3 % от рублёвой суммы платежа, НДС включён;
      • SWIFT     — комиссия банка за перевод (Тати 2026-10-15, как в кабинете клиента):
                    процент от суммы платежа, но не меньше минимума и не больше максимума,
@@ -21,7 +21,7 @@
 
   var RATES_ENDPOINT = 'https://app.lokomotivneva.ru/api/public/fx-rates';
 
-  /* Котировки «Продажа» БЕЗ наценки. Обновляются из API; здесь — запасные
+  /* Котировки profinance «Продажа» без коэффициента по объёму. Обновляются из API; здесь — запасные
      значения на случай, если источник недоступен (profinance, 16.09.2026 19:00). */
   var market = { USD: 84.358, EUR: 97.331, CNY: 12.5795, AED: 84.358 / 3.6725 };
 
@@ -30,7 +30,7 @@
      поэтому считаем его кросс-курсом от доллара. */
   var AED_PER_USD = 3.6725;
 
-  /* Наценка к рыночному курсу по объёму сделки в долларах. */
+  /* Коэффициент по объёму сделки в долларах (тариф субагента). */
   var TIERS = [
     { upTo: 50000, pct: 1.7 },
     { upTo: 200000, pct: 1.5 },
@@ -48,14 +48,36 @@
       KZT: { pct: 0.1, min: 2000, max: 5000 }, RUB: { pct: 0.2, min: 200, max: 1000 }
     } }
   };
-  /* MEDIAN(минимум; сумма × ставка; максимум) — как в таблице «Платежи» и в кабинете. */
-  var swiftFee = function (sum, cur) {
+  /* MEDIAN(минимум; сумма × ставка; максимум) — как в таблице «Платежи» и в кабинете.
+     Результат — в центах валюты (целое число), округление до 0,01 вверх от половины. */
+  var swiftFeeCents = function (sum, cur) {
     var t = (SWIFT.tariffs[SWIFT.bank] || {})[cur] || { pct: 0.2 };
-    var v = sum * t.pct / 100;
-    if (t.min != null) v = Math.max(v, t.min);
-    if (t.max != null) v = Math.min(v, t.max);
-    return Math.round(v * 100) / 100;
+    var v = divHalfUp(BigInt(sum) * BigInt(Math.round(t.pct * 1000)), BigInt(1000)); // сумма × % → центы
+    if (t.min != null) { var mn = BigInt(Math.round(t.min * 100)); if (v < mn) v = mn; }
+    if (t.max != null) { var mx = BigInt(Math.round(t.max * 100)); if (v > mx) v = mx; }
+    return v;
   };
+
+  /* Деньги — целыми числами (BigInt), без float (Тати 2026-10-19): раньше расчёт шёл по
+     неокруглённому курсу, а на экране курс с 4 знаками — ручная проверка не сходилась
+     на копейки. Теперь порядок такой же, как при проверке на калькуляторе:
+       курс → 4 знака; платёж = сумма × курс → копейки; вознаграждение = платёж × 0,3 %
+       → копейки; SWIFT в валюте → 0,01, × курс → копейки; итог = сумма округлённых строк.
+     Округление математическое (половина — вверх). */
+  /* BigInt вызываем функцией, без литералов 100n: на совсем старом браузере литерал —
+     синтаксическая ошибка всего файла (пропала бы и лента курсов), а так сломается
+     только расчёт. */
+  function divHalfUp(a, b) { return (a * BigInt(2) + b) / (b * BigInt(2)); }  // a ≥ 0, b > 0
+  function roundRate4(rate) {                                    // курс в 1/10000 рубля
+    return BigInt(Math.round(Number((rate * 10000).toPrecision(15))));
+  }
+  function expressMoney(sum, rate4, feePct, swiftCents) {
+    var base = divHalfUp(BigInt(sum) * rate4, BigInt(100));                         // копейки
+    var fee = divHalfUp(base * BigInt(Math.round(feePct * 1000)), BigInt(100000));  // копейки
+    var swift = divHalfUp(swiftCents * rate4, BigInt(10000));                       // копейки
+    return { base: base, fee: fee, swift: swift, total: base + fee + swift };
+  }
+  w.LOKO_EXPRESS_MONEY = expressMoney;  // для ручной проверки расчёта из консоли
 
   /* Валюты по направлениям — как в карте звонка оператора
      (backend/src/lib/paymentDirections.js). Пустой список = согласуем с менеджером,
@@ -68,7 +90,10 @@
     europe: ['EUR'],
     other:  []
   };
-  var TICKER_MARKUP = 1.5;   // в бегущей строке показываем средний тир
+  var TICKER_MARKUP = 1.5;   // в бегущей строке показываем средний коэффициент
+  /* Время котировки «ЧЧ:ММ» по Москве — из ответа API (поле time, его даёт profinance).
+     Пока ответа нет — null: на запасных значениях время не известно. */
+  var rateTime = null;
 
   var nf = function (v, dg) {
     return Number(v).toLocaleString('ru-RU', { minimumFractionDigits: dg, maximumFractionDigits: dg });
@@ -143,34 +168,42 @@
       if (el) el.textContent = text;
     };
 
-    if (!rateMarket) { set('rate', 'расчёт сделает менеджер'); return; }
+    if (!rateMarket) {
+      set('rate', 'расчёт сделает менеджер');
+      var rtNo = express.querySelector('[data-express-rate-time]');
+      if (rtNo) rtNo.hidden = true;
+      return;
+    }
 
-    /* Тир наценки — по долларовому эквиваленту суммы, как в системе.
-       Пока сумма не введена, показываем средний тир (+1,5%) — тот же курс,
+    /* Коэффициент по объёму — по долларовому эквиваленту суммы, как в системе.
+       Пока сумма не введена, показываем средний коэффициент — тот же курс,
        что бежит в ленте наверху, иначе цифры на одном экране расходятся. */
     var usdEquivalent = market.USD ? (sum * rateMarket) / market.USD : 0;
     var tier = sum ? tierFor(usdEquivalent) : { pct: TICKER_MARKUP };
-    var rate = rateMarket * (1 + tier.pct / 100);
+    /* Курс сразу округляем до 4 знаков — по нему и показываем, и считаем. */
+    var rate4 = roundRate4(rateMarket * (1 + tier.pct / 100));
 
-    /* Процент наценки в интерфейсе не показываем (Тати, 16.09.2026) —
+    /* Коэффициент по объёму в интерфейсе не показываем (Тати, 16.09.2026) —
        он уже учтён в самом курсе. */
-    set('rate', nf(rate, 4) + ' ₽');
+    set('rate', nf(Number(rate4) / 10000, 4) + ' ₽');
+    /* Время котировки из источника (profinance, МСК), а не часы браузера (Тати 2026-10-19).
+       Нет времени (источник недоступен, запасные значения) — подпись не показываем. */
+    var rt = express.querySelector('[data-express-rate-time]');
+    if (rt) { rt.hidden = !rateTime; rt.textContent = rateTime ? 'ориентировочно, на ' + rateTime + ' МСК' : ''; }
 
     if (!sum) { ['base', 'fee', 'swift', 'total'].forEach(function (k) { set(k, '—'); }); return; }
-
-    var base = sum * rate;                        // рубли по курсу с наценкой
-    var fee = base * (AGENT_FEE_PCT / 100);       // вознаграждение агента 0,3 %
 
     /* Комиссия банка за SWIFT (Тати 2026-10-15): в валюте платежа, в рубли — по тому
        же курсу; крупный платёж (от 150 000 $ в эквиваленте) — бесплатно. */
     var free = usdEquivalent >= SWIFT.freeFromUsd;
-    var swiftCur = free ? 0 : swiftFee(sum, cur);
-    var swiftRub = swiftCur * rate;
+    var swiftCents = free ? BigInt(0) : swiftFeeCents(sum, cur);
+    var m = expressMoney(sum, rate4, AGENT_FEE_PCT, swiftCents);  // всё в копейках
+    var rub = function (k) { return nf(Number(k) / 100, 2) + ' ₽'; };
 
-    set('base', nf(base, 2) + ' ₽');
-    set('fee', nf(fee, 2) + ' ₽');
-    set('swift', free ? 'бесплатно' : nf(swiftCur, 2) + ' ' + cur + ' ≈ ' + nf(swiftRub, 2) + ' ₽');
-    set('total', nf(base + fee + swiftRub, 2) + ' ₽');
+    set('base', rub(m.base));
+    set('fee', rub(m.fee));
+    set('swift', free ? 'бесплатно' : nf(Number(swiftCents) / 100, 2) + ' ' + cur + ' ≈ ' + rub(m.swift));
+    set('total', rub(m.total));
   }
 
   /* Направления — из общего конфига сайта, чтобы срок не разъезжался с блоком
@@ -241,6 +274,7 @@
       .then(function (data) {
         clearTimeout(stop);
         if (!data) return;
+        rateTime = data.source === 'profinance' && /^\d{1,2}:\d{2}$/.test(data.time || '') ? data.time : null;
         if (data.rates) {
           ['USD', 'EUR', 'CNY', 'AED'].forEach(function (c) {
             if (data.rates[c]) market[c] = Number(data.rates[c]);
