@@ -255,7 +255,7 @@
     leadMode = true;
     var links = [];
     if (CFG.telegram) links.push({ t: 'Написать в Telegram', h: 'https://t.me/' + CFG.telegram });
-    if (CFG.whatsapp) links.push({ t: 'WhatsApp', h: 'https://wa.me/' + CFG.whatsapp });
+    if (CFG.whatsapp) links.push({ t: 'WhatsApp', h: 'https://wa.me/' + CFG.whatsapp + (CFG.whatsappText ? '?text=' + encodeURIComponent(CFG.whatsappText) : '') });
     links.push({ t: CFG.phoneHuman || '+7 (495) 10-80-100', h: 'tel:' + (CFG.phone || '+74951080100') });
     botSay('<p>Оставьте свой номер телефона — менеджер свяжется с вами в ближайшее время.</p>' +
            '<p>Или свяжитесь сразу:</p>', links, function () {

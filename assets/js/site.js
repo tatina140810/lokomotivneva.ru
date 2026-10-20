@@ -37,7 +37,8 @@
       return tg ? { href: 'https://t.me/' + tg, label: 'Написать в Telegram', icon: 'i-telegram' } : null;
     }
     if (kind === 'whatsapp') {
-      return wa ? { href: 'https://wa.me/' + wa, label: 'Написать в WhatsApp', icon: 'i-whatsapp' } : null;
+      var waText = c.whatsappText ? '?text=' + encodeURIComponent(c.whatsappText) : '';
+      return wa ? { href: 'https://wa.me/' + wa + waText, label: 'Написать в WhatsApp', icon: 'i-whatsapp' } : null;
     }
     /* 'auto' и всё неизвестное — по приоритету: сначала Telegram, потом WhatsApp. */
     return messengerLink('telegram') || messengerLink('whatsapp');
