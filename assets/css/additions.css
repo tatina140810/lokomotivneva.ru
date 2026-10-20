@@ -179,6 +179,9 @@ body.is-search-open { overflow: hidden; }
   .header__actions { gap: .45rem; }
   .header__search, .header__phone { width: 34px; height: 34px; }
   .header__search .icon, .header__phone .icon { width: 17px; height: 17px; }
+  /* Кружок телефона 34px, а зона нажатия — 44px: невидимая рамка вокруг. */
+  .header__phone { position: relative; }
+  .header__phone::after { content: ''; position: absolute; inset: -5px; border-radius: 50%; }
 }
 
 /* --------------------- 2. Выпадающее подменю в шапке --------------------- */

@@ -640,7 +640,12 @@ h6 .text-gold, h6 .text-gold-dark { color: inherit; }
 .contacts__icon svg { width: 26px; height: 26px; }
 .contacts__label { display: block; font-size: .75rem; letter-spacing: .14em; text-transform: uppercase; color: var(--text-muted-dark); }
 .contacts__value { font-weight: 700; font-size: 1.05rem; transition: color .25s var(--ease); }
-a.contacts__value:hover { color: var(--gold-700); }
+/* Строка контакта — одна ссылка целиком: значок, подпись и значение (Тати 2026-10-20),
+   клик по кружку или по пустому месту строки ведёт туда же, куда текст. */
+.contacts__row { display: flex; align-items: center; gap: 1rem; flex: 1; min-width: 0; min-height: 44px; }
+.contacts__row .contacts__icon { transition: border-color .25s var(--ease), background-color .25s var(--ease); }
+.contacts__row:hover .contacts__value, .contacts__row:focus-visible .contacts__value { color: var(--gold-700); }
+.contacts__row:hover .contacts__icon, .contacts__row:focus-visible .contacts__icon { border-color: var(--gold-700); background: rgba(212, 175, 55, .1); }
 
 .requisites-card {
   padding: 1.5rem;
