@@ -50,9 +50,9 @@
   };
   /* MEDIAN(минимум; сумма × ставка; максимум) — как в таблице «Платежи» и в кабинете.
      Результат — в центах валюты (целое число), округление до 0,01 вверх от половины. */
-  var swiftFeeCents = function (sum, cur) {
+  var swiftFeeCents = function (sumCents, cur) {
     var t = (SWIFT.tariffs[SWIFT.bank] || {})[cur] || { pct: 0.2 };
-    var v = divHalfUp(BigInt(sum) * BigInt(Math.round(t.pct * 1000)), BigInt(1000)); // сумма × % → центы
+    var v = divHalfUp(sumCents * BigInt(Math.round(t.pct * 1000)), BigInt(100000)); // сумма × % → центы
     if (t.min != null) { var mn = BigInt(Math.round(t.min * 100)); if (v < mn) v = mn; }
     if (t.max != null) { var mx = BigInt(Math.round(t.max * 100)); if (v > mx) v = mx; }
     return v;
@@ -71,8 +71,10 @@
   function roundRate4(rate) {                                    // курс в 1/10000 рубля
     return BigInt(Math.round(Number((rate * 10000).toPrecision(15))));
   }
-  function expressMoney(sum, rate4, feePct, swiftCents) {
-    var base = divHalfUp(BigInt(sum) * rate4, BigInt(100));                         // копейки
+  /* sumCents — сумма платежа в центах валюты (BigInt): с 2026-10-20 сумму можно вводить
+     с копейками/центами. */
+  function expressMoney(sumCents, rate4, feePct, swiftCents) {
+    var base = divHalfUp(BigInt(sumCents) * rate4, BigInt(10000));                  // копейки
     var fee = divHalfUp(base * BigInt(Math.round(feePct * 1000)), BigInt(100000));  // копейки
     var swift = divHalfUp(swiftCents * rate4, BigInt(10000));                       // копейки
     return { base: base, fee: fee, swift: swift, total: base + fee + swift };
@@ -152,6 +154,41 @@
     }
   }
 
+  /* Сумма с копейками/центами (Тати 2026-10-20): до 2 знаков после запятой, точка
+     на вводе становится запятой, тысячи — пробелами: «13 832,37». Лишние знаки
+     после запятой не вводятся. Для расчёта денег — точные центы из строки (BigInt),
+     без float; число (parseFloat) — только для выбора коэффициента по объёму.
+     Пусто, «13 832,» и нули дают 0 — расчёт показывает прочерки, NaN не бывает. */
+  function formatAmount(raw) {
+    var s = String(raw || '').replace(/\./g, ',').replace(/[^\d,]/g, '');
+    var i = s.indexOf(',');
+    var intDigits = (i < 0 ? s : s.slice(0, i)).replace(/^0+(?=\d)/, '');
+    if (i < 0) return { text: intDigits.replace(/\B(?=(\d{3})+(?!\d))/g, '\u00a0'), int: intDigits, frac: '' };
+    var frac = s.slice(i + 1).replace(/,/g, '').slice(0, 2);
+    if (!intDigits) intDigits = '0';
+    return { text: intDigits.replace(/\B(?=(\d{3})+(?!\d))/g, '\u00a0') + ',' + frac, int: intDigits, frac: frac };
+  }
+  function readAmount(el) {
+    var raw = el.value || '';
+    var f = formatAmount(raw);
+    if (f.text !== raw) {
+      /* Курсор оставляем после того же по счёту знака (цифры или запятой), иначе при
+         правке в середине числа он прыгал бы в конец. */
+      var pos = el.selectionStart, keep = null;
+      if (pos != null && d.activeElement === el) {
+        keep = raw.slice(0, pos).replace(/\./g, ',').replace(/[^\d,]/g, '').length;
+      }
+      el.value = f.text;
+      if (keep != null) {
+        var p = 0, n = 0;
+        while (p < f.text.length && n < keep) { if (/[\d,]/.test(f.text[p])) n++; p++; }
+        try { el.setSelectionRange(p, p); } catch (e) { /* поле не в фокусе */ }
+      }
+    }
+    var cents = BigInt(f.int || '0') * BigInt(100) + BigInt((f.frac + '00').slice(0, 2));
+    return { cents: cents, sum: cents > BigInt(0) ? parseFloat((f.int || '0') + '.' + (f.frac || '0')) : 0 };
+  }
+
   function recalc() {
     if (!express) return;
     var amountEl = express.querySelector('[data-express-amount]');
@@ -159,9 +196,8 @@
     var cur = curEl ? curEl.value : 'USD';
     var rateMarket = market[cur];
 
-    var digits = (amountEl.value || '').replace(/\D+/g, '');
-    if (digits) amountEl.value = Number(digits).toLocaleString('ru-RU');
-    var sum = parseInt(digits || '0', 10);
+    var amt = readAmount(amountEl);
+    var sum = amt.sum, sumCents = amt.cents;
 
     var set = function (name, text) {
       var el = express.querySelector('[data-express-' + name + ']');
@@ -196,8 +232,8 @@
     /* Комиссия банка за SWIFT (Тати 2026-10-15): в валюте платежа, в рубли — по тому
        же курсу; крупный платёж (от 150 000 $ в эквиваленте) — бесплатно. */
     var free = usdEquivalent >= SWIFT.freeFromUsd;
-    var swiftCents = free ? BigInt(0) : swiftFeeCents(sum, cur);
-    var m = expressMoney(sum, rate4, AGENT_FEE_PCT, swiftCents);  // всё в копейках
+    var swiftCents = free ? BigInt(0) : swiftFeeCents(sumCents, cur);
+    var m = expressMoney(sumCents, rate4, AGENT_FEE_PCT, swiftCents);  // всё в копейках
     var rub = function (k) { return nf(Number(k) / 100, 2) + ' ₽'; };
 
     set('base', rub(m.base));
@@ -247,6 +283,15 @@
         if (typeof w.ymGoal === 'function') w.ymGoal('calc_submit');
       }, 1500);
     };
+    /* Третий знак после запятой не вводим вовсе (а не обрезаем после ввода). */
+    var amountIn = express.querySelector('[data-express-amount]');
+    if (amountIn) amountIn.addEventListener('beforeinput', function (e) {
+      if (e.inputType !== 'insertText' || e.data == null || amountIn.selectionStart == null) return;
+      var v = amountIn.value;
+      var next = v.slice(0, amountIn.selectionStart) + e.data + v.slice(amountIn.selectionEnd);
+      var i = next.replace(/\./g, ',').indexOf(',');
+      if (i >= 0 && next.slice(i + 1).replace(/\D/g, '').length > 2) e.preventDefault();
+    });
     express.addEventListener('input', function () { recalc(); calcGoal(); });
     express.addEventListener('change', function (e) {
       var t = e.target;
