@@ -662,7 +662,8 @@ function ymGoal(goal, params) {
   if (!document.querySelector('.fab-contact') && !document.body.hasAttribute('data-no-messengers')) {
     var fab = document.createElement('a');
     fab.className = 'fab-contact';
-    fab.href = 'https://t.me/lokomotivneva';
+    // Адрес — из site-config.js (contacts.telegram), чтобы все ссылки вели в одно место: в бота.
+    fab.href = 'https://t.me/' + (((window.LOKO || {}).contacts || {}).telegram || 'LokomotivNeva_Bot').replace(/^@/, '');
     fab.target = '_blank';
     fab.rel = 'nofollow noopener';
     fab.setAttribute('aria-label', 'Написать нам в Telegram');
