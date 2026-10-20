@@ -15,7 +15,7 @@
   var openers = Array.prototype.slice.call(document.querySelectorAll('[data-search-open]'));
   if (!openers.length) return;
 
-  var INDEX_URL = '/assets/search-index.json';
+  var INDEX_URL = '/assets/search-index.json?v=20261020nodog';  // версия: nginx кэширует /assets/ надолго
 
   /* Что показывать при пустом поле: не первые страницы индекса (он отсортирован
      по адресу, и наверх всплывают «О компании» и «Блог»), а разделы, ради
