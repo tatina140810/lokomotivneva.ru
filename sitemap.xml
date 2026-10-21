@@ -2,7 +2,7 @@
 <!--
   Карта сайта lokomotivneva.ru
   Не включены намеренно:
-    /individuals/  — раздел удалён с сайта, отдаёт 404
+    /individuals/  — раздел не опубликован (meta robots: noindex, nofollow)
     /privacy/      — служебная страница с meta robots: noindex
     /cases/        — раздел удалён с сайта, отдаёт 404
     /blog/ — временно исключён, страница пустая (noindex), вернуть после публикации первой статьи
