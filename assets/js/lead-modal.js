@@ -51,6 +51,8 @@
     holder.innerHTML = FORM_HTML;
     form = holder.firstChild;
     holder.removeChild(form);
+    /* «Удобнее написать?» на /payments/* — блок добавляет site.js (подключён раньше). */
+    if (window.LOKO && typeof window.LOKO.addFormMessengers === 'function') window.LOKO.addFormMessengers(form);
   }
   if (!d.getElementById('toast')) {
     var toast = d.createElement('div');

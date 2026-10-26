@@ -28,7 +28,7 @@
      Явный вид ('telegram' / 'whatsapp') резолвится СТРОГО: если этот мессенджер
      в конфиге пуст, ссылка не подменяется на другой — иначе строка «WhatsApp»
      увела бы в Telegram. Подмена по приоритету осталась только у 'auto'. */
-  function messengerLink(kind) {
+  function messengerLink(kind, textOverride) {
     var c = CFG.contacts || {};
     var tg = (c.telegram || '').replace(/^@/, '').trim();
     var wa = (c.whatsapp || '').replace(/\D/g, '');
@@ -37,24 +37,27 @@
       return tg ? { href: 'https://t.me/' + tg, label: 'Написать в Telegram', icon: 'i-telegram' } : null;
     }
     if (kind === 'whatsapp') {
-      var waText = c.whatsappText ? '?text=' + encodeURIComponent(c.whatsappText) : '';
+      var text = textOverride || c.whatsappText;
+      var waText = text ? '?text=' + encodeURIComponent(text) : '';
       return wa ? { href: 'https://wa.me/' + wa + waText, label: 'Написать в WhatsApp', icon: 'i-whatsapp' } : null;
     }
     /* 'auto' и всё неизвестное — по приоритету: сначала Telegram, потом WhatsApp. */
     return messengerLink('telegram') || messengerLink('whatsapp');
   }
 
-  function applyMessengers() {
+  /* root — чтобы повысить ссылки и в форме, которой ещё нет в документе
+     (окно заявки собирает её само, см. addFormMessengers ниже). */
+  function applyMessengers(root) {
     /* Каждая строка контактов прячется по СВОЕМУ мессенджеру: у строки
        data-messenger-row="whatsapp" смотрим только whatsapp. Пустое значение
        атрибута = 'auto' (строка «Мессенджер» из старой вёрстки). */
-    $$('[data-messenger-row]').forEach(function (el) {
+    $$('[data-messenger-row]', root).forEach(function (el) {
       var kind = el.getAttribute('data-messenger-row') || 'auto';
       el.hidden = !messengerLink(kind);
     });
 
-    $$('a[data-messenger]').forEach(function (el) {
-      var res = messengerLink(el.getAttribute('data-messenger'));
+    $$('a[data-messenger]', root).forEach(function (el) {
+      var res = messengerLink(el.getAttribute('data-messenger'), el.getAttribute('data-wa-text'));
       if (!res) return;                       /* оставляем фолбэк из HTML */
       el.setAttribute('href', res.href);
       el.setAttribute('target', '_blank');
@@ -65,6 +68,49 @@
       if (use) use.setAttribute('href', '/assets/sprite.svg#' + res.icon);
     });
   }
+
+  /* ============ 1а. «Удобнее написать?» под формой на /payments/* ============
+     Ставится в конец #lead-form (под кнопку и строку о согласии), поэтому едет
+     вместе с формой в окно заявки. Ссылки — те же data-messenger, что в
+     контактах; WhatsApp — с текстом по странице (formMessengers.waText).
+     Повторный вызов на той же форме ничего не добавляет. */
+  function addFormMessengers(form) {
+    var fm = CFG.formMessengers || {};
+    var path = location.pathname.replace(/\/+$/, '/');
+    if (!form || fm.show === false || path.indexOf('/payments/') !== 0) return;
+    if (form.querySelector('.form-msgr')) return;
+    if (!messengerLink('telegram') && !messengerLink('whatsapp')) return;
+
+    var waText = (fm.waText || {})[path] || '';
+    var row = function (kind, name) {
+      return '<a class="form-msgr__btn" data-messenger="' + kind + '"' +
+        (kind === 'whatsapp' && waText ? ' data-wa-text="' + esc(waText) + '"' : '') +
+        ' data-messenger-text="' + name + '" aria-label="Написать в ' + name + '" href="tel:' + esc((CFG.contacts || {}).phone || '+74951080100') + '" rel="nofollow">' +
+        '<span class="contacts__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-' + kind + '"></use></svg></span>' +
+        '<span data-messenger-label>' + name + '</span></a>';
+    };
+    var box = document.createElement('div');
+    box.className = 'form-msgr';
+    box.innerHTML =
+      '<p class="form-msgr__title">' + esc(fm.title || 'Удобнее написать?') + '</p>' +
+      '<div class="form-msgr__list">' +
+        (messengerLink('telegram') ? row('telegram', 'Telegram') : '') +
+        (messengerLink('whatsapp') ? row('whatsapp', 'WhatsApp') : '') +
+      '</div>';
+    form.appendChild(box);
+    applyMessengers(box);
+
+    /* Круглая кнопка помощника в правом нижнем углу ложится на поля формы и на
+       эти кнопки (особенно на телефоне) — пока форма на экране, она убрана. */
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function (entries) {
+        document.documentElement.classList.toggle('lead-form-in-view', entries[0].isIntersecting);
+      }).observe(form);
+    }
+  }
+  /* Окно заявки (lead-modal.js) на страницах без своей формы собирает её само
+     и вызывает это после сборки. */
+  CFG.addFormMessengers = addFormMessengers;
 
   /* ================== 2. Вариант заголовка первого экрана ===================
      'control' ничего не трогает — в HTML лежит текущий заголовок. */
@@ -171,6 +217,7 @@
   }
 
   applyMessengers();
+  addFormMessengers(document.getElementById('lead-form'));
   applyHeroVariant();
   applyProof();
   applyReviews();

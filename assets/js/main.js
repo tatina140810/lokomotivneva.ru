@@ -57,13 +57,14 @@ function ymGoal(goal, params) {
 (function () {
   'use strict';
 
-  /* Любая ссылка в Telegram или на телефон — плавающая кнопка, ссылки из
+  /* Любая ссылка в Telegram, WhatsApp или на телефон — плавающая кнопка, ссылки из
      site-config, ответы помощника. Делегирование на документе ловит и те, что
      дорисованы скриптами. Цель уходит и в VK, и в Метрику. */
   document.addEventListener('click', function (e) {
     var a = e.target && e.target.closest ? e.target.closest('a[href]') : null;
     if (!a) return;
     if (/^https?:\/\/(www\.)?t\.me\//i.test(a.href)) { vkGoal('telegram_click'); ymGoal('telegram_click'); }
+    else if (/^https?:\/\/(www\.)?wa\.me\//i.test(a.href)) { vkGoal('whatsapp_click'); ymGoal('whatsapp_click'); }
     else if (/^\s*tel:/i.test(a.getAttribute('href'))) { vkGoal('phone_click'); ymGoal('phone_click'); }
   }, true);
 

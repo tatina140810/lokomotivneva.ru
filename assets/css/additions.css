@@ -1125,3 +1125,22 @@ html.is-lead-modal .toast { z-index: 1001; }
 .is-js .page-hero .reveal[data-reveal-delay="3"] { animation-delay: .12s; }
 @keyframes heroReveal { from { transform: translateY(12px); } to { transform: none; } }
 @media (prefers-reduced-motion: reduce) { .is-js .page-hero .reveal { animation: none; } }
+
+/* «Удобнее написать?» под формой заявки на /payments/* (блок собирает site.js).
+   Те же круглые значки, что в контактах, но на тёмной карточке формы. Кнопки
+   во всю ширину и не ниже 52px — по ним легко попасть пальцем. */
+.form-msgr { margin-top: .35rem; padding-top: 1rem; border-top: 1px solid rgba(212, 175, 55, .25); }
+.form-msgr__title { margin: 0 0 .7rem; text-align: center; font-weight: 700; color: var(--white); }
+.form-msgr__list { display: grid; grid-template-columns: 1fr 1fr; gap: .7rem; }
+.form-msgr__btn {
+  display: flex; align-items: center; justify-content: center; gap: .6rem;
+  min-height: 52px; padding: .45rem .9rem; border-radius: 999px;
+  border: 1px solid rgba(212, 175, 55, .55); color: var(--white); font-weight: 700;
+  transition: border-color .25s var(--ease), background-color .25s var(--ease), color .25s var(--ease);
+}
+.form-msgr__btn .contacts__icon { width: 36px; height: 36px; }
+.form-msgr__btn .contacts__icon svg { width: 20px; height: 20px; }
+.form-msgr__btn:hover, .form-msgr__btn:focus-visible { border-color: var(--gold-400); background: rgba(212, 175, 55, .1); color: var(--gold-400); }
+@media (max-width: 360px) { .form-msgr__list { grid-template-columns: 1fr; } }
+/* Пока форма заявки на экране, кнопка помощника не закрывает её поля (site.js). */
+.lead-form-in-view .helper-fab, .lead-form-in-view .fab-contact { opacity: 0; visibility: hidden; pointer-events: none; transition: opacity .2s, visibility .2s; }
