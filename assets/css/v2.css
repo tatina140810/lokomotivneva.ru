@@ -920,3 +920,61 @@
 .crew__item dd { margin: .55rem 0 0; font-size: clamp(1.1rem, 1rem + .5vw, 1.4rem); font-weight: 800; color: var(--white); }
 .crew__item span { display: block; margin-top: .3rem; font-size: .85rem; color: var(--text-muted-light); }
 @media (max-width: 860px) { .crew { grid-template-columns: 1fr; } }
+
+
+/* ---- 20. Билеты «Маршрут платежа» на главной — кликабельные (Тати 2026-10-26) ----
+   Только билеты со ссылкой (.ticket--link); билеты «Кому подходит» на /partners/
+   не трогаем. Вся карточка — одна ссылка: псевдоэлемент ссылки растянут на билет
+   (stretched link), вложенных ссылок нет. Подъём при наведении задаём с
+   .is-js .reveal.is-visible — иначе правило появления (transform: none) его
+   перебивает; задержку появления (transition-delay) на наведение не тянем. */
+.ticket--link { cursor: pointer; }
+.ticket--link.reveal.is-visible { transition-delay: 0s; }
+.ticket--link:hover,
+.is-js .ticket--link.reveal.is-visible:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 26px 48px -20px rgba(11, 30, 63, .55), 0 2px 6px rgba(11, 30, 63, .1);
+}
+.ticket--link:has(.ticket__link:focus-visible) {
+  outline: 3px solid var(--gold-600);
+  outline-offset: 3px;
+}
+.ticket--link .ticket__link::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: 14px;
+}
+/* Кнопка: золотая заливка палитры, тёмно-синий текст (контраст 4,9–13,2 : 1, WCAG AA). */
+.ticket--link .ticket__link {
+  justify-content: center;
+  gap: .5rem;
+  min-height: 44px;
+  padding: .6rem 1.25rem;
+  border-radius: 999px;
+  background: var(--gold-fill);
+  color: var(--navy-900);
+  font-size: .95rem;
+  line-height: 1.2;
+  box-shadow: 0 8px 18px -10px rgba(165, 129, 26, .7);
+  transition: box-shadow .25s ease;
+}
+.ticket--link .ticket__link:focus-visible { outline: none; }
+/* Без filter/transform на самой ссылке: они делают её точкой отсчёта для ::after,
+   и растянутая ссылка сжимается до размеров кнопки. */
+.ticket--link:hover .ticket__link { box-shadow: 0 12px 24px -8px rgba(165, 129, 26, .85); }
+.ticket--link:hover .ticket__link .icon { transform: translateX(3px); }
+/* Планка «Локомотив» — только декор: бледное золото вместо яркой заливки, чтобы
+   не читалась как кнопка; своих эффектов при наведении у неё нет. */
+.ticket--link .ticket__tail { background: linear-gradient(180deg, rgba(227, 196, 106, .28), rgba(201, 162, 39, .22)); }
+.ticket--link .ticket__tail span { color: var(--gold-700); opacity: .75; }
+@media (max-width: 860px) {
+  .ticket--link .ticket__link { display: flex; width: 100%; }
+}
+@media (max-width: 420px) {
+  .ticket--link .ticket__link { padding: .6rem .8rem; font-size: .88rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ticket--link:hover, .is-js .ticket--link.reveal.is-visible:hover { transform: none; }
+}
