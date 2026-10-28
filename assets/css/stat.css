@@ -300,3 +300,15 @@ tbody tr:last-child td { border-bottom: 0; }
   .funnel__bar { grid-column: 1 / -1; grid-row: 2; }
   .card__toggle { margin-left: 0; }
 }
+
+/* Сворачиваемые блоки (Тати 2026-10-28), см. stat-collapse.js. */
+.clp-hidden { display: none !important; }
+.clp-head { cursor: pointer; user-select: none; }
+.clp-head:hover { color: var(--navy); }
+.clp-head:focus-visible { outline: 2px solid var(--navy); outline-offset: 3px; border-radius: 4px; }
+.clp-mark {
+  display: inline-block; width: 8px; height: 8px; margin: 0 10px 2px 2px;
+  border-right: 2px solid var(--ink-3); border-bottom: 2px solid var(--ink-3);
+  transform: rotate(45deg); transition: transform .15s; vertical-align: middle;
+}
+.clp-head[aria-expanded="false"] .clp-mark { transform: rotate(-45deg); }
