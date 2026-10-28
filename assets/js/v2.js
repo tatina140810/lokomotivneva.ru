@@ -279,15 +279,34 @@
        итог и остановился на 1,5 с: иначе засчитали бы первую набранную цифру. */
     var calcGoalSent = false, calcGoalTimer = null;
     var calcGoal = function () {
-      if (calcGoalSent) return;
       clearTimeout(calcGoalTimer);
       calcGoalTimer = setTimeout(function () {
         var total = express.querySelector('[data-express-total]');
         if (!total || total.textContent.trim() === '—') return;
+        calcStat();
+        if (calcGoalSent) return;
         calcGoalSent = true;
         if (typeof w.vkGoal === 'function') w.vkGoal('calc_submit');
         if (typeof w.ymGoal === 'function') w.ymGoal('calc_submit');
       }, 1500);
+    };
+    /* Наша статистика (/stat/, Тати 2026-10-28): в отличие от цели Метрики считаем каждый
+       НОВЫЙ итог — сменили сумму, валюту или направление. Тот же итог повторно не шлём.
+       Наружу уходят направление, валюта и диапазон суммы по долларовому эквиваленту. */
+    var calcStatKey = '';
+    var calcStat = function () {
+      if (!w.LOKO_STAT || typeof w.LOKO_STAT.calc !== 'function') return;
+      var curEl = express.querySelector('[data-express-currency]');
+      var cur = curEl ? curEl.value : '';
+      var amt = readAmount(express.querySelector('[data-express-amount]'));
+      if (!amt.sum || !/^[A-Z]{3}$/.test(cur)) return;
+      var route = routeSel ? routeSel.value : '';
+      var key = route + '|' + cur + '|' + amt.sum;
+      if (key === calcStatKey) return;
+      calcStatKey = key;
+      var usd = market[cur] && market.USD ? (amt.sum * market[cur]) / market.USD : 0;
+      var band = usd < 10000 ? 'lt10k' : usd < 50000 ? '10k_50k' : usd < 150000 ? '50k_150k' : 'gt150k';
+      w.LOKO_STAT.calc({ route: route, currency: cur, band: usd ? band : '' });
     };
     /* Третий знак после запятой не вводим вовсе (а не обрезаем после ввода). */
     var amountIn = express.querySelector('[data-express-amount]');

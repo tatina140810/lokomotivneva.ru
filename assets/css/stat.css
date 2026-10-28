@@ -280,3 +280,23 @@ tbody tr:last-child td { border-bottom: 0; }
 .tguploads { margin: 8px 0 4px; font-size: 13px; }
 .tguploads summary { cursor: pointer; color: var(--ink-2); font-weight: 600; }
 .tguploads table { margin-top: 6px; }
+
+/* Расчёты в калькуляторе (Тати 2026-10-28): свёрнутый блок внутри «Что смотрят». */
+.card__toggle { margin-left: auto; font-size: 13px; padding: 6px 12px; }
+.card__toggle[aria-expanded="true"] { background: var(--navy); border-color: var(--navy); color: #fff; }
+.calc { margin: 0 0 22px; padding: 16px 0 4px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.calc__h3 { font-size: 14px; font-weight: 600; margin: 18px 0 10px; color: var(--ink-2); }
+.calc .tiles { margin-bottom: 8px; }
+.calc__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.funnel { display: grid; gap: 8px; }
+.funnel__step { display: grid; grid-template-columns: 230px 1fr 190px; gap: 12px; align-items: center; font-size: 14px; }
+.funnel__label { color: var(--ink-2); }
+.funnel__bar { height: 14px; background: var(--bg); border-radius: 7px; overflow: hidden; }
+.funnel__bar span { display: block; height: 100%; background: var(--navy); border-radius: 7px; }
+.funnel__num b { font-variant-numeric: tabular-nums; }
+@media (max-width: 860px) {
+  .calc__grid { grid-template-columns: 1fr; }
+  .funnel__step { grid-template-columns: 1fr auto; }
+  .funnel__bar { grid-column: 1 / -1; grid-row: 2; }
+  .card__toggle { margin-left: 0; }
+}

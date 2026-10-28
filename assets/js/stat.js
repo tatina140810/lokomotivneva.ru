@@ -236,6 +236,13 @@
      успешного ответа сервера (см. window.LOKO_STAT.lead). */
   w.LOKO_STAT.lead = function () { push('form', { target: 'Заявка отправлена' }); flush(); };
 
+  /* Расчёт в калькуляторе (Тати 2026-10-28). Зовёт v2.js на каждый НОВЫЙ итог: направление,
+     валюта и диапазон суммы. Точную сумму не передаём. */
+  w.LOKO_STAT.calc = function (c) {
+    if (!c) return;
+    push('calc', { calc_route: c.route || null, calc_currency: c.currency || null, calc_band: c.band || null });
+  };
+
   /* Уход со страницы: фиксируем итоговое время и прокрутку и дожимаем очередь. */
   function leave() {
     if (sent.left) return;

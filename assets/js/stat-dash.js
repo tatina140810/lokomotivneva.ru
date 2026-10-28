@@ -95,6 +95,7 @@
      VK в системе считаются по московским суткам. Перехода на летнее время в РФ нет. */
   var MSK = '+03:00';
   var DAY_MS = 86400000;
+  var calcOpen = false;      // блок «Расчёты в калькуляторе» свёрнут, пока его не раскрыли
   var period = { days: 0 };  // по умолчанию — «Сегодня» (Тати 2026-10-06)
   /* Московская календарная дата момента — её видят карточки кабинетов и подпись периода. */
   function localDay(d) {
@@ -261,8 +262,13 @@
     html += '</div>';
 
     // 6. Страницы.
+    // Кнопка раскрывает блок «Расчёты в калькуляторе» (Тати 2026-10-28): он не на виду
+    // постоянно, а данные для него грузятся только при раскрытии.
     html += '<div class="card"><div class="card__head"><h2>Что смотрят</h2>'
-      + '<span class="card__note">просмотры страниц и сколько на них задерживаются</span></div>'
+      + '<span class="card__note">просмотры страниц и сколько на них задерживаются</span>'
+      + '<button type="button" class="bar__btn card__toggle" id="calc-toggle" aria-expanded="' + calcOpen + '" aria-controls="calc-box">'
+      + (calcOpen ? 'Скрыть расчёты' : 'Расчёты в калькуляторе') + '</button></div>'
+      + '<div id="calc-box" class="calc"' + (calcOpen ? '' : ' hidden') + '></div>'
       + list(x.pages, function (p) {
         return '<tr><td>' + esc(p.path) + '<div class="t-sub">' + esc(p.section) + '</div></td>'
           + '<td>' + num(p.views) + '</td><td>' + num(p.visits) + '</td><td>' + dur(p.avgMs) + '</td></tr>';
@@ -327,6 +333,18 @@
     if (w.renderTelegramBox) w.renderTelegramBox($('#tg-ads'), { api: API, token: token, summary: x, onChange: load });
     if (w.renderAdsBox) w.renderAdsBox($('#ads'), { api: API, token: token, summary: x, onChange: load });
     if (w.renderAdsMonthly) w.renderAdsMonthly($('#ads-monthly'), { api: API, token: token });
+    var b = bounds();
+    var calcBox = function () {
+      if (w.renderCalcBox) w.renderCalcBox($('#calc-box'), { api: API, token: token, from: b.from, to: b.to });
+    };
+    if (calcOpen) calcBox();
+    $('#calc-toggle').addEventListener('click', function () {
+      calcOpen = !calcOpen;
+      this.setAttribute('aria-expanded', String(calcOpen));
+      this.textContent = calcOpen ? 'Скрыть расчёты' : 'Расчёты в калькуляторе';
+      $('#calc-box').hidden = !calcOpen;
+      if (calcOpen) calcBox();
+    });
   }
 
   /* Разбивка внутри карточки. У Яндекса показываем все три канала всегда, даже с
