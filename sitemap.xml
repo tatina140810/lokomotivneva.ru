@@ -147,4 +147,26 @@
     <priority>0.7</priority>
   </url>
 
+  <!-- guides:start (собирает _guides_gen.py, руками не править) -->
+  <url>
+    <loc>https://lokomotivneva.ru/guides/</loc>
+    <lastmod>2026-10-28</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://lokomotivneva.ru/guides/oplata-invojsa-v-kitaj/</loc>
+    <lastmod>2026-10-28</lastmod>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://lokomotivneva.ru/guides/platezhnyj-agent-ved/</loc>
+    <lastmod>2026-10-28</lastmod>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://lokomotivneva.ru/guides/postanovka-kontrakta-na-uchet/</loc>
+    <lastmod>2026-10-28</lastmod>
+    <priority>0.6</priority>
+  </url>
+  <!-- guides:end -->
 </urlset>

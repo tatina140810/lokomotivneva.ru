@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Оплата через платёжного агента в ВЭД: схема и проверка агента | ООО «Локомотив»</title>
+  <meta name="description" content="Кто такой платёжный агент в ВЭД по закону, какие документы получает бухгалтерия, что с НДС и валютным контролем и 7 пунктов проверки агента до оплаты.">
+  <meta name="theme-color" content="#0B1E3F">
+  <link rel="canonical" href="https://lokomotivneva.ru/guides/platezhnyj-agent-ved/">
+  <link rel="icon" href="/assets/img/logo-160.jpg">
+  <link rel="stylesheet" href="/assets/css/styles.css?v=20261020cnt">
+  <link rel="stylesheet" href="/assets/css/additions.css?v=20261028rt">
+  <!-- Отказ от аналитики. Посетитель, выбравший «Только необходимые» в окне о
+       cookie, не должен попадать в счётчики — а они стоят инлайном сразу ниже,
+       поэтому выключатель обязан быть инлайновым и стоять ПЕРЕД ними: внешний
+       файл с defer выполнился бы слишком поздно. Ставит заглушки, а не удаляет
+       код счётчиков, чтобы ниже ничего не пришлось править. См. cookie.js. -->
+  <script type="text/javascript">
+  (function (w, d) {
+    try { if (w.localStorage.getItem('loko_analytics') !== 'deny') return; } catch (e) { return; }
+    /* Метрика: наш ym() определён раньше, и её код его не перезапишет —
+       он пишет m[i] = m[i] || function(){...}. Инициализация уходит в пустоту.
+       Сам tag.js при этом всё равно скачался бы: её загрузчик проверяет, нет ли
+       в документе скрипта с таким же src, и только потом вставляет свой. Кладём
+       пустышку с тем же адресом — браузер её не исполняет и не загружает
+       (type не исполняемый), а загрузчик видит совпадение и выходит. */
+    w.ym = function () {};
+    w['disableYaCounter112180979'] = true;
+    var ya = d.createElement('script');
+    ya.type = 'text/plain';
+    ya.src = 'https://mc.yandex.ru/metrika/tag.js?id=112180979';
+    d.head.appendChild(ya);
+    /* VK: её код выходит, если в документе уже есть элемент с этим id, —
+       пустышка без src не грузит ничего и гасит счётчик. */
+    var stub = d.createElement('script');
+    stub.id = 'tmr-code';
+    d.head.appendChild(stub);
+    w._tmr = { push: function () {} };
+  })(window, document);
+  </script>
+<!-- Top.Mail.Ru counter -->
+<script type="text/javascript">
+var _tmr = window._tmr || (window._tmr = []);
+_tmr.push({id: "3797721", type: "pageView", start: (new Date()).getTime()});
+(function (d, w, id) {
+  if (d.getElementById(id)) return;
+  var ts = d.createElement("script"); ts.type = "text/javascript"; ts.async = true; ts.id = id;
+  ts.src = "https://top-fwz1.mail.ru/js/code.js";
+  var f = function () {var s = d.getElementsByTagName("script")[0]; s.parentNode.insertBefore(ts, s);};
+  if (w.opera == "[object Opera]") { d.addEventListener("DOMContentLoaded", f, false); } else { f(); }
+})(document, window, "tmr-code");
+</script>
+<!-- /Top.Mail.Ru counter -->
+  <!-- Yandex.Metrika counter -->
+  <script type="text/javascript">
+      (function(m,e,t,r,i,k,a){
+          m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+          m[i].l=1*new Date();
+          for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+          k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
+      })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=112180979', 'ym');
+
+      ym(112180979, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", referrer: document.referrer, url: location.href, accurateTrackBounce:true, trackLinks:true});
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/112180979" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+  <!-- /Yandex.Metrika counter -->
+  <link rel="stylesheet" href="/assets/css/helper.css?v=20260924rkn">
+  <link rel="stylesheet" href="/assets/css/guides.css?v=20261028g1">
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "headline": "Оплата через платёжного агента в ВЭД: как работает схема и как проверить агента", "description": "Кто такой платёжный агент в ВЭД по закону, какие документы получает бухгалтерия, что с НДС и валютным контролем и 7 пунктов проверки агента до оплаты.", "datePublished": "2026-10-28", "dateModified": "2026-10-28", "inLanguage": "ru", "mainEntityOfPage": "https://lokomotivneva.ru/guides/platezhnyj-agent-ved/", "author": {"@type": "Organization", "name": "Редакция ООО «Локомотив»"}, "publisher": {"@type": "Organization", "name": "ООО «Локомотив»", "logo": {"@type": "ImageObject", "url": "https://lokomotivneva.ru/assets/img/logo-160.jpg"}}}</script>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Главная", "item": "https://lokomotivneva.ru/"}, {"@type": "ListItem", "position": 2, "name": "База знаний ВЭД", "item": "https://lokomotivneva.ru/guides/"}, {"@type": "ListItem", "position": 3, "name": "Оплата через платёжного агента в ВЭД: как работает схема и как проверить агента"}]}</script>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Платёжный агент в ВЭД — это то же самое, что платёжный агент по 103-ФЗ?", "acceptedAnswer": {"@type": "Answer", "text": "Нет. По 103-ФЗ платёжный агент — это компания или ИП, которые принимают платежи физических лиц, например за связь или коммунальные услуги. Компании, которые оплачивают инвойсы иностранным поставщикам за импортёров, обычно работают по агентскому договору или договору комиссии из Гражданского кодекса."}}, {"@type": "Question", "name": "Какие документы я получу после оплаты через агента?", "acceptedAnswer": {"@type": "Answer", "text": "Как правило: агентский договор и поручение на конкретный платёж, отчёт агента с подтверждением расходов (ст. 1008 ГК РФ требует прикладывать доказательства расходов, если договор не говорит иное), акт об оказании услуг агента и подтверждение перевода поставщику. Состав пакета стоит согласовать в договоре заранее."}}, {"@type": "Question", "name": "С какой суммы агент платит НДС?", "acceptedAnswer": {"@type": "Answer", "text": "По статье 156 Налогового кодекса агент определяет базу по НДС как сумму своего вознаграждения. Деньги, которые агент переводит поставщику за вас, его выручкой не являются."}}, {"@type": "Question", "name": "Если платит агент, кто отвечает за валютный контроль?", "acceptedAnswer": {"@type": "Answer", "text": "Если контракт с иностранным поставщиком подписан вашей компанией, обязанности резидента по нему остаются у вас. Например, по статье 19 закона № 173-ФЗ резидент должен обеспечить возврат денег, если оплаченный товар не ввезён. Поэтому агент должен выдать документы, которые подтверждают платёж по вашему контракту."}}, {"@type": "Question", "name": "Как понять, что агент существует и не ликвидируется?", "acceptedAnswer": {"@type": "Answer", "text": "Получите бесплатную выписку на egrul.nalog.ru: в ней видно дату регистрации, руководителя и записи о ликвидации или реорганизации. Сервис «Прозрачный бизнес» на pb.nalog.ru покажет сведения о налогах, численности и отчётности, а kad.arbitr.ru — арбитражные дела компании."}}]}</script>
+</head>
+<body>
+<noscript><div><img src="https://top-fwz1.mail.ru/counter?id=3797721;js=na" style="position:absolute;left:-9999px;" alt="Top.Mail.Ru" /></div></noscript>
+  <a class="skip-link" href="#main">Перейти к основному содержанию</a>
+
+  <header class="header" id="header">
+    <div class="container header__inner">
+      <a class="brand" href="/" aria-label="ООО «Локомотив» — на главную">
+        <span class="brand__seal"><img src="/assets/img/logo-160.jpg" width="160" height="160" alt="Эмблема ООО «Локомотив»"></span>
+        <span class="brand__text"><span class="brand__name">ЛОКОМОТИВ</span><span class="brand__tagline">Платёжный агент ВЭД и логистика</span></span>
+      </a>
+      <nav class="nav" id="nav" aria-label="Основная навигация">
+        <ul class="nav__list">
+          <li><a class="nav__link" href="/payments/">Платежи</a></li>
+          <li><a class="nav__link" href="/logistics/">Логистика</a></li>
+          <li><a class="nav__link" href="/trust/">Проверьте нас</a></li>
+          <li><a class="nav__link" href="/guides/">База знаний</a></li>
+          <li><a class="nav__link" href="/individuals/">Для физлиц</a></li>
+          <li><a class="nav__link" href="/contacts/">Контакты</a></li><li><a class="nav__link" href="/partners/">Партнёрам</a></li>
+        </ul>
+        <div class="nav__mobile-actions"><a class="btn btn--gold btn--block" href="/contacts/">Рассчитать платёж</a></div>
+      </nav>
+      <div class="header__actions">
+        <button class="header__search" type="button" data-search-open aria-label="Поиск по сайту" title="Поиск по сайту"><svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-search"></use></svg></button>
+        <a class="header__phone" href="tel:+74951080100" aria-label="Позвонить +7 (495) 10-80-100"><svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-phone"></use></svg><span>+7 (495) 10-80-100</span></a>
+      </div>
+      <button class="burger" id="burger" type="button" aria-label="Открыть меню" aria-expanded="false" aria-controls="nav"><span></span><span></span><span></span></button>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="page-hero page-hero--guide">
+      <div class="hero__glow" aria-hidden="true"></div>
+      <div class="container page-hero__inner guide__hero">
+        <nav class="crumbs" aria-label="Хлебные крошки"><ol><li><a href="/">Главная</a></li><li><a href="/guides/">База знаний ВЭД</a></li><li><a href="/guides/#agent-scheme">Агентская схема</a></li><li aria-current="page">Оплата через платёжного агента в ВЭД: как работает схема и как проверить агента</li></ol></nav>
+        <h1>Оплата через платёжного агента в ВЭД: как работает схема и как проверить агента</h1>
+        <p class="guide__meta">Автор: Редакция ООО «Локомотив» · Обновлено: <time datetime="2026-10-28">28 октября 2026</time> · 6 мин чтения</p>
+      </div>
+    </section>
+    <section class="section section--light"><div class="container guide">
+      <div class="guide__summary"><p class="guide__summary-label">Коротко</p><p>«Платёжный агент» в ВЭД — разговорное название. По закону такая компания работает по агентскому договору (глава 52 ГК РФ) или договору комиссии (глава 51): вы платите ей в рублях, а она за вознаграждение оплачивает инвойс иностранному поставщику и отчитывается документами.</p><p>Перед переводом денег проверьте агента: российское юрлицо в ЕГРЮЛ, договор с условием о возврате денег, фиксированные курс и вознаграждение, полный пакет закрывающих документов и проверку вашего контракта с его стороны.</p></div>
+      
+      <article class="prose guide__body"><h2 id="kto-eto">Кого называют платёжным агентом в ВЭД</h2>
+<p>Когда импортёр ищет «платёжного агента», он ищет компанию, которая оплатит инвойс иностранному поставщику вместо него: вы переводите рубли российской компании, а она отправляет деньги поставщику в Китай, Турцию, ОАЭ или Европу и возвращает вам документы для бухгалтерии.</p>
+<p>В законе у такой компании другое название. Чаще всего это <strong>агент по агентскому договору</strong> (глава 52 ГК РФ) или <strong>комиссионер по договору комиссии</strong> (глава 51 ГК РФ). По статье 1005 ГК РФ агент за вознаграждение совершает по поручению принципала юридические и иные действия — от своего имени, но за счёт принципала, либо от имени и за счёт принципала.</p>
+<div class="guide__note">
+<p>Не путайте с двумя «платёжными агентами» из других законов:</p>
+<ul>
+<li><strong>Платёжный агент по 103-ФЗ</strong> — компания или ИП, которые принимают платежи физических лиц: например, наличные через терминал за связь или коммунальные услуги.</li>
+<li><strong>Банковский платёжный агент по 161-ФЗ</strong> — компания или ИП, которых банк привлекает для отдельных банковских операций.</li>
+</ul>
+<p>Агент, который оплачивает инвойсы за импортёров, ни тем ни другим обычно не является. Если компания называет себя «платёжным агентом», спросите, по какому договору она работает, и прочитайте этот договор.</p>
+</div>
+
+<h2 id="kak-rabotaet">Как работает оплата через агента</h2>
+<p>Схема у разных агентов похожа:</p>
+<ol>
+<li><strong>Заявка.</strong> Вы присылаете инвойс, контракт и реквизиты поставщика.</li>
+<li><strong>Расчёт и поручение.</strong> Агент называет курс, своё вознаграждение и срок, а вы подписываете поручение на конкретный платёж.</li>
+<li><strong>Оплата агенту.</strong> Вы переводите рубли на счёт российской компании-агента по её счёту.</li>
+<li><strong>Платёж поставщику.</strong> Агент сам или через своих партнёров (субагентов) переводит деньги поставщику.</li>
+<li><strong>Отчёт и документы.</strong> Агент отчитывается: что сделал, сколько потратил и чем это подтверждается.</li>
+</ol>
+<p>Важная деталь — <strong>кто сторона сделки с поставщиком</strong>. Если агент действует от своего имени, права и обязанности по сделке с третьим лицом приобретает он сам (абзац 2 п. 1 ст. 1005 ГК РФ). Если от вашего имени — права и обязанности возникают у вас. На практике контракт на поставку обычно подписывает сам импортёр, а агент только оплачивает по нему. Как это устроено у конкретного агента, должно быть написано в договоре.</p>
+<p>Как этот процесс выглядит у нас, по шагам, — на странице <a href="/how-it-works/">«Как это работает»</a>.</p>
+
+<h2 id="dokumenty">Какие документы получает бухгалтерия</h2>
+<div class="table-wrap"><table>
+<thead><tr><th>Документ</th><th>Зачем он нужен</th></tr></thead>
+<tbody>
+<tr><td>Агентский договор</td><td>Основа отношений: предмет, вознаграждение, сроки, порядок возврата денег и ответственность сторон.</td></tr>
+<tr><td>Поручение на платёж</td><td>Фиксирует конкретную операцию: получателя, сумму, валюту, курс и вознаграждение.</td></tr>
+<tr><td>Отчёт агента</td><td>Обязателен по статье 1008 ГК РФ. Если договор не говорит иное, к нему прикладывают доказательства расходов агента. Возражения по отчёту нужно заявить в течение 30 дней, иначе он считается принятым.</td></tr>
+<tr><td>Акт</td><td>Подтверждает услугу агента и его вознаграждение — для учёта расходов.</td></tr>
+<tr><td>Подтверждение платежа</td><td>Показывает, что деньги ушли поставщику по вашему инвойсу. Пригодится банку и в споре с поставщиком.</td></tr>
+</tbody>
+</table></div>
+<p>Срок возражений по отчёту короткий, поэтому проверяйте отчёт сразу: совпадают ли сумма, курс, получатель и номер инвойса с поручением.</p>
+
+<h2 id="nds">НДС и учёт</h2>
+<p>По статье 156 Налогового кодекса агент считает базу по НДС как сумму своего вознаграждения. Деньги, которые он переводит поставщику за вас, — не его выручка: это ваши средства, которые проходят через агента транзитом.</p>
+<p>У импортёра в учёте отдельно отражаются расчёты с агентом, оплата поставщику и вознаграждение агента. Схему проводок лучше согласовать с вашим бухгалтером до первого платежа, а не после.</p>
+
+<h2 id="valyutnyj-kontrol">Валютный контроль при оплате через агента</h2>
+<p>Оплата через агента не снимает с импортёра обязанностей по контракту с иностранным поставщиком. Если контракт подписан вашей компанией, вы остаётесь резидентом, который за него отвечает. Например, по статье 19 закона № 173-ФЗ резидент должен обеспечить возврат в Россию денег, уплаченных нерезиденту за товары, которые так и не были ввезены.</p>
+<p>Поэтому документы от агента нужны не только бухгалтерии: они подтверждают, что платёж прошёл именно по вашему контракту и инвойсу. Когда нужно ставить контракт на учёт в банке, разберём в отдельной статье.</p>
+<p>Ваш банк тоже вправе задавать вопросы. По пункту 14 статьи 7 закона № 115-ФЗ клиенты обязаны предоставлять банку информацию, которая нужна ему для исполнения этого закона. Если вы переводите агенту крупную сумму, держите под рукой агентский договор, поручение и инвойс.</p>
+
+<h2 id="kak-proverit">Как проверить платёжного агента: 7 пунктов</h2>
+<ol>
+<li><strong>Российское юрлицо и его история.</strong> Закажите бесплатную выписку на <a href="https://egrul.nalog.ru/" target="_blank" rel="noopener nofollow">egrul.nalog.ru</a>. В ней видно дату регистрации, руководителя, учредителей и записи о ликвидации или реорганизации. Договор с иностранной компанией вместо российской лишает вас понятной защиты в российском суде.</li>
+<li><strong>Налоги, отчётность и долги.</strong> Сервис <a href="https://pb.nalog.ru/" target="_blank" rel="noopener nofollow">«Прозрачный бизнес»</a> показывает сведения ФНС о компании, <a href="https://bo.nalog.gov.ru/" target="_blank" rel="noopener nofollow">bo.nalog.gov.ru</a> — бухгалтерскую отчётность, <a href="https://fssp.gov.ru/iss/ip" target="_blank" rel="noopener nofollow">банк ФССП</a> — исполнительные производства.</li>
+<li><strong>Суды.</strong> Найдите компанию по ИНН в <a href="https://kad.arbitr.ru/" target="_blank" rel="noopener nofollow">картотеке арбитражных дел</a>. Насторожить должны иски клиентов о возврате денег. Заодно проверьте компанию по <a href="https://www.cbr.ru/inside/warning-list/" target="_blank" rel="noopener nofollow">списку Банка России</a> с признаками нелегальной деятельности.</li>
+<li><strong>Договор до оплаты.</strong> Попросите агентский договор до перевода денег и покажите его юристу. В нём должны быть: предмет, вознаграждение, срок исполнения поручения, отчётность, порядок и срок возврата денег, если платёж не прошёл, ответственность сторон.</li>
+<li><strong>Курс и вознаграждение письменно.</strong> Условия конкретного платежа должны быть зафиксированы в поручении или другом документе до того, как вы переводите деньги. Фраза «курс уточним при отправке» означает, что итоговую сумму вы узнаете постфактум.</li>
+<li><strong>Закрывающие документы.</strong> Уточните заранее, какие документы вы получите и в какой срок: отчёт агента, акт, подтверждение платежа. Попросите образцы.</li>
+<li><strong>Агент задаёт вопросы.</strong> Добросовестный агент проверяет ваш контракт, инвойс и реквизиты получателя. Если агенту всё равно, что и кому вы платите, платёж с большей вероятностью остановят банки по цепочке, а вопросы потом зададут вам.</li>
+</ol>
+<p>Отдельно о том, куда вы платите: деньги переводите только на расчётный счёт той компании, с которой подписан договор. Просьба перевести на карту физлица или на счёт другой компании — повод остановиться.</p>
+<p>Никакой агент не может честно обещать, что пройдёт любой платёж: международные расчёты зависят от банков-корреспондентов и их проверок. Обещание «100% без отказов» — скорее повод задать больше вопросов.</p>
+<p>Наши ответы по каждому пункту, выписку ЕГРЮЛ и карточку компании мы выложили на странице <a href="/trust/">«Проверьте нас»</a>. Можно сверить их с первоисточниками самостоятельно.</p></article>
+      <aside class="guide__cta"><p>Мы показываем свои документы и ответы по каждому пункту проверки на отдельной странице — сравните с другими агентами.</p><div class="guide__cta-links"><a class="btn btn--navy" href="/trust/">Проверьте нас</a><a class="btn btn--gold" href="/#calc">Рассчитать платёж</a></div></aside>
+      <div class="prose"><h2 id="faq">Частые вопросы</h2><div class="faq guide__faq"><details class="faq__item"><summary class="faq__q">Платёжный агент в ВЭД — это то же самое, что платёжный агент по 103-ФЗ?</summary><div class="faq__a"><p>Нет. По 103-ФЗ платёжный агент — это компания или ИП, которые принимают платежи физических лиц, например за связь или коммунальные услуги. Компании, которые оплачивают инвойсы иностранным поставщикам за импортёров, обычно работают по агентскому договору или договору комиссии из Гражданского кодекса.</p></div></details><details class="faq__item"><summary class="faq__q">Какие документы я получу после оплаты через агента?</summary><div class="faq__a"><p>Как правило: агентский договор и поручение на конкретный платёж, отчёт агента с подтверждением расходов (ст. 1008 ГК РФ требует прикладывать доказательства расходов, если договор не говорит иное), акт об оказании услуг агента и подтверждение перевода поставщику. Состав пакета стоит согласовать в договоре заранее.</p></div></details><details class="faq__item"><summary class="faq__q">С какой суммы агент платит НДС?</summary><div class="faq__a"><p>По статье 156 Налогового кодекса агент определяет базу по НДС как сумму своего вознаграждения. Деньги, которые агент переводит поставщику за вас, его выручкой не являются.</p></div></details><details class="faq__item"><summary class="faq__q">Если платит агент, кто отвечает за валютный контроль?</summary><div class="faq__a"><p>Если контракт с иностранным поставщиком подписан вашей компанией, обязанности резидента по нему остаются у вас. Например, по статье 19 закона № 173-ФЗ резидент должен обеспечить возврат денег, если оплаченный товар не ввезён. Поэтому агент должен выдать документы, которые подтверждают платёж по вашему контракту.</p></div></details><details class="faq__item"><summary class="faq__q">Как понять, что агент существует и не ликвидируется?</summary><div class="faq__a"><p>Получите бесплатную выписку на egrul.nalog.ru: в ней видно дату регистрации, руководителя и записи о ликвидации или реорганизации. Сервис «Прозрачный бизнес» на pb.nalog.ru покажет сведения о налогах, численности и отчётности, а kad.arbitr.ru — арбитражные дела компании.</p></div></details></div><h2 id="sources">Источники</h2><ol class="guide__sources"><li><a href="https://www.consultant.ru/document/cons_doc_LAW_9027/16b93ff7ea7de7dab0724c646d4654ce75554780/" target="_blank" rel="noopener nofollow">Гражданский кодекс РФ, ст. 1005. Агентский договор</a> <span class="guide__src-note">КонсультантПлюс</span></li><li><a href="https://www.consultant.ru/document/cons_doc_LAW_9027/61c9aed64e81a8aed5c7a49cd10b5dce832ac726/" target="_blank" rel="noopener nofollow">Гражданский кодекс РФ, ст. 1008. Отчёты агента</a> <span class="guide__src-note">КонсультантПлюс</span></li><li><a href="https://www.consultant.ru/document/cons_doc_LAW_9027/cca276287b4e78f6bd949d7e1aef14a463bd0f2e/" target="_blank" rel="noopener nofollow">Гражданский кодекс РФ, ст. 990. Договор комиссии</a> <span class="guide__src-note">КонсультантПлюс</span></li><li><a href="https://www.consultant.ru/document/cons_doc_LAW_88274/c5051782233acca771e9adb35b47d3fb82c9ff1c/" target="_blank" rel="noopener nofollow">Федеральный закон № 103-ФЗ, ст. 2. Основные понятия</a> <span class="guide__src-note">кто такой платёжный агент по закону</span></li><li><a href="https://www.consultant.ru/document/cons_doc_LAW_115625/4f41fe599ce341751e4e34dc50a4b676674c1416/" target="_blank" rel="noopener nofollow">Федеральный закон № 161-ФЗ «О национальной платёжной системе», ст. 3</a> <span class="guide__src-note">банковский платёжный агент</span></li><li><a href="https://www.consultant.ru/document/cons_doc_LAW_28165/6b569713cc84e7a3aaf87ea5f8c7c04c77baad10/" target="_blank" rel="noopener nofollow">Налоговый кодекс РФ, ст. 156</a> <span class="guide__src-note">НДС у агентов и комиссионеров</span></li><li><a href="https://www.consultant.ru/document/cons_doc_LAW_45458/898bd5aa0592f9c50e1712a92fb21339ef2b188a/" target="_blank" rel="noopener nofollow">Федеральный закон № 173-ФЗ «О валютном регулировании и валютном контроле», ст. 19</a> <span class="guide__src-note">обязанности резидентов по внешнеторговым контрактам</span></li><li><a href="https://www.consultant.ru/document/cons_doc_LAW_32834/3e3e0d20d2919071b55ef95f26f849df6a4f11e8/" target="_blank" rel="noopener nofollow">Федеральный закон № 115-ФЗ, ст. 7</a> <span class="guide__src-note">п. 14: клиент обязан давать информацию банку</span></li><li><a href="https://egrul.nalog.ru/" target="_blank" rel="noopener nofollow">Выписка из ЕГРЮЛ (ФНС России)</a></li><li><a href="https://pb.nalog.ru/" target="_blank" rel="noopener nofollow">Прозрачный бизнес (ФНС России)</a></li><li><a href="https://kad.arbitr.ru/" target="_blank" rel="noopener nofollow">Картотека арбитражных дел</a></li><li><a href="https://fssp.gov.ru/iss/ip" target="_blank" rel="noopener nofollow">Банк исполнительных производств ФССП</a></li><li><a href="https://www.cbr.ru/inside/warning-list/" target="_blank" rel="noopener nofollow">Банк России: список компаний с признаками нелегальной деятельности</a></li></ol></div>
+      <p class="guide__disclaimer">Статья носит справочный характер и не является юридической или налоговой консультацией. Нормы меняются — проверяйте актуальную редакцию по ссылкам в разделе «Источники».</p>
+    </div></section>
+  </main>
+
+  <footer class="footer" id="footer">
+    <div class="container footer__grid">
+      <div class="footer__brand">
+        <span class="brand__seal brand__seal--lg"><img src="/assets/img/logo-160.jpg" width="160" height="160" loading="lazy" alt="Эмблема ООО «Локомотив»"></span>
+        <div><p class="footer__name">ООО «ЛОКОМОТИВ»</p><p class="footer__slogan">агент по расчётам ВЭД по агентскому договору · логистика · таможня</p><a class="footer__rutube" href="https://rutube.ru/channel/81908671/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M8 5v14l11-7z" fill="currentColor"/></svg>Больше полезного — на нашем канале в Rutube</a></div>
+      </div>
+      <nav class="footer__nav" aria-label="Платежи"><h2 class="footer__heading">Платежи</h2><ul>
+        <li><a href="/payments/china/">Китай</a></li><li><a href="/payments/turkey/">Турция</a></li>
+        <li><a href="/payments/uae/">ОАЭ</a></li><li><a href="/payments/europe/">Европа</a></li>
+        <li><a href="/payments/services/">Услуги и ПО</a></li><li><a href="/payments/export/">Экспортная выручка</a></li>
+      </ul></nav>
+      <nav class="footer__nav" aria-label="Компания"><h2 class="footer__heading">Компания</h2><ul>
+        <li><a href="/complex/">Платёж + доставка</a></li><li><a href="/sellers/">Для селлеров</a></li>
+        <li><a href="/logistics/">Логистика</a></li><li><a href="/trust/">Проверьте нас</a></li><li><a href="/guides/">База знаний ВЭД</a></li><li><a href="/partners/">Партнёрам</a></li>
+        <li><a href="/cabinet/">Личный кабинет</a></li><li><a href="/contacts/">Контакты</a></li>
+      </ul></nav>
+      <div class="footer__legal"><h2 class="footer__heading">Реквизиты</h2>
+        <p>ООО «ЛОКОМОТИВ»</p><p>ОГРН 1267700222899 · ИНН 9703250829 · КПП 770301001</p><p>г. Москва, муниципальный округ Пресненский вн.тер.г., 1-й Красногвардейский пр-д, д. 22, стр. 1, 123112</p>
+      </div>
+    </div>
+    <div class="container footer__bottom"><p>© <span id="year">2026</span> ООО «ЛОКОМОТИВ». Все права защищены.</p><p><a href="/privacy/">Политика обработки персональных данных</a> · <a href="/">На главную</a><span class="footer__pd">Оператор ПДн, рег. № <span style="white-space:nowrap">77-26-572994</span></span></p></div>
+  </footer>
+
+  <script src="/assets/js/site-config.js?v=20261026msgr" defer></script>
+  <script src="/assets/js/site.js?v=20261026msgr" defer></script>
+  <script src="/assets/js/lead-modal.js?v=20261026msgr" defer></script>
+  <script src="/assets/js/main.js?v=20261026ru" defer></script>
+  <script src="/assets/js/search.js?v=20261026ru" defer></script>
+  <script src="/assets/js/helper-kb.js?v=20261028wrd" defer></script>
+  <script src="/assets/js/helper.js?v=20261020wa" defer></script>
+  <script src="/assets/js/stat.js?v=20261028calc" defer></script>
+  <script src="/assets/js/cookie.js?v=20260924b" defer></script>
+</body>
+</html>

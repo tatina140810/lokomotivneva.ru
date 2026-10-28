@@ -91,7 +91,8 @@ def load_articles():
         if not m:
             sys.exit(f"{name}: нет шапки <!--META {{...}} -->")
         meta = json.loads(m.group(1))
-        meta["body"] = m.group(2).strip()
+        # Пометки <!--CHECK: ...--> — для сверки фактов, на сайт не выходят.
+        meta["body"] = re.sub(r"\s*<!--\s*CHECK:.*?-->", "", m.group(2), flags=re.S).strip()
         meta.setdefault("slug", name[:-5])
         meta.setdefault("updated", meta["published"])
         meta.setdefault("author", AUTHOR_DEFAULT)
