@@ -1036,6 +1036,8 @@ body.is-search-open { overflow: hidden; }
 
 @media (max-width: 720px) {
   .cookie { flex-direction: column; align-items: stretch; gap: .8rem; text-align: left; }
+  /* В колонке flex-basis 22rem становится высотой: полоса занимала полэкрана телефона. */
+  .cookie__text { flex: none; }
   .cookie__btn { flex: 1 1 auto; text-align: center; justify-content: center; }
 }
 
