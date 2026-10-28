@@ -157,29 +157,30 @@ _tmr.push({id: "3797721", type: "pageView", start: (new Date()).getTime()});
       </div>
     <!-- ЛЕНТА КУРСОВ. Ориентировочный курс по тарифу субагента: profinance + коэффициент
          по объёму — тот же источник и та же логика, что в LokomotivPos.
-         Значения стоят в разметке и обновляются v2.js; если источник недоступен,
-         посетитель видит последние проставленные цифры, а не прочерки. -->
-      <section class="rates" aria-label="Курсы валют">
+         Временно скрыта (Тати 2026-10-28): hidden здесь и у строки «Курс» в калькуляторе,
+         показ включает SHOW_RATES в v2.js. Чисел в разметке нет — их ставит v2.js
+         из запасных котировок или API, поэтому и без JS курсы не видны. -->
+      <section class="rates" aria-label="Курсы валют" data-show-rates hidden>
       <div class="rates__inner">
         <p class="rates__label">Курс для расчёта</p>
         <div class="rates__viewport">
           <div class="rates__track" data-rates>
-            <span class="rate" data-rate="USD"><span class="rate__code">USD</span><span class="rate__val">85,6234 ₽</span></span>
-            <span class="rate" data-rate="EUR"><span class="rate__code">EUR</span><span class="rate__val">98,7910 ₽</span></span>
-            <span class="rate" data-rate="CNY"><span class="rate__code">CNY</span><span class="rate__val">12,7682 ₽</span></span>
-            <span class="rate" data-rate="AED"><span class="rate__code">AED</span><span class="rate__val">23,3160 ₽</span></span>
-            <span class="rate" data-rate="USD" aria-hidden="true"><span class="rate__code">USD</span><span class="rate__val">85,6234 ₽</span></span>
-            <span class="rate" data-rate="EUR" aria-hidden="true"><span class="rate__code">EUR</span><span class="rate__val">98,7910 ₽</span></span>
-            <span class="rate" data-rate="CNY" aria-hidden="true"><span class="rate__code">CNY</span><span class="rate__val">12,7682 ₽</span></span>
-            <span class="rate" data-rate="AED" aria-hidden="true"><span class="rate__code">AED</span><span class="rate__val">23,3160 ₽</span></span>
-            <span class="rate" data-rate="USD" aria-hidden="true"><span class="rate__code">USD</span><span class="rate__val">85,6234 ₽</span></span>
-            <span class="rate" data-rate="EUR" aria-hidden="true"><span class="rate__code">EUR</span><span class="rate__val">98,7910 ₽</span></span>
-            <span class="rate" data-rate="CNY" aria-hidden="true"><span class="rate__code">CNY</span><span class="rate__val">12,7682 ₽</span></span>
-            <span class="rate" data-rate="AED" aria-hidden="true"><span class="rate__code">AED</span><span class="rate__val">23,3160 ₽</span></span>
-            <span class="rate" data-rate="USD" aria-hidden="true"><span class="rate__code">USD</span><span class="rate__val">85,6234 ₽</span></span>
-            <span class="rate" data-rate="EUR" aria-hidden="true"><span class="rate__code">EUR</span><span class="rate__val">98,7910 ₽</span></span>
-            <span class="rate" data-rate="CNY" aria-hidden="true"><span class="rate__code">CNY</span><span class="rate__val">12,7682 ₽</span></span>
-            <span class="rate" data-rate="AED" aria-hidden="true"><span class="rate__code">AED</span><span class="rate__val">23,3160 ₽</span></span>
+            <span class="rate" data-rate="USD"><span class="rate__code">USD</span><span class="rate__val"></span></span>
+            <span class="rate" data-rate="EUR"><span class="rate__code">EUR</span><span class="rate__val"></span></span>
+            <span class="rate" data-rate="CNY"><span class="rate__code">CNY</span><span class="rate__val"></span></span>
+            <span class="rate" data-rate="AED"><span class="rate__code">AED</span><span class="rate__val"></span></span>
+            <span class="rate" data-rate="USD" aria-hidden="true"><span class="rate__code">USD</span><span class="rate__val"></span></span>
+            <span class="rate" data-rate="EUR" aria-hidden="true"><span class="rate__code">EUR</span><span class="rate__val"></span></span>
+            <span class="rate" data-rate="CNY" aria-hidden="true"><span class="rate__code">CNY</span><span class="rate__val"></span></span>
+            <span class="rate" data-rate="AED" aria-hidden="true"><span class="rate__code">AED</span><span class="rate__val"></span></span>
+            <span class="rate" data-rate="USD" aria-hidden="true"><span class="rate__code">USD</span><span class="rate__val"></span></span>
+            <span class="rate" data-rate="EUR" aria-hidden="true"><span class="rate__code">EUR</span><span class="rate__val"></span></span>
+            <span class="rate" data-rate="CNY" aria-hidden="true"><span class="rate__code">CNY</span><span class="rate__val"></span></span>
+            <span class="rate" data-rate="AED" aria-hidden="true"><span class="rate__code">AED</span><span class="rate__val"></span></span>
+            <span class="rate" data-rate="USD" aria-hidden="true"><span class="rate__code">USD</span><span class="rate__val"></span></span>
+            <span class="rate" data-rate="EUR" aria-hidden="true"><span class="rate__code">EUR</span><span class="rate__val"></span></span>
+            <span class="rate" data-rate="CNY" aria-hidden="true"><span class="rate__code">CNY</span><span class="rate__val"></span></span>
+            <span class="rate" data-rate="AED" aria-hidden="true"><span class="rate__code">AED</span><span class="rate__val"></span></span>
           </div>
         </div>
         <p class="rates__note">Курс сделки фиксируется в Поручении перед оплатой</p>
@@ -327,7 +328,7 @@ _tmr.push({id: "3797721", type: "pageView", start: (new Date()).getTime()});
             <p class="express__ccynote" data-express-ccy-note></p>
 
             <dl class="express__calc" data-express-calc>
-              <div><dt>Курс</dt><dd><b data-express-rate>85,6234 ₽</b><span class="express__ratetime" data-express-rate-time hidden></span></dd></div>
+              <div data-show-rates hidden><dt>Курс</dt><dd><b data-express-rate>—</b><span class="express__ratetime" data-express-rate-time hidden></span></dd></div>
               <div><dt>Сумма платежа</dt><dd><b data-express-base>—</b></dd></div>
               <div><dt>Вознаграждение агента от 0,3%</dt><dd><b data-express-fee>—</b></dd></div>
               <div><dt>Комиссия банка за SWIFT</dt><dd><b data-express-swift>—</b></dd></div>
@@ -583,7 +584,7 @@ _tmr.push({id: "3797721", type: "pageView", start: (new Date()).getTime()});
   <script src="/assets/js/main.js?v=20261026ru" defer></script>
   <script src="/assets/js/about-video.js?v=20261015rt" defer></script>
   <script src="/assets/js/search.js?v=20261026ru" defer></script>
-  <script src="/assets/js/v2.js?v=20261026mk17" defer></script>
+  <script src="/assets/js/v2.js?v=20261028rates" defer></script>
   <script src="/assets/js/helper-kb.js?v=20261023mail" defer></script>
   <script src="/assets/js/helper.js?v=20261020wa" defer></script>
   <script src="/assets/js/stat.js?v=20261014ref" defer></script>
