@@ -1147,3 +1147,15 @@ html.is-lead-modal .toast { z-index: 1001; }
 
 /* Приглашение на кофе над контактами (Тати 2026-10-27). */
 .contacts__invite { margin: 0 0 1.75rem; font-size: 1.05rem; line-height: 1.6; color: var(--text-dark); max-width: 34rem; }
+
+/* Ссылка на Rutube-канал (Тати 2026-10-28): под видео на главной и в подвале всех страниц. */
+.about-video__more { text-align: center; margin: 18px 0 0; }
+.about-video__more a { color: var(--navy-800); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--gold-500); }
+.about-video__more a:hover { color: var(--gold-700); }
+.footer__rutube {
+  display: inline-flex; align-items: center; gap: .4rem; margin-top: .8rem;
+  color: var(--white); font-size: .88rem; text-decoration: underline;
+  text-decoration-color: rgba(212, 175, 55, .6); text-underline-offset: 3px;
+}
+.footer__rutube svg { flex: none; color: var(--gold-500); }
+.footer__rutube:hover { color: var(--gold-400); }
