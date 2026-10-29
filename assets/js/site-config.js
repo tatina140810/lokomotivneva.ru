@@ -186,6 +186,19 @@
     leadMagnet: {
       file: '',                        // TODO: напр. '/assets/docs/checklist-valutny-kontrol.pdf'
       title: 'Чек-лист по валютному контролю'
+    },
+
+    /* ---------------------------------------------------------------------
+       9. КОЛЛТРЕКИНГ (Тати 2026-10-29, assets/js/calltrack.js)
+       ---------------------------------------------------------------------
+       Посетителю из рекламы (Директ, Telegram, VK) сайт показывает номер из пула, чтобы
+       звонок попал в Метрику. enabled: false — подмены нет, везде номер из contacts.
+       defaultNumber — номер в вёрстке (только цифры, с 7), его скрипт и заменяет. */
+    calltracking: {
+      enabled: false,
+      api: 'https://app.lokomotivneva.ru/api/calltracking',
+      counterId: 112180979,
+      defaultNumber: '74951080100'
     }
   };
 
