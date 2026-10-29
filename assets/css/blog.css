@@ -1,4 +1,4 @@
-/* Раздел «База знаний ВЭД» (/guides/), Тати 2026-10-28. Страницы собирает _guides_gen.py. */
+/* Блог (/blog/), Тати 2026-10-28/29. Страницы собирает _blog_gen.py. */
 
 /* ---- Главная раздела ---- */
 .guide-toc { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: 1.4rem; }
@@ -107,3 +107,19 @@
   .gdecide { grid-template-columns: 1fr; }
 }
 .gflow__arrow-v { display: none; }
+
+/* ---- Лента блога: фильтр по рубрикам и карточки (Тати 2026-10-29) ---- */
+.blog-filter { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: 1.4rem; }
+.blog-filter[hidden] { display: none; }
+.blog-filter button {
+  font: inherit; font-size: .95rem; cursor: pointer; padding: .45rem .9rem; border-radius: 999px;
+  border: 1px solid rgba(227, 196, 106, .45); background: transparent; color: var(--gold-300);
+}
+.blog-filter button:hover { background: rgba(227, 196, 106, .12); }
+.blog-filter button[aria-pressed="true"] { background: var(--gold-500); border-color: var(--gold-500); color: var(--navy-900); }
+.blog-feed { max-width: 980px; }
+.blog-feed .guide-cards { grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); }
+.guide-card[hidden] { display: none; }
+.guide-card__cat { font-size: .78rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--gold-700); }
+.guide-card--news a { border-left: 3px solid var(--gold-500); }
+.blog-empty { color: var(--text-muted-dark); font-style: italic; }
