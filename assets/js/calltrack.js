@@ -48,21 +48,59 @@
       .catch(function () { clearTimeout(t); return null; });
   }
 
-  /* ClientID Метрики: счётчик может ещё грузиться — ждём не дольше 1,5 с. */
-  function clientId(cb) {
-    var done = false;
-    var finish = function (v) { if (!done) { done = true; cb(/^\d{5,30}$/.test(String(v)) ? String(v) : null); } };
-    setTimeout(function () { finish(null); }, 1500);
-    try { if (typeof w.ym === 'function') w.ym(COUNTER, 'getClientID', finish); else finish(null); } catch (x) { finish(null); }
+  /* ClientID Метрики. Счётчик грузится отдельно и на телефоне часто не успевает к первому
+     запросу (29.10: у первых сессий ClientID пустой) — поэтому:
+     • сессию заводим, подождав не дольше 1,5 с (визит важнее, чем ClientID);
+     • не дождались — ждём дальше: поздний ответ счётчика и повторные вопросы через 3, 7 и 15 с;
+       как только ClientID появился — внеочередная отметка с ним;
+     • уходит со страницы, а ClientID так и не отправлен — досылаем его sendBeacon. */
+  var cid = null;
+  var cidSent = false;
+  var cidWaiters = [];
+  function takeCid(v) {
+    if (cid || !/^\d{5,30}$/.test(String(v))) return;
+    cid = String(v);
+    var list = cidWaiters; cidWaiters = [];
+    list.forEach(function (f) { f(cid); });
+    if (!cidSent) sendCid();
   }
+  function askCid() {
+    try { if (typeof w.ym === 'function') w.ym(COUNTER, 'getClientID', takeCid); } catch (x) { /* счётчика нет */ }
+  }
+  function clientId(cb) {
+    if (cid) return cb(cid);
+    var done = false;
+    var finish = function (v) { if (!done) { done = true; cb(v); } };
+    cidWaiters.push(finish);
+    setTimeout(function () { finish(null); }, 1500);
+    askCid();
+  }
+  [3000, 7000, 15000].forEach(function (ms) { setTimeout(function () { if (!cid) askCid(); }, ms); });
+
+  function sendCid() {
+    var s = store();
+    if (!cid || !s || !s.token) return;
+    cidSent = true;
+    post('/ping', { token: s.token, client_id: cid });
+  }
+  w.addEventListener('pagehide', function () {
+    var s = store();
+    if (!cid || cidSent || !s || !s.token || !w.navigator.sendBeacon) return;
+    try {
+      cidSent = w.navigator.sendBeacon(API + '/ping', new Blob([JSON.stringify({ token: s.token, client_id: cid })], { type: 'text/plain' }));
+    } catch (x) { /* не вышло — значит не вышло */ }
+  });
 
   function session() {
-    clientId(function (cid) {
+    clientId(function (c) {
       post('/session', {
-        visitor_id: STAT.visitorId, session_id: STAT.sessionId, client_id: cid,
+        visitor_id: STAT.visitorId, session_id: STAT.sessionId, client_id: c,
         entry: e, landing: String(w.location.href).slice(0, 500)
       }).then(function (r) {
-        if (r && r.tracked && r.token) store({ token: r.token, sid: STAT.sessionId, pinged: Date.now() });
+        if (!r || !r.tracked || !r.token) return;
+        store({ token: r.token, sid: STAT.sessionId, pinged: Date.now() });
+        if (c) cidSent = true;
+        else if (cid) sendCid();   /* ClientID пришёл, пока заводили сессию */
       });
     });
   }
@@ -73,9 +111,10 @@
     if (Date.now() - (s.pinged || 0) < PING_MS - 5000) return;
     s.pinged = Date.now();
     store(s);
-    clientId(function (cid) {
-      post('/ping', { token: s.token, client_id: cid }).then(function (r) {
-        if (r && r.expired) { store(null); session(); }
+    clientId(function (c) {
+      post('/ping', { token: s.token, client_id: c }).then(function (r) {
+        if (r && r.expired) { store(null); cidSent = false; session(); return; }
+        if (c) cidSent = true;
       });
     });
   }
