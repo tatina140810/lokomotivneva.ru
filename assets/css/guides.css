@@ -62,3 +62,48 @@
 .guide__video { position: relative; aspect-ratio: 16 / 9; margin-bottom: 1.8rem; border-radius: var(--radius); overflow: hidden; }
 .guide__video iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
 .guide__disclaimer { margin-top: 2rem; font-size: .85rem; color: var(--text-muted-dark); }
+
+/* ---- Схемы в статьях (Тати 2026-10-29): HTML, а не картинка — текст чёткий и на телефоне
+   перестраивается в столбик. Узлы .gflow__node, между ними .gflow__arrow с подписью. ---- */
+.gfig { margin: 1.6rem 0 1.8rem; padding: 1.4rem 1.2rem 1.1rem; background: var(--white);
+  border: 1px solid var(--light-2); border-radius: var(--radius); box-shadow: var(--shadow-soft); }
+.gfig figcaption { margin-top: .9rem; font-size: .88rem; color: var(--text-muted-dark); text-align: center; }
+.gflow { display: flex; align-items: stretch; justify-content: center; gap: .4rem; }
+.gflow__node { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; align-items: center; text-align: center;
+  gap: .45rem; padding: .9rem .7rem; border-radius: 12px; background: var(--light-1, #F5F7FB); border: 1px solid var(--light-2); }
+.gflow__node--accent { background: var(--navy-800); border-color: var(--navy-800); color: #fff; }
+.gflow__node--accent .gflow__sub { color: var(--gold-300); }
+.gflow__icon { width: 46px; height: 46px; border-radius: 50%; display: grid; place-items: center;
+  background: rgba(212, 175, 55, .16); color: var(--gold-700); }
+.gflow__node--accent .gflow__icon { background: rgba(212, 175, 55, .22); color: var(--gold-400); }
+.gflow__icon svg { width: 24px; height: 24px; }
+.gflow__title { font-weight: 700; color: inherit; line-height: 1.25; }
+.gflow__node:not(.gflow__node--accent) .gflow__title { color: var(--navy-800); }
+.gflow__sub { font-size: .85rem; line-height: 1.4; color: var(--text-muted-dark); }
+.gflow__arrow { flex: 0 0 132px; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: .3rem; font-size: .8rem; line-height: 1.3; text-align: center; color: var(--navy-800); }
+.gflow__arrow svg { width: 100%; height: 12px; color: var(--gold-600); }
+.gflow__back { margin-top: .8rem; display: flex; align-items: center; justify-content: center; gap: .5rem;
+  font-size: .85rem; color: var(--navy-800); padding: .55rem .8rem; border: 1px dashed rgba(212, 175, 55, .7); border-radius: 10px; }
+.gflow__back svg { width: 18px; height: 18px; color: var(--gold-700); flex: none; }
+.gflow-row + .gflow-row { margin-top: 1rem; }
+.gflow-row__label { font-size: .78rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--gold-700); margin: 0 0 .5rem; }
+/* Дерево решения: порог постановки на учёт */
+.gdecide { display: grid; grid-template-columns: repeat(2, 1fr); gap: .8rem; }
+.gdecide__card { border-radius: 12px; border: 1px solid var(--light-2); padding: 1rem; background: var(--light-1, #F5F7FB); }
+.gdecide__head { font-weight: 700; color: var(--navy-800); margin: 0 0 .6rem; display: flex; align-items: center; gap: .5rem; }
+.gdecide__head svg { width: 22px; height: 22px; color: var(--gold-700); }
+.gdecide__row { display: flex; justify-content: space-between; gap: .6rem; padding: .45rem .6rem; border-radius: 8px; font-size: .92rem; }
+.gdecide__row + .gdecide__row { margin-top: .35rem; }
+.gdecide__row--yes { background: var(--navy-800); color: #fff; }
+.gdecide__row--yes b { color: var(--gold-400); }
+.gdecide__row--no { background: var(--white); border: 1px solid var(--light-2); color: var(--text-dark); }
+@media (max-width: 720px) {
+  .gflow { flex-direction: column; align-items: stretch; }
+  .gflow__arrow { flex: 0 0 auto; flex-direction: row; padding: .2rem 0; }
+  .gflow__arrow svg { width: 12px; height: 30px; }
+  .gflow__arrow .gflow__arrow-h { display: none; }
+  .gflow__arrow .gflow__arrow-v { display: block; }
+  .gdecide { grid-template-columns: 1fr; }
+}
+.gflow__arrow-v { display: none; }

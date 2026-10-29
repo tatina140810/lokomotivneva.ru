@@ -62,7 +62,7 @@ def page(head, foot, *, title, desc, path, main, jsonld):
     robots = '\n  <meta name="robots" content="noindex">' if WITH_DRAFTS else ""
     ld = robots + "".join(
         f'\n  <script type="application/ld+json">{json.dumps(x, ensure_ascii=False)}</script>' for x in jsonld)
-    h = h.replace("</head>", f'  <link rel="stylesheet" href="/assets/css/guides.css?v=20261028g1">{ld}\n</head>', 1)
+    h = h.replace("</head>", f'  <link rel="stylesheet" href="/assets/css/guides.css?v=20261029fig">{ld}\n</head>', 1)
     return f'{h}<main id="main">\n{main}\n  </main>{foot}'
 
 
