@@ -773,7 +773,8 @@
 .page-hero--v2 h1 { font-size: clamp(2.5rem, 1.5rem + 3.2vw, 4.8rem); line-height: 1.06; }
 .hero-h1__main { white-space: normal; font-size: 1em; }
 .page-hero--v2 h1 .hero-h1__soft { font-size: .6em; margin-top: .45em; line-height: 1.15; }
-.page-hero--v2 h1 + .hero-sub { font-size: clamp(1.2rem, 1rem + .8vw, 1.75rem); }
+/* Подзаголовок стал длинной фразой (Тати 2026-10-30) — мельче, чтобы кнопки остались на первом экране. */
+.page-hero--v2 h1 + .hero-sub { font-size: clamp(1rem, .92rem + .5vw, 1.4rem); }
 .page-hero--v2 .hero-accent { font-size: clamp(1.05rem, .95rem + .5vw, 1.4rem); }
 .page-hero--v2 .hero-accent + .hero-footnote { font-size: .85rem; }
 @media (max-width: 700px) { .hero-br { display: none; } }

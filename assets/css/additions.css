@@ -1161,3 +1161,57 @@ html.is-lead-modal .toast { z-index: 1001; }
 }
 .footer__rutube svg { flex: none; color: var(--gold-500); }
 .footer__rutube:hover { color: var(--gold-400); }
+
+/* ==== Короткая форма заявки (lead-modal.js, Тати 2026-10-30) ==== */
+.field--choice { border: 0; margin: 0; padding: 0; min-width: 0; }
+.field--choice legend { padding: 0; margin-bottom: .4rem; }
+.choice { display: grid; grid-template-columns: 1fr 1fr; gap: .5rem; }
+.choice__item { position: relative; display: flex; cursor: pointer; }
+.choice__item input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.choice__item span {
+  flex: 1; text-align: center; padding: .75rem .6rem; border-radius: 10px; font-size: .95rem;
+  border: 1px solid rgba(159, 178, 208, .3); background: rgba(255, 255, 255, .05); color: var(--white);
+  transition: border-color .2s var(--ease), background-color .2s var(--ease);
+}
+.choice__item:hover span { border-color: rgba(212, 175, 55, .5); }
+.choice__item input:checked + span { border-color: var(--gold-500); background: rgba(212, 175, 55, .16); color: var(--gold-400); font-weight: 600; }
+.choice__item input:focus-visible + span { outline: 2px solid var(--gold-500); outline-offset: 2px; }
+.choice__item input.is-invalid + span { border-color: #E5715F; }
+.field--choice:has(.is-invalid) .choice__item span { border-color: #E5715F; }
+.field__input--select {
+  appearance: none; -webkit-appearance: none; cursor: pointer; padding-right: 2.6rem;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23D4AF37' stroke-width='2' stroke-linecap='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right .9rem center; background-size: 18px;
+}
+.field__opt { text-transform: none; letter-spacing: 0; font-weight: 400; color: var(--text-muted-light) !important; }
+
+/* ==== Мобильная панель связи (main.js, Тати 2026-10-30) ====
+   Только на узком экране. Cookie-полоса встаёт над панелью, помощник — над обеими;
+   плавающая кнопка Telegram на телефоне не нужна — Telegram есть в панели. */
+.mbar { display: none; }
+@media (max-width: 760px) {
+  .has-mbar { --mbar-h: calc(58px + env(safe-area-inset-bottom, 0px)); }
+  .mbar {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 995;
+    display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; gap: 1px;
+    height: var(--mbar-h); padding-bottom: env(safe-area-inset-bottom, 0px);
+    background: rgba(11, 30, 63, .12); box-shadow: 0 -8px 24px rgba(7, 22, 48, .18);
+    transition: transform .25s var(--ease);
+  }
+  .mbar--away, .is-lead-modal .mbar, .helper-open .mbar { transform: translateY(110%); }
+  .mbar__btn {
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
+    background: var(--navy-900); color: var(--white); font-size: .78rem; font-weight: 600; text-decoration: none;
+  }
+  .mbar__btn--phone { background: var(--gold-fill); color: var(--navy-900); }
+  .mbar__btn--whatsapp .mbar__icon { color: #25D366; }
+  .mbar__btn--telegram .mbar__icon { color: #2AABEE; }
+  .mbar__icon { width: 22px; height: 22px; }
+  .has-mbar body { padding-bottom: var(--mbar-h); }
+  .has-mbar .fab-contact { display: none; }
+  .has-mbar .cookie { bottom: var(--mbar-h); padding-bottom: .85rem; }
+  .has-mbar .helper-fab { bottom: calc(var(--mbar-h) + .9rem); }
+  .has-mbar.cookie-open .helper-fab { bottom: calc(var(--mbar-h) + var(--cookie-h, 4.5rem) + .9rem); }
+  .has-mbar .toast { bottom: calc(var(--mbar-h) + 1rem); }
+}
+@media (prefers-reduced-motion: reduce) { .mbar { transition: none; } }

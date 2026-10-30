@@ -15,8 +15,8 @@
   <meta property="og:locale" content="ru_RU">
   <link rel="icon" href="/assets/img/logo-160.jpg">
   <link rel="stylesheet" href="/assets/css/styles.css?v=20261020cnt">
-  <link rel="stylesheet" href="/assets/css/additions.css?v=20261028ck">
-  <link rel="stylesheet" href="/assets/css/v2.css?v=20261026tk2">
+  <link rel="stylesheet" href="/assets/css/additions.css?v=20261030lead">
+  <link rel="stylesheet" href="/assets/css/v2.css?v=20261030lead">
   <link rel="stylesheet" href="/assets/css/helper.css?v=20260924rkn">
   <script type="application/ld+json">
   {
@@ -104,7 +104,7 @@ _tmr.push({id: "3797721", type: "pageView", start: (new Date()).getTime()});
           <li><a class="nav__link" href="/trust/">Проверьте нас</a></li>
           <li><a class="nav__link" href="/blog/">Блог</a></li>
           <li><a class="nav__link" href="/individuals/">Для физлиц</a></li>
-          <li><a class="nav__link" href="/contacts/">Контакты</a></li><li><a class="nav__link" href="/partners/">Партнёрам</a></li>
+          <li><a class="nav__link" href="/contacts/">Контакты</a></li><li><a class="nav__link" href="/partners/">Партнёрам</a></li><li><a class="nav__link" href="/cabinet/">Личный кабинет</a></li>
         </ul>
         <div class="nav__mobile-actions"><a class="btn btn--gold btn--block" href="#zayavka">Рассчитать платёж</a></div>
       </nav>
@@ -128,11 +128,12 @@ _tmr.push({id: "3797721", type: "pageView", start: (new Date()).getTime()});
       <div class="hero-2col">
       <div class="page-hero__inner">
         <!-- Вариант 1 «Прямой экспресс» (Тати 2026-09-29): крючок — выход из тупика,
-             подзаголовок — платёж + логистика, акцент — комиссия от 0,3%. -->
+             акцент — комиссия от 0,3%. Подзаголовок (Тати 2026-10-30): кому и что делаем —
+             вместо «Платёж и логистика в одном решении» (логистику пока не продвигаем). -->
         <h1 class="reveal" data-reveal-delay="1" id="hero-title" data-hero-title>
           <span class="hero-h1__main">Доставим ваш платёж <br class="hero-br">точно по&nbsp;расписанию</span><span class="hero-h1__soft text-gold">Прямой экспресс до&nbsp;Китая, <br class="hero-br">Турции, ОАЭ&nbsp;и&nbsp;ЕС</span>
         </h1>
-        <p class="hero-sub reveal" data-reveal-delay="1">Платёж и логистика в одном решении</p>
+        <p class="hero-sub reveal" data-reveal-delay="1">Платёжный агент для компаний и&nbsp;частных лиц: оплата зарубежным поставщикам и&nbsp;сервисам, получение платежей из-за рубежа — от&nbsp;1&nbsp;рабочего дня</p>
         <p class="hero-accent reveal" data-reveal-delay="1">Честный билет для вашего бизнеса — комиссия агента от&nbsp;<b>0,3%</b><sup class="hero-h1__star">*</sup></p>
         <p class="hero-footnote reveal" data-reveal-delay="1">* вознаграждение агента от рублёвой суммы платежа, без учёта комиссии банка</p>
 
@@ -140,7 +141,9 @@ _tmr.push({id: "3797721", type: "pageView", start: (new Date()).getTime()});
              на /calculator/. Скрипт v2.js без [data-express] просто не запускается. -->
         <div class="page-hero__actions reveal" data-reveal-delay="3">
           <a class="btn btn--gold btn--lg" href="#zayavka">Оставить заявку</a>
-          <a class="btn btn--ghost btn--lg" href="/cabinet/">Личный кабинет</a>
+          <!-- Вместо «Личного кабинета» (он остался в меню шапки) — WhatsApp, Тати 2026-10-30.
+               Фолбэк в разметке — звонок; site.js поднимает ссылку до WhatsApp из site-config. -->
+          <a class="btn btn--ghost btn--lg" href="tel:+74951080100" data-messenger="whatsapp" rel="nofollow"><svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-whatsapp"></use></svg><span data-messenger-label>Написать в WhatsApp</span></a>
         </div>
       </div>
 
@@ -540,7 +543,9 @@ _tmr.push({id: "3797721", type: "pageView", start: (new Date()).getTime()});
               <div aria-hidden="true" style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden"><label>Не заполняйте это поле<input type="text" name="lk_trap" tabindex="-1" autocomplete="off" data-lpignore="true" data-form-type="other"></label></div>
               <div class="field"><label class="field__label" for="name">Имя <span aria-hidden="true">*</span></label><input class="field__input" type="text" id="name" name="name" autocomplete="name" placeholder="Как к вам обращаться" required minlength="2" aria-describedby="name-error"><p class="field__error" id="name-error" role="alert" hidden></p></div>
               <div class="field"><label class="field__label" for="phone">Телефон <span aria-hidden="true">*</span></label><input class="field__input" type="tel" id="phone" name="phone" autocomplete="tel" placeholder="+7 (___) ___-__-__ или +код страны" required inputmode="tel" aria-describedby="phone-error"><p class="field__error" id="phone-error" role="alert" hidden></p></div>
-              <div class="field"><label class="field__label" for="message">Направление и сумма</label><textarea class="field__input field__input--area" id="message" name="message" rows="3" placeholder="Напр. Китай, оплата поставщику ~100 000 ¥, есть инвойс" aria-describedby="message-error"></textarea><p class="field__error" id="message-error" role="alert" hidden></p></div>
+              <!-- Короткая форма (Тати 2026-10-30): «Кто вы», направление и сумму вставляет
+                   lead-modal.js — одна разметка с окном заявки. Без JS форма и так не отправляется. -->
+              <div data-short-fields></div>
               <div class="field"><label class="field__label" for="ref-code">Код партнёра (если есть)</label><input class="field__input" type="text" id="ref-code" name="ref" autocomplete="off" maxlength="20" placeholder="Например: TEST-01" style="text-transform:uppercase"></div>
               <label class="checkbox"><input type="checkbox" id="consent" name="consent" required aria-describedby="consent-error"><span>Я согласен с <a href="/privacy/" target="_blank" rel="noopener">политикой обработки персональных данных</a></span></label>
               <p class="field__error" id="consent-error" role="alert" hidden></p>
@@ -584,14 +589,14 @@ _tmr.push({id: "3797721", type: "pageView", start: (new Date()).getTime()});
 
   <script src="/assets/js/site-config.js?v=20261029s" defer></script>
   <script src="/assets/js/site.js?v=20261026msgr" defer></script>
-  <script src="/assets/js/lead-modal.js?v=20261026msgr" defer></script>
-  <script src="/assets/js/main.js?v=20261026ru" defer></script>
+  <script src="/assets/js/lead-modal.js?v=20261030lead" defer></script>
+  <script src="/assets/js/main.js?v=20261030lead" defer></script>
   <script src="/assets/js/about-video.js?v=20261015rt" defer></script>
   <script src="/assets/js/search.js?v=20261026ru" defer></script>
   <script src="/assets/js/v2.js?v=20261028calc" defer></script>
   <script src="/assets/js/helper-kb.js?v=20261028wrd" defer></script>
   <script src="/assets/js/helper.js?v=20261020wa" defer></script>
-  <script src="/assets/js/stat.js?v=20261028calc" defer></script>
+  <script src="/assets/js/stat.js?v=20261030lead" defer></script>
   <script src="/assets/js/calltrack.js?v=20261029c" defer></script>
   <script src="/assets/js/cookie.js?v=20260924b" defer></script>
 </body>

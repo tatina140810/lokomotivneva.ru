@@ -457,6 +457,17 @@ function ymGoal(goal, params) {
     },
     consent: function (_, field) {
       return field.checked ? '' : 'Без согласия мы не сможем обработать заявку';
+    },
+    /* Короткая форма (lead-modal.js, Тати 2026-10-30). Скрытое поле direction на страницах
+       направлений уже заполнено — проверка касается только выпадающего списка. */
+    client_kind: function (_, field) {
+      return field.form && field.form.querySelector('[name="client_kind"]:checked') ? '' : 'Выберите: компания или частное лицо';
+    },
+    direction: function (v, field) {
+      return field.tagName !== 'SELECT' || v ? '' : 'Выберите направление';
+    },
+    amount: function (v) {
+      return v.trim().length > 100 ? 'Слишком длинно — не более 100 символов' : '';
     }
   };
 
@@ -512,7 +523,10 @@ function ymGoal(goal, params) {
     var refInput = form.querySelector('[name="ref"]');
     if (refInput && !refInput.value) refInput.value = LOKO_REF.get();
 
-    var fields = $$('input, textarea', form).filter(function (f) { return RULES[f.name]; });
+    /* У группы переключателей «Кто вы» проверяется первый: под ним и сообщение об ошибке. */
+    var fields = $$('input, textarea, select', form).filter(function (f) {
+      return RULES[f.name] && !(f.type === 'radio' && form.querySelector('[name="' + f.name + '"]') !== f);
+    });
 
     /* Проверяем поле при потере фокуса, ошибку снимаем сразу при исправлении */
     fields.forEach(function (field) {
@@ -521,8 +535,13 @@ function ymGoal(goal, params) {
         if (field.classList.contains('is-invalid')) validateField(field);
       });
       field.addEventListener('change', function () {
-        if (field.type === 'checkbox') validateField(field);
+        if (field.type === 'checkbox' || field.tagName === 'SELECT') validateField(field);
       });
+      if (field.type === 'radio') {
+        $$('[name="' + field.name + '"]', form).forEach(function (r) {
+          r.addEventListener('change', function () { validateField(field); });
+        });
+      }
     });
 
     /* Приём заявок ведёт рабочая панель app.lokomotivneva.ru (вкладка «Заявки с сайта»).
@@ -614,11 +633,21 @@ function ymGoal(goal, params) {
          направление в уведомлении, даже если панель новый ключ пока не выводит. */
       var directionField = form.querySelector('[name="direction"]');
       var direction = directionField ? directionField.value : '';
+      /* Короткая форма: «кто вы», направление и сумма — первыми строками текста заявки,
+         сервер хранит только текст (Тати 2026-10-30). */
+      var kindField = form.querySelector('[name="client_kind"]:checked');
+      var amountField = form.querySelector('[name="amount"]');
+      var head = [];
+      if (kindField) head.push('Кто: ' + kindField.value);
       if (direction) {
         payload.direction = direction;
-        var directionLabel = directionField.getAttribute('data-label') || direction;
-        payload.message = 'Направление: ' + directionLabel + (payload.message ? '\n' + payload.message : '');
+        var directionLabel = directionField.tagName === 'SELECT'
+          ? directionField.options[directionField.selectedIndex].text
+          : directionField.getAttribute('data-label') || direction;
+        head.push('Направление: ' + directionLabel);
       }
+      if (amountField && amountField.value.trim()) head.push('Сумма: ' + amountField.value.trim());
+      if (head.length) payload.message = head.join('\n') + (payload.message ? '\n' + payload.message : '');
 
       sending = true;
       if (submitBtn) { submitBtn.disabled = true; submitBtn.dataset.label = submitBtn.textContent; submitBtn.textContent = 'Отправляем…'; }
@@ -672,6 +701,54 @@ function ymGoal(goal, params) {
       '<svg class="fab-contact__icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-telegram"></use></svg>' +
       '<span class="fab-contact__label">Написать в Telegram</span>';
     document.body.appendChild(fab);
+  }
+
+  /* ===== Мобильная панель связи внизу экрана (Тати 2026-10-30) =====
+     Позвонить / WhatsApp / Telegram — на всех страницах, кроме служебных (data-no-messengers:
+     /stat/, /partners/). Видна только на узком экране (CSS). Не перекрывает форму: пока
+     форма заявки на экране, поле в фокусе или открыто окно заявки — панель уходит вниз.
+     Cookie-полоса и помощник поднимаются над ней (additions.css). */
+  if (!document.body.hasAttribute('data-no-messengers') && !document.querySelector('.mbar')) {
+    var cfg = window.LOKO || {};
+    var cc = cfg.contacts || {};
+    var waTexts = (cfg.formMessengers || {}).waText || {};
+    var waText = waTexts[location.pathname] || cc.whatsappText || '';
+    var waNum = (cc.whatsapp || '').replace(/\D/g, '');
+    var tgUser = (cc.telegram || 'LokomotivNeva_Bot').replace(/^@/, '');
+    var phone = cc.phone || '+74951080100';
+    var item = function (href, icon, label, ext) {
+      return '<a class="mbar__btn mbar__btn--' + icon + '" href="' + href + '"' + (ext ? ' target="_blank" rel="nofollow noopener"' : '') + '>'
+        + '<svg class="mbar__icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-' + icon + '"></use></svg>'
+        + '<span>' + label + '</span></a>';
+    };
+    var bar = document.createElement('nav');
+    bar.className = 'mbar';
+    bar.setAttribute('aria-label', 'Связаться с нами');
+    bar.innerHTML = item('tel:' + phone, 'phone', 'Позвонить')
+      + (waNum ? item('https://wa.me/' + waNum + (waText ? '?text=' + encodeURIComponent(waText) : ''), 'whatsapp', 'WhatsApp', true) : '')
+      + item('https://t.me/' + tgUser, 'telegram', 'Telegram', true);
+    document.body.appendChild(bar);
+    document.documentElement.classList.add('has-mbar');
+
+    var formsOnScreen = [];
+    var hideBar = function () {
+      var el = document.activeElement;
+      var typing = el && /^(INPUT|TEXTAREA|SELECT)$/.test(el.tagName) && el.type !== 'checkbox' && el.type !== 'radio';
+      bar.classList.toggle('mbar--away', formsOnScreen.length > 0 || Boolean(typing));
+    };
+    if ('IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) {
+          var i = formsOnScreen.indexOf(en.target);
+          if (en.isIntersecting && i === -1) formsOnScreen.push(en.target);
+          if (!en.isIntersecting && i !== -1) formsOnScreen.splice(i, 1);
+        });
+        hideBar();
+      });
+      $$('form.form').forEach(function (f) { io.observe(f); });
+    }
+    document.addEventListener('focusin', hideBar);
+    document.addEventListener('focusout', function () { setTimeout(hideBar, 0); });
   }
 
   /* Год в подвале — чтобы копирайт не устаревал */
