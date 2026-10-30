@@ -700,7 +700,8 @@ function ymGoal(goal, params) {
     var fab = document.createElement('a');
     fab.className = 'fab-contact';
     // Адрес — из site-config.js (contacts.telegram), чтобы все ссылки вели в одно место: в бота.
-    fab.href = 'https://t.me/' + (((window.LOKO || {}).contacts || {}).telegram || 'LokomotivNeva_Bot').replace(/^@/, '');
+    // ?start=site — метка «С сайта → Telegram» в карточке (Тати 2026-10-30).
+    fab.href = 'https://t.me/' + (((window.LOKO || {}).contacts || {}).telegram || 'LokomotivNeva_Bot').replace(/^@/, '') + '?start=site';
     fab.target = '_blank';
     fab.rel = 'nofollow noopener';
     fab.setAttribute('aria-label', 'Написать нам в Telegram');
@@ -733,7 +734,7 @@ function ymGoal(goal, params) {
     bar.setAttribute('aria-label', 'Связаться с нами');
     bar.innerHTML = item('tel:' + phone, 'phone', 'Позвонить')
       + (waNum ? item('https://wa.me/' + waNum + (waText ? '?text=' + encodeURIComponent(waText) : ''), 'whatsapp', 'WhatsApp', true) : '')
-      + item('https://t.me/' + tgUser, 'telegram', 'Telegram', true);
+      + item('https://t.me/' + tgUser + '?start=site', 'telegram', 'Telegram', true);
     document.body.appendChild(bar);
     document.documentElement.classList.add('has-mbar');
 

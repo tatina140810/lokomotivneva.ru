@@ -34,7 +34,9 @@
     var wa = (c.whatsapp || '').replace(/\D/g, '');
 
     if (kind === 'telegram') {
-      return tg ? { href: 'https://t.me/' + tg, label: 'Написать в Telegram', icon: 'i-telegram' } : null;
+      /* ?start=site — бот ставит в карточке метку «С сайта → Telegram»: видно, что клиента
+         привёл сайт (Тати 2026-10-30). Telegram передаёт её боту как «/start site». */
+      return tg ? { href: 'https://t.me/' + tg + '?start=site', label: 'Написать в Telegram', icon: 'i-telegram' } : null;
     }
     if (kind === 'whatsapp') {
       var text = textOverride || c.whatsappText;
