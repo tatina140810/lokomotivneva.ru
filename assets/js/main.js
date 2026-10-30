@@ -467,6 +467,9 @@ function ymGoal(goal, params) {
       return field.tagName !== 'SELECT' || v ? '' : 'Выберите направление';
     },
     amount: function (v) {
+      /* Короткая форма: только цифры (с пробелами по разрядам), до 15 цифр. */
+      if (v.trim() && !/^[\d\s]+$/.test(v.trim())) return 'Только цифры — валюту выберите рядом';
+      if (v.replace(/\D/g, '').length > 15) return 'Слишком большая сумма';
       return v.trim().length > 100 ? 'Слишком длинно — не более 100 символов' : '';
     }
   };
@@ -646,7 +649,11 @@ function ymGoal(goal, params) {
           : directionField.getAttribute('data-label') || direction;
         head.push('Направление: ' + directionLabel);
       }
-      if (amountField && amountField.value.trim()) head.push('Сумма: ' + amountField.value.trim());
+      // «Сумма: 500 000 AED» — цифры из поля, валюта из выбора рядом (по умолчанию ₽).
+      var currencyField = form.querySelector('[name="amount_currency"]');
+      if (amountField && amountField.value.trim()) {
+        head.push('Сумма: ' + amountField.value.trim() + (currencyField && currencyField.value ? ' ' + currencyField.value : ''));
+      }
       if (head.length) payload.message = head.join('\n') + (payload.message ? '\n' + payload.message : '');
 
       sending = true;

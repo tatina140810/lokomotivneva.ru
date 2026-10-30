@@ -19,6 +19,7 @@
   var DIRECTIONS = [['china', 'Китай'], ['turkey', 'Турция'], ['uae', 'ОАЭ'], ['europe', 'Европа'], ['uk', 'Великобритания'],
     ['hongkong', 'Гонконг'], ['export', 'Получение платежа из-за рубежа (экспорт)'], ['services', 'Оплата услуг и ПО'],
     ['individuals', 'Обучение, лечение, поездки (физлица)'], ['other', 'Другая страна']];
+  var CURRENCIES = [['₽', 'рубли'], ['$', 'доллары'], ['¥', 'юани'], ['€', 'евро'], ['AED', 'дирхамы ОАЭ']];
   var SHORT_FIELDS =
     '<fieldset class="field field--choice"><legend class="field__label">Кто вы <span aria-hidden="true">*</span></legend>' +
       '<div class="choice">' +
@@ -30,8 +31,15 @@
         '<option value="">Выберите направление</option>' +
         DIRECTIONS.map(function (x) { return '<option value="' + x[0] + '">' + x[1] + '</option>'; }).join('') +
       '</select><p class="field__error" id="direction-error" role="alert" hidden></p></div>' +
+    // Сумма — только цифры (пробелы по разрядам ставятся при вводе), валюта — выбором рядом,
+    // по умолчанию ₽ (Тати 2026-10-30). В заявку уходит «Сумма: 500 000 AED».
     '<div class="field"><label class="field__label" for="amount">Сумма <span class="field__opt">— необязательно</span></label>' +
-      '<input class="field__input" type="text" id="amount" name="amount" maxlength="100" autocomplete="off" placeholder="Напр. 50 000 $ или 2 млн ₽" aria-describedby="amount-error">' +
+      '<div style="display:grid;grid-template-columns:minmax(0,1fr) auto;gap:.5rem">' +
+        '<input class="field__input" type="text" id="amount" name="amount" inputmode="numeric" maxlength="19" autocomplete="off" placeholder="Напр. 500 000" aria-describedby="amount-error">' +
+        '<select class="field__input field__input--select" id="amount-currency" name="amount_currency" aria-label="Валюта суммы" style="width:auto;min-width:5.6rem">' +
+          CURRENCIES.map(function (c) { return '<option value="' + c[0] + '" title="' + c[1] + '">' + c[0] + '</option>'; }).join('') +
+        '</select>' +
+      '</div>' +
       '<p class="field__error" id="amount-error" role="alert" hidden></p></div>';
 
   var FORM_HTML =
@@ -133,6 +141,24 @@
     step('lead_form_start');
   }
   form.addEventListener('input', onFirstInput);
+
+  /* Сумма: только цифры, пробелы по разрядам прямо при вводе; курсор остаётся после той же
+     цифры, что и до форматирования (иначе он прыгал бы в конец). */
+  var amountInput = form.querySelector('#amount');
+  if (amountInput) {
+    amountInput.addEventListener('input', function () {
+      var el = amountInput;
+      var caret = el.selectionStart == null ? el.value.length : el.selectionStart;
+      var digitsBefore = el.value.slice(0, caret).replace(/\D/g, '').length;
+      var digits = el.value.replace(/\D/g, '').replace(/^0+(?=\d)/, '').slice(0, 15);
+      var formatted = digits.replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+      if (formatted === el.value) return;
+      el.value = formatted;
+      var pos = 0, seen = 0;
+      while (pos < formatted.length && seen < digitsBefore) { if (/\d/.test(formatted[pos])) seen++; pos++; }
+      try { el.setSelectionRange(pos, pos); } catch (e) { /* поле не в фокусе */ }
+    });
+  }
   form.addEventListener('change', onFirstInput);
 
   var lastFocus = null;
