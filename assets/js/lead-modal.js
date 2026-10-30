@@ -16,8 +16,9 @@
   /* Короткая форма (Тати 2026-10-30): кто вы и направление — выбором, сумма необязательна.
      main.js кладёт их первыми строками в текст заявки (сервер хранит только текст), цель
      Метрики та же — lead_form. Эту же разметку вставляет в себя форма на главной. */
-  var DIRECTIONS = [['china', 'Китай'], ['turkey', 'Турция'], ['uae', 'ОАЭ'], ['europe', 'Европа'], ['hongkong', 'Гонконг'],
-    ['export', 'Получение платежа из-за рубежа (экспорт)'], ['services', 'Оплата услуг и ПО'], ['other', 'Другая страна']];
+  var DIRECTIONS = [['china', 'Китай'], ['turkey', 'Турция'], ['uae', 'ОАЭ'], ['europe', 'Европа'], ['uk', 'Великобритания'],
+    ['hongkong', 'Гонконг'], ['export', 'Получение платежа из-за рубежа (экспорт)'], ['services', 'Оплата услуг и ПО'],
+    ['individuals', 'Обучение, лечение, поездки (физлица)'], ['other', 'Другая страна']];
   var SHORT_FIELDS =
     '<fieldset class="field field--choice"><legend class="field__label">Кто вы <span aria-hidden="true">*</span></legend>' +
       '<div class="choice">' +
@@ -101,7 +102,8 @@
   var body = modal.querySelector('.lead-modal__body');
 
   /* Страница уже говорит, о чём заявка: направление и «кто вы» выбраны заранее, их можно поменять. */
-  var pathDir = (location.pathname.match(/^\/payments\/([a-z]+)\//) || [])[1];
+  var pathDir = /^\/individuals\//.test(location.pathname) ? 'individuals'
+    : (location.pathname.match(/^\/payments\/([a-z]+)\//) || [])[1];
   var dirSelect = form.querySelector('select[name="direction"]');
   if (dirSelect && pathDir && dirSelect.querySelector('option[value="' + pathDir + '"]')) dirSelect.value = pathDir;
   var person = form.querySelector('#client-kind-person');

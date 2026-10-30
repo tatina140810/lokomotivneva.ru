@@ -95,7 +95,7 @@ _tmr.push({id: "3797721", type: "pageView", start: (new Date()).getTime()});
     <div class="container header__inner">
       <a class="brand" href="/" aria-label="ООО «Локомотив» — на главную">
         <span class="brand__seal"><img src="/assets/img/logo-160.jpg" width="160" height="160" alt="Эмблема ООО «Локомотив»"></span>
-        <span class="brand__text"><span class="brand__name">ЛОКОМОТИВ</span><span class="brand__tagline">Платёжный агент ВЭД и логистика</span></span>
+        <span class="brand__text"><span class="brand__name">ЛОКОМОТИВ</span><span class="brand__tagline">Платёжный агент ВЭД</span></span>
       </a>
       <nav class="nav" id="nav" aria-label="Основная навигация">
         <ul class="nav__list">
@@ -546,7 +546,8 @@ _tmr.push({id: "3797721", type: "pageView", start: (new Date()).getTime()});
               <!-- Короткая форма (Тати 2026-10-30): «Кто вы», направление и сумму вставляет
                    lead-modal.js — одна разметка с окном заявки. Без JS форма и так не отправляется. -->
               <div data-short-fields></div>
-              <div class="field"><label class="field__label" for="ref-code">Код партнёра (если есть)</label><input class="field__input" type="text" id="ref-code" name="ref" autocomplete="off" maxlength="20" placeholder="Например: TEST-01" style="text-transform:uppercase"></div>
+              <!-- Код партнёра — только из ссылки партнёра (cookie lk_ref), поля для ввода нет (Тати 2026-10-30). -->
+              <input type="hidden" name="ref" value="">
               <label class="checkbox"><input type="checkbox" id="consent" name="consent" required aria-describedby="consent-error"><span>Я согласен с <a href="/privacy/" target="_blank" rel="noopener">политикой обработки персональных данных</a></span></label>
               <p class="field__error" id="consent-error" role="alert" hidden></p>
               <button class="btn btn--gold btn--block btn--lg" type="submit">Отправить заявку</button>
@@ -589,7 +590,7 @@ _tmr.push({id: "3797721", type: "pageView", start: (new Date()).getTime()});
 
   <script src="/assets/js/site-config.js?v=20261029s" defer></script>
   <script src="/assets/js/site.js?v=20261026msgr" defer></script>
-  <script src="/assets/js/lead-modal.js?v=20261030lead" defer></script>
+  <script src="/assets/js/lead-modal.js?v=20261030lead2" defer></script>
   <script src="/assets/js/main.js?v=20261030lead" defer></script>
   <script src="/assets/js/about-video.js?v=20261015rt" defer></script>
   <script src="/assets/js/search.js?v=20261026ru" defer></script>
