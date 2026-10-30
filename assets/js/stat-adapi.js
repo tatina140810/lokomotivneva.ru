@@ -116,6 +116,7 @@
     var stale = staleOf(s);
     return '<div class="apitile"><h3>' + esc(s.label) + '</h3>'
       + (stale ? '<p class="stalewarn">' + esc(stale.text) + '</p>' : '')
+      + (w.adApiSum ? w.adApiSum.html(s, summary) : '')
       + head
       + kv('Показы', cnt(s.impressions))
       + kv('Клики', cnt(s.clicks))
@@ -186,6 +187,7 @@
     if (w.adApiVk) w.adApiVk.bind(opts);
     if (w.adApiBalance) w.adApiBalance.bind(opts);
     if (w.adApiReconcile) w.adApiReconcile.bind(opts);
+    if (w.adApiSum) w.adApiSum.fill(host, opts);
     var btn = d.getElementById('api-sync');
     if (!btn) return;
     btn.addEventListener('click', function () {

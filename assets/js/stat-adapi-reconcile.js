@@ -35,6 +35,10 @@
   }
 
   w.adApiReconcile = {
+    // Для сводной строки над карточкой (stat-adapi-sum.js).
+    monthName: monthName,
+    dueMonths: function (rc) { return rc ? pending(rc).map(function (a) { return monthName(a.month); }) : []; },
+
     html: function (s) {
       var rc = s.reconcile;
       if (!rc) return '';

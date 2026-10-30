@@ -11,6 +11,9 @@
     topup: 'пополнение (авто — уточнить по счёту)', jump: 'скачок!', drop: 'падение!',
   };
   var SHOW = 24;
+  /* По умолчанию (Тати 2026-10-30) — только строки за 24 часа, где остаток изменился,
+     и ручные замеры; «Показать все» раскрывает ленту целиком, как раньше. */
+  var RECENT_MS = 24 * 3600e3;
 
   function esc(v) {
     return String(v == null ? '' : v).replace(/[&<>"]/g, function (c) {
@@ -38,29 +41,37 @@
         rows.push({ at: m.at, day: m.day, src: 'вручную', net: m.net, vat: m.withVat,
           delta: null, status: m.ignored ? 'сомнительный' : '' });
       });
-      rows.sort(function (a, b) {
-        var ta = a.at ? Date.parse(a.at) : Date.parse(a.day + 'T12:00:00+03:00');
-        var tb = b.at ? Date.parse(b.at) : Date.parse(b.day + 'T12:00:00+03:00');
-        return tb - ta;
+      rows.forEach(function (r) { r.t = r.at ? Date.parse(r.at) : Date.parse(r.day + 'T12:00:00+03:00'); });
+      rows.sort(function (a, b) { return b.t - a.t; });
+      var since = Date.now() - RECENT_MS;
+      var shown = 0;
+      rows.forEach(function (r) {
+        r.main = r.t >= since && (r.src === 'вручную' || (r.delta != null && Math.abs(r.delta) >= 0.005));
+        if (r.main) shown += 1;
       });
+      var more = rows.length - shown;
       var alert = bw.paused
         ? '<div class="apibal__alert"><b>Замеры остановлены.</b> ' + esc(bw.alert || '')
           + '<div class="apiacc__row"><button type="button" class="bar__btn" id="bal-check">Пополнение внесено — проверить</button>'
           + '<button type="button" class="bar__btn" id="bal-force">Разобрано, продолжить</button></div>'
           + '<p class="apierr" id="bal-err"></p></div>'
         : '';
-      return '<div class="apibal"><h4>Остаток счёта по часам <span class="t-sub">— в расчёт идёт последний замер суток; '
+      return '<div class="apibal" id="bal-box"><h4>Остаток счёта по часам <span class="t-sub">— в расчёт идёт последний замер суток; '
         + 'ручной замер в те же сутки только для сверки</span></h4>'
         + alert
-        + (rows.length ? '<div class="scrollx"><table><thead><tr><th>Время, МСК</th><th>Откуда</th>'
+        + (rows.length && !shown ? '<p class="t-sub apibal__few">За последние 24 часа остаток не менялся, ручных замеров не было.</p>' : '')
+        + (rows.length ? '<div class="scrollx' + (shown ? '' : ' apibal__more') + '"><table><thead><tr><th>Время, МСК</th><th>Откуда</th>'
           + '<th>Без НДС</th><th>С НДС</th><th>За час</th><th></th></tr></thead><tbody>'
           + rows.map(function (r) {
             var bad = r.status === 'jump' || r.status === 'drop';
-            return '<tr' + (r.src === 'вручную' ? ' class="apibal__manual"' : '') + '><td>' + esc(when(r.at, r.day)) + '</td>'
+            var cls = (r.src === 'вручную' ? 'apibal__manual' : '') + (r.main ? '' : ' apibal__more');
+            return '<tr' + (cls.trim() ? ' class="' + cls.trim() + '"' : '') + '><td>' + esc(when(r.at, r.day)) + '</td>'
               + '<td>' + r.src + '</td><td>' + r2(r.net) + '</td><td>' + r2(r.vat) + '</td>'
               + '<td>' + signed(r.delta) + '</td>'
               + '<td' + (bad ? ' class="apierr"' : ' class="t-sub"') + '>' + esc(STATUS[r.status] != null ? STATUS[r.status] : r.status) + '</td></tr>';
           }).join('') + '</tbody></table></div>'
+          + (more ? '<p class="apibal__toggle"><button type="button" class="apilink" id="bal-all" data-more="' + rows.length + '">'
+            + 'Показать все (' + rows.length + ')</button></p>' : '')
           : '<p class="t-sub">Первый замер появится в течение часа.</p>')
         + '</div>';
     },
@@ -79,6 +90,13 @@
               + '(дата и время зачисления) и проверьте снова — или нажмите «Разобрано», если его не было.';
           })
           .catch(function (e) { err.textContent = e.message; });
+      }
+      var all = d.getElementById('bal-all');
+      if (all) {
+        all.addEventListener('click', function () {
+          var open = d.getElementById('bal-box').classList.toggle('apibal--all');
+          all.textContent = open ? 'Только изменения за 24 часа' : 'Показать все (' + all.getAttribute('data-more') + ')';
+        });
       }
       var a = d.getElementById('bal-check');
       var b = d.getElementById('bal-force');

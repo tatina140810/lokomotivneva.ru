@@ -312,3 +312,26 @@ tbody tr:last-child td { border-bottom: 0; }
   transform: rotate(45deg); transition: transform .15s; vertical-align: middle;
 }
 .clp-head[aria-expanded="false"] .clp-mark { transform: rotate(-45deg); }
+
+/* Карточки кабинетов (Тати 2026-10-30): сводная строка, свёрнутые пояснения и ручной ввод,
+   почасовой остаток Директа — по умолчанию только изменения за 24 часа. */
+.apisum { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 8px 14px; background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; margin: 0 0 12px; font-size: 13px; }
+.apisum__it > span { display: block; font-size: 11px; color: var(--ink-3); margin-bottom: 2px; }
+.apisum__it b { font-weight: 600; color: var(--ink); font-variant-numeric: tabular-nums; }
+.apisum__it b .t-sub { display: block; font-weight: 400; }
+.apisum__it b.apisum__warn { color: #9A6700; }
+.apisum__it b.apisum__bad { color: var(--bad); }
+.apifold { margin-top: 10px; font-size: 12px; color: var(--ink-3); }
+.apifold > summary { cursor: pointer; color: var(--ink-2); font-weight: 600; font-size: 13px; }
+.apifold p { margin: 6px 0 0; line-height: 1.5; }
+.apifold--form { border-top: 1px solid var(--line); padding-top: 10px; }
+.apifold--form .apiacc { border-top: 0; margin-top: 4px; padding-top: 0; color: var(--ink); }
+.apilink { border: 0; background: none; padding: 0; color: var(--navy); font: inherit; font-size: 12px; cursor: pointer; text-decoration: underline; }
+.vkauto__line { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 4px 10px; }
+.vkauto__wait { color: #9A6700; font-weight: 600; }
+.vkauto__form { margin-top: 6px; }
+.apibal:not(.apibal--all) .apibal__more { display: none; }
+.apibal--all .apibal__few { display: none; }
+.apibal__toggle { margin: 6px 0 0; }
+.apibal .apibal__manual td { background: #FFF4D6; }
+.apibal .apibal__manual td:first-child { box-shadow: inset 3px 0 0 #E0A800; }

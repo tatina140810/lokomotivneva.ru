@@ -54,22 +54,33 @@
           + '. Дальше раздел неизвестен — внесите свежие остатки из кабинета.</p>';
       }
       var est = v.estimated ? ', оценка' : '';
+      // Длинные серые пояснения — в свёрнутый «Как считается» (Тати 2026-10-30); на виду цифры.
+      var how = [
+        'Своих в кабинете — расход своих денег по остаткам, без НДС' + (v.knownUntil ? ', учтён до ' + at(v.knownUntil) : '')
+          + (v.estimated ? ' (оценка)' : '') + '; × 1,22 — потрачено с НДС.',
+        'Бонусы VK бесплатные — в затраты и цены не входят.',
+        'Полный расход кабинета — статистика VK × 1,22, как если бы бонусов не было; для сравнения с Директом'
+          + (s.lastSyncAt ? '. Данные на ' + at(s.lastSyncAt) : '') + '.',
+        'Остаток своих — в кабинете, без НДС' + (v.estimated ? ' (оценка)' : '') + '; «оплачено» — сумма счетов с НДС за этот остаток.',
+        'Бюджет: оплачено по счетам — сумма счетов с НДС за пополнения своих.',
+      ];
+      if (v.apiBalance) how.push('Общий остаток по API — свои и бонусы вместе, на ' + at(v.apiBalance.at) + '.');
+      if (w.adApiVkAuto) how = how.concat(w.adApiVkAuto.notes(s));
       return '<div class="apitile__main">' + rub(v.own.inPeriodVat) + '<span class="t-sub"> своих денег потрачено за период, с НДС</span></div>'
-        + kv('Своих в кабинете', rub2(v.own.inPeriod) + '<div class="t-sub">без НДС, по остаткам'
-          + (v.knownUntil ? ' до ' + at(v.knownUntil) : '') + est + '</div>', 'расход своих по остаткам; × 1,22 — потрачено с НДС')
+        + kv('Своих в кабинете', rub2(v.own.inPeriod) + '<div class="t-sub">без НДС' + est + '</div>', 'расход своих по остаткам; × 1,22 — потрачено с НДС')
         + kv('Бонусы потрачено', rub2(v.bonus.inPeriod), 'бонусы VK бесплатные — в затраты и цены не входят')
-        + kv('Полный расход кабинета', rub2(v.statsInPeriod)
-          + '<div class="t-sub">с НДС, в кабинете без НДС: ' + rub2(s.costNet)
-          + (s.lastSyncAt ? '; данные на ' + at(s.lastSyncAt) : '') + '</div>',
+        + kv('Полный расход кабинета', rub2(v.statsInPeriod) + '<div class="t-sub">с НДС; без НДС ' + rub2(s.costNet) + '</div>',
           'статистика VK × 1,22 — как если бы бонусов не было; для сравнения с Директом')
         + '<div class="apitile__sep"></div>'
-        + kv('Остаток своих', rub2(v.own.balance) + '<div class="t-sub">в кабинете, без НДС' + est + '; оплачено за него '
-          + rub2(v.own.balanceVat) + '</div>')
+        + kv('Остаток своих', rub2(v.own.balance) + '<div class="t-sub">без НДС' + est + '; оплачено ' + rub2(v.own.balanceVat) + '</div>')
         + kv('Остаток бонусов', rub2(v.bonus.balance) + (v.estimated ? '<div class="t-sub">оценка</div>' : ''))
         + kv('Бюджет: оплачено по счетам', rub2(v.own.paid), 'сумма счетов с НДС за пополнения своих')
         + kv('Бонусы получено', rub2(v.bonus.topups))
         + (v.apiBalance ? kv('Общий остаток по API', rub2(v.apiBalance.total), 'на ' + at(v.apiBalance.at) + '; свои + бонусы вместе') : '')
-        + flags + (w.adApiVkAuto ? w.adApiVkAuto.html(s) : '') + '<div class="apitile__sep"></div>';
+        + flags + (w.adApiVkAuto ? w.adApiVkAuto.html(s) : '')
+        + '<details class="apifold"><summary>Как считается</summary>'
+        + how.map(function (h) { return '<p>' + h + '</p>'; }).join('') + '</details>'
+        + '<div class="apitile__sep"></div>';
     },
 
     // Цены по своим деньгам — основная строка; по полному расходу — вторая.
@@ -83,7 +94,9 @@
     },
 
     form: function () {
-      return '<div class="apiacc"><p class="apiacc__line"><b>VK: пополнения и остатки</b> <span class="t-sub">— суммы кабинета без НДС; оплата по счёту — с НДС</span></p>'
+      // Ручной ввод нужен редко — свёрнут по умолчанию (Тати 2026-10-30).
+      return '<details class="apifold apifold--form"><summary>Внести вручную</summary>'
+        + '<div class="apiacc"><p class="apiacc__line"><b>VK: пополнения и остатки</b> <span class="t-sub">— суммы кабинета без НДС; оплата по счёту — с НДС</span></p>'
         + '<div class="apiacc__row">'
         + '<label>Что<select id="vk-kind"><option value="topup">Пополнение</option><option value="balance">Остатки из кабинета</option></select></label>'
         + '<label>Дата<input type="date" id="vk-date" value="' + today() + '"></label>'
@@ -98,7 +111,7 @@
         + '<label>Свои, ₽<input type="text" inputmode="decimal" id="vk-own"></label>'
         + '<label>Бонусы, ₽<input type="text" inputmode="decimal" id="vk-bonus"></label></div>'
         + '<div class="apiacc__row"><button type="button" class="bar__btn" id="vk-save">Внести</button></div>'
-        + '<p class="apierr" id="vk-err"></p></div>';
+        + '<p class="apierr" id="vk-err"></p></div></details>';
     },
 
     bind: function (opts) {
