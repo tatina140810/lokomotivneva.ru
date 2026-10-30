@@ -141,9 +141,9 @@ _tmr.push({id: "3797721", type: "pageView", start: (new Date()).getTime()});
              на /calculator/. Скрипт v2.js без [data-express] просто не запускается. -->
         <div class="page-hero__actions reveal" data-reveal-delay="3">
           <a class="btn btn--gold btn--lg" href="#zayavka">Оставить заявку</a>
-          <!-- Вместо «Личного кабинета» (он остался в меню шапки) — WhatsApp, Тати 2026-10-30.
-               Фолбэк в разметке — звонок; site.js поднимает ссылку до WhatsApp из site-config. -->
-          <a class="btn btn--ghost btn--lg" href="tel:+74951080100" data-messenger="whatsapp" rel="nofollow"><svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-whatsapp"></use></svg><span data-messenger-label>Написать в WhatsApp</span></a>
+          <!-- Вторая кнопка — бот в Telegram (Тати 2026-10-30, раньше WhatsApp; «Личный кабинет» — в меню
+               шапки). Цель telegram_click ставит main.js по любому клику на ссылку t.me. -->
+          <a class="btn btn--ghost btn--lg" href="https://t.me/LokomotivNeva_Bot" target="_blank" rel="nofollow noopener"><svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/assets/sprite.svg#i-telegram"></use></svg><span>Написать в Telegram</span></a>
         </div>
       </div>
 
